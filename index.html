@@ -6,34 +6,8 @@
   <title>Francisco Martins — Graphic Designer</title>
   <meta name="description" content="Francisco Martins — graphic designer based in Lisbon, Portugal. Visual identity, branding, packaging, typography and photography.">
   <link rel="stylesheet" href="assets/css/style.css">
-  <script>
-    /* Decide before first paint whether to skip the intro (repeat visit this session, or reduced motion). */
-    (function () {
-      try {
-        var skip = sessionStorage.getItem('fm-intro-seen') ||
-          (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-        if (skip) document.documentElement.classList.add('intro-done');
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body>
-
-<!-- Intro overlay — home, first visit per session -->
-<div class="intro" id="intro" aria-hidden="true">
-  <div class="intro-frames">
-    <img src="assets/images/poli-thumb.jpg" alt="" width="642" height="900">
-    <img src="assets/images/litet-thumb.jpg" alt="" width="636" height="900">
-    <img src="assets/images/1543-thumb.jpg" alt="" width="675" height="900">
-    <img src="assets/images/xadrez-thumb-2.jpg" alt="" width="675" height="900">
-    <img src="assets/images/filipa-thumb.jpg" alt="" width="600" height="900">
-    <img src="assets/images/beah-thumb.jpg" alt="" width="600" height="900">
-  </div>
-  <div class="intro-meta">
-    <span class="intro-count">01</span>
-    <span class="intro-name">Francisco Martins</span>
-  </div>
-</div>
 
 <!-- Fixed header -->
 <header class="site-header grid">

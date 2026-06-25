@@ -157,48 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     syncHeader();
   }
 
-  /* ---------- Intro overlay (home, first visit per session) ---------- */
-  const intro = document.getElementById('intro');
-  const root = document.documentElement;
-
-  if (intro && !root.classList.contains('intro-done')) {
-    const frames = intro.querySelectorAll('.intro-frames img');
-    const countEl = intro.querySelector('.intro-count');
-    const nameEl = intro.querySelector('.intro-name');
-    const names = ['Poliempreende', 'Litet Snitt', '1543', 'Clube de Xadrez', 'Filipa', 'Beah'];
-    const STEP = 150;   // ms each project flashes
-    let i = 0;
-
-    root.classList.add('intro-playing');
-
-    const show = (n) => {
-      frames.forEach((f, k) => f.classList.toggle('is-on', k === n));
-      if (countEl) countEl.textContent = String(n + 1).padStart(2, '0');
-      if (nameEl) nameEl.textContent = names[n] || '';
-    };
-
-    const finish = () => {
-      intro.classList.add('is-leaving');
-      root.classList.remove('intro-playing');
-      try { sessionStorage.setItem('fm-intro-seen', '1'); } catch (e) {}
-      const done = () => { root.classList.add('intro-done'); startHeroType(); };
-      intro.addEventListener('transitionend', done, { once: true });
-      setTimeout(done, 1000); // fallback if transitionend never fires
-    };
-
-    show(0);
-    const timer = setInterval(() => {
-      i += 1;
-      if (i >= frames.length) {
-        clearInterval(timer);
-        setTimeout(finish, 260); // brief hold on the last frame
-        return;
-      }
-      show(i);
-    }, STEP);
-  } else {
-    // Intro skipped (repeat visit / reduced motion) — type the hero right away.
-    startHeroType();
-  }
+  /* ---------- Hero: start the terminal type-out on load ---------- */
+  startHeroType();
 
 });
