@@ -1002,9 +1002,14 @@ ul {
     margin-top: 1.5rem;
   }
 
-  .we-1 .img-b, .we-2 .img-b, .we-3 .img-b,
-  .we-4 .img-b, .we-5 .img-b {
-    grid-column: 4 / 17;
+  /* Drop the second image on the four design projects (01–04) */
+  .we-1 .img-b, .we-2 .img-b, .we-3 .img-b, .we-4 .img-b {
+    display: none;
+  }
+
+  /* Photography (05): keep the second photo, but full content-width too */
+  .we-5 .img-b {
+    grid-column: 1 / 17;
     margin-top: 1rem;
   }
 
@@ -1021,13 +1026,19 @@ ul {
     grid-column: 1 / 17;
   }
 
-  .about .about-text {
-    grid-column: 1 / 17;
-    margin-top: 1rem;
+  /* tighten the gap between the "Bio" label and the text on mobile */
+  .about {
+    row-gap: 2rem;
   }
 
+  .about .about-text {
+    grid-column: 1 / 17;
+    margin-top: 0.25rem;
+  }
+
+  /* portrait fills the content width (equal --pad gutters both sides) */
   .about .about-photo {
-    grid-column: 5 / 17;
+    grid-column: 1 / 17;
     margin-top: 2rem;
   }
 
