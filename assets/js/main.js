@@ -157,7 +157,166 @@ document.addEventListener('DOMContentLoaded', () => {
     syncHeader();
   }
 
-  /* ---------- Hero: start the terminal type-out on load ---------- */
+  /* ---------- Hero LED "digital grain" fill (pharmacy-cross style) ----------
+     Orange neon grains rain down and stack to fill the hero, hold, then switch
+     off — and loop. Lives behind the terminal window (z-index 0). Paused while
+     the hero is off-screen; skipped entirely under reduced-motion.            */
+  const startHeroGrain = () => {
+    const canvas = document.querySelector('.hero .hero-grain');
+    if (!canvas || reduceMotion) return;
+    const hero = canvas.closest('.hero');
+    const ctx = canvas.getContext('2d');
+
+    const CELL = 16;          // grid cell size (CSS px)
+    const DOT  = 7;           // lit LED diameter (CSS px)
+    const FALL = 760;         // grain fall speed (px / s)
+    const FILL_SECONDS = 4.5; // target time to fill the whole field
+    const BAND = CELL * 9;    // scatter zone above the rising front (gradual fill)
+
+    let dpr, w, h, cols, rows, total, offY;
+    let stack, pending, grains, lit;
+    let settled, sctx;        // offscreen layer of already-lit LEDs
+    let sprite;               // pre-rendered glowing dot (avoids per-cell shadowBlur)
+    let phase, phaseT, spawnAcc, last;
+    let running = false, rafId = 0;
+
+    // pre-render one glowing orange LED into an offscreen canvas
+    const makeSprite = () => {
+      const s = Math.ceil(CELL * dpr);
+      const c = document.createElement('canvas');
+      c.width = c.height = s;
+      const g = c.getContext('2d');
+      const cx = s / 2, r = (DOT * dpr) / 2;
+      const halo = g.createRadialGradient(cx, cx, 0, cx, cx, r * 2.3);
+      halo.addColorStop(0,    'rgba(255, 190, 110, 0.95)');
+      halo.addColorStop(0.45, 'rgba(255, 92, 0, 0.85)');
+      halo.addColorStop(1,    'rgba(255, 92, 0, 0)');
+      g.fillStyle = halo;
+      g.beginPath(); g.arc(cx, cx, r * 2.3, 0, Math.PI * 2); g.fill();
+      g.fillStyle = 'rgba(255, 214, 160, 0.95)'; // bright core
+      g.beginPath(); g.arc(cx, cx, r * 0.62, 0, Math.PI * 2); g.fill();
+      sprite = c;
+    };
+
+    const reset = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // canvas stops above the divider bar — size to the canvas, not the hero
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width  = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(w / CELL);
+      rows = Math.floor(h / CELL);          // whole rows only — no clipped bottom row
+      offY = h - rows * CELL;               // bottom-align: remainder absorbed at the top
+      total = cols * rows;
+      stack = new Array(cols).fill(0);   // settled LEDs per column (from bottom)
+      pending = new Array(cols).fill(0); // grains currently falling toward a column
+      grains = [];
+      lit = 0;
+      makeSprite();
+      settled = document.createElement('canvas');
+      settled.width = canvas.width; settled.height = canvas.height;
+      sctx = settled.getContext('2d');
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      phase = 'fill'; phaseT = 0; spawnAcc = 0; last = 0;
+    };
+
+    const stamp = (col, level) => { // paint a settled LED onto the offscreen layer
+      const x = col * CELL;
+      const y = offY + (rows - 1 - level) * CELL;
+      sctx.drawImage(sprite, x, y, CELL, CELL);
+    };
+
+    const frame = (t) => {
+      if (!running) return;
+      if (!last) last = t;
+      let dt = (t - last) / 1000; last = t;
+      if (dt > 0.05) dt = 0.05; // clamp after tab-switches
+      phaseT += dt;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (phase === 'fill') {
+        // spawn new grains into not-yet-claimed columns
+        spawnAcc += (total / FILL_SECONDS) * dt;
+        let toSpawn = Math.floor(spawnAcc);
+        spawnAcc -= toSpawn;
+        let guard = cols * 2;
+        while (toSpawn > 0 && lit + grains.length < total && guard-- > 0) {
+          const col = (Math.random() * cols) | 0;
+          if (stack[col] + pending[col] < rows) {
+            // appear in a short scatter band just above this column's surface,
+            // so the lit dots hug a rising front instead of a full-height curtain
+            const surfaceY = offY + (rows - 1 - stack[col]) * CELL;
+            grains.push({ col, y: surfaceY - (CELL + Math.random() * BAND) });
+            pending[col]++;
+            toSpawn--;
+          }
+        }
+        // lowest grains settle first so columns stack cleanly
+        grains.sort((a, b) => b.y - a.y);
+        for (let k = grains.length - 1; k >= 0; k--) {
+          const gr = grains[k];
+          gr.y += FALL * dt;
+          const surface = offY + (rows - 1 - stack[gr.col]) * CELL; // top of next empty cell
+          if (gr.y >= surface) {
+            stamp(gr.col, stack[gr.col]);
+            stack[gr.col]++; pending[gr.col]--; lit++;
+            grains.splice(k, 1);
+          }
+        }
+        // draw settled field + the falling grains (with a faint trail)
+        ctx.drawImage(settled, 0, 0, w, h);
+        for (const gr of grains) {
+          const x = gr.col * CELL;
+          ctx.globalAlpha = 0.35;
+          ctx.drawImage(sprite, x, gr.y - CELL, CELL, CELL);
+          ctx.globalAlpha = 1;
+          ctx.drawImage(sprite, x, gr.y, CELL, CELL);
+        }
+        if (lit >= total) { phase = 'hold'; phaseT = 0; }
+
+      } else if (phase === 'hold') {
+        ctx.drawImage(settled, 0, 0, w, h); // fully lit — brief glow
+        if (phaseT > 0.9) { phase = 'off'; phaseT = 0; }
+
+      } else if (phase === 'off') {
+        const k = Math.min(phaseT / 0.7, 1);             // fade the whole field out
+        ctx.globalAlpha = (1 - k) * (0.85 + Math.random() * 0.15); // LED flicker
+        ctx.drawImage(settled, 0, 0, w, h);
+        ctx.globalAlpha = 1;
+        if (k >= 1) { phase = 'wait'; phaseT = 0; }
+
+      } else { // 'wait' — dark beat before looping
+        if (phaseT > 0.8) reset();
+      }
+
+      rafId = requestAnimationFrame(frame);
+    };
+
+    const start = () => { if (!running) { running = true; last = 0; rafId = requestAnimationFrame(frame); } };
+    const stop  = () => { running = false; if (rafId) cancelAnimationFrame(rafId); };
+
+    reset();
+    start();
+
+    // pause while the hero is scrolled out of view (battery + focus)
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => e.isIntersecting ? start() : stop());
+      }, { threshold: 0 }).observe(hero);
+    }
+
+    // re-fit on resize (debounced)
+    let rt;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => { stop(); reset(); start(); }, 200);
+    }, { passive: true });
+  };
+
+  /* ---------- Hero: start the terminal type-out + LED grain on load ---------- */
   startHeroType();
+  startHeroGrain();
 
 });

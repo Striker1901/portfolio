@@ -275,11 +275,38 @@ ul {
 
 /* ---------- Hero — terminal (code/tech style) ---------- */
 .hero {
+  --hero-strip: clamp(56px, 9vh, 96px); /* bottom band: divider + scroll cue */
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
   place-items: center;
   padding: var(--pad);
+}
+
+/* LED "digital grain" fill — pharmacy-cross style, behind the terminal window.
+   Stops at the divider so the grains stack onto the bar, leaving the scroll
+   cue on a clean strip below. */
+.hero-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: calc(100% - var(--hero-strip)); /* stop at the divider bar */
+  pointer-events: none;
+}
+
+/* Full-width bar dividing the LED animation from the scroll indicator */
+.hero-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--hero-strip);
+  z-index: 1;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(255, 92, 0, 0.8), 0 0 22px rgba(255, 92, 0, 0.5);
+  pointer-events: none;
 }
 
 .term {
@@ -399,6 +426,7 @@ ul {
   .term-caret { animation: none; }
   .hero-scroll { animation: none; }
   .term.is-typing .t-line { opacity: 1; }
+  .hero-grain { display: none; }
 }
 
 /* ---------- Work with me — terminal offer (closing dark section) ---------- */
