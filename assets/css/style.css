@@ -296,6 +296,18 @@ ul {
   pointer-events: none;
 }
 
+/* Plain strip below the divider — masks the blueprint grid behind the scroll cue */
+.hero-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hero-strip);
+  z-index: 0;
+  background: #0d0d0d; /* section base colour, no grid lines */
+  pointer-events: none;
+}
+
 /* Full-width bar dividing the LED animation from the scroll indicator */
 .hero-divider {
   position: absolute;
@@ -319,6 +331,22 @@ ul {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero terminal plotted onto the 44px blueprint grid: square corners, sized to
+   whole cells (17 × 10) so all four edges land exactly on grid lines. A centred
+   box only stays aligned in 2-cell (88px) steps, so to shave one line off the
+   bottom we keep the TOP fixed and shrink upward: translateY(-22px) holds the
+   top on its line while the bottom moves up one cell. Dims: 748 (17) × 440 (10).
+   (Scoped to the hero; the work-with-me terminal keeps its rounded panel.) */
+.hero .term {
+  width: min(92vw, 748px);             /* 17 × 44px grid cells */
+  min-height: 440px;                   /* 10 × 44px grid cells */
+  transform: translateY(-22px);        /* hold the top edge on its grid line */
+  border: 1px solid rgba(255, 255, 255, 0.14); /* thin grid-line-style outline */
+  border-radius: 0;                    /* square — match the straight grid lines */
+  overflow: visible;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
 }
 
 .term-bar {
