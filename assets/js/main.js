@@ -136,27 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(nextLine, 250);
   };
 
-  /* ---------- Header adapts over any dark section (hero + work-with-me) ---------- */
-  const header = document.querySelector('.site-header');
-  const darkSections = Array.from(document.querySelectorAll('.dark-section, .page-footer'));
-  if (header && darkSections.length) {
-    let hTicking = false;
-    const syncHeader = () => {
-      const hb = header.offsetHeight; // top header band
-      const onDark = darkSections.some((s) => {
-        const r = s.getBoundingClientRect();
-        return r.top <= hb && r.bottom > hb; // section sits behind the header band
-      });
-      header.classList.toggle('on-dark', onDark);
-      hTicking = false;
-    };
-    window.addEventListener('scroll', () => {
-      if (!hTicking) { hTicking = true; requestAnimationFrame(syncHeader); }
-    }, { passive: true });
-    window.addEventListener('resize', syncHeader, { passive: true });
-    syncHeader();
-  }
-
   /* ---------- Hero LED "digital grain" fill (pharmacy-cross style) ----------
      Orange neon grains rain down and stack to fill the hero, hold, then switch
      off — and loop. Lives behind the terminal window (z-index 0). Paused while

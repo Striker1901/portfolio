@@ -44,11 +44,11 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --bg: #ffffff;
-  --ink: #0a0a0a;
+  --bg: #0d0d0d;
+  --ink: #f2f2f2;
   --accent: #ff5c00;
-  --muted: #757575;
-  --line: rgba(0, 0, 0, 0.14);
+  --muted: #9a9a9a;
+  --line: rgba(255, 255, 255, 0.14);
 
   --font: "PP Neue Montreal", "Inter", -apple-system, sans-serif;
 
@@ -151,26 +151,16 @@ ul {
   font-weight: 500;
   /* frosted-glass bar: translucent fill + backdrop blur, hairline edge to
      define it against the content scrolling underneath */
-  background: rgba(255, 255, 255, 0.72);
+  color: #f2f2f2;
+  background: rgba(13, 13, 13, 0.6);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   pointer-events: none;
 }
 
 .site-header a {
   pointer-events: auto;
-}
-
-/* Over the dark terminal hero: light text + dark gradient (toggled by JS) */
-.site-header {
-  transition: color 0.35s var(--ease), background 0.35s var(--ease);
-}
-
-.site-header.on-dark {
-  color: #f2f2f2;
-  background: rgba(13, 13, 13, 0.6);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 /* All three groups share row 1 (columns overlap at col 5, so pin the row to
@@ -658,16 +648,14 @@ ul {
 .we-4 .img-b,
 .we-5 .img-b { grid-column: 11 / 16; align-self: end; }
 
-/* Clube de Xadrez logo is black-on-white → outline it so it doesn't merge
-   with the page (home work index + case-page lead). The img-a box stretches to
-   the tall img-b beside it, so center the mark vertically inside the frame. */
+/* Clube de Xadrez logo is a light mark on transparent bg, sits directly on the
+   page. The img-a box stretches to the tall img-b beside it, so center the
+   mark vertically inside the frame. */
 .we-4 .img-a {
-  border: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.case-img img[src$="xadrez-symbol.png"] { border: 1px solid var(--line); }
 
 /* ---------- Photography teaser ---------- */
 .photography {
