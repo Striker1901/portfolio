@@ -528,6 +528,60 @@ ul {
   font-size: var(--text-s);
 }
 
+/* ---------- Cookie consent banner ---------- */
+.cookie-banner {
+  position: fixed;
+  left: var(--pad);
+  bottom: var(--pad);
+  z-index: 70;
+  max-width: 22rem;
+  background: #0a0a0a;
+  border: 1px solid var(--line);
+  padding: 1.2rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+.cookie-banner p {
+  margin: 0 0 0.9rem;
+  font-size: var(--text-s);
+  color: var(--muted);
+  line-height: 1.5;
+}
+.cookie-banner__actions {
+  display: flex;
+  gap: 0.6rem;
+}
+.cookie-banner__actions button {
+  flex: 1;
+  font-family: var(--font);
+  font-size: var(--text-s);
+  font-weight: 500;
+  padding: 0.6em 1em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--ease) 0.2s, border-color var(--ease) 0.2s, color var(--ease) 0.2s;
+}
+.cookie-banner__accept {
+  background: var(--accent);
+  color: #0a0a0a;
+}
+.cookie-banner__accept:hover { background: #ff7a33; }
+.cookie-banner__reject {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+.cookie-banner__reject:hover { border-color: var(--muted); }
+
+.pf-cookie-settings {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.pf-links .pf-cookie-settings:hover { color: var(--accent); }
+
 /* ---------- Fixed work list (desktop) ---------- */
 .work-list {
   position: fixed;
@@ -1157,5 +1211,11 @@ ul {
 
   .photo-entry .work-img {
     grid-column: 1 / 17;
+  }
+
+  .cookie-banner {
+    left: var(--pad);
+    right: var(--pad);
+    max-width: none;
   }
 }

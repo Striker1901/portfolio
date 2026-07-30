@@ -2,7 +2,82 @@
 // Scroll reveals, active work-list tracking, scroll progress line.
 // All features guard on element existence so this file is shared by every page.
 
+/* ---------- Google Analytics — gated behind explicit cookie consent ---------- */
+/* Runs outside the DOMContentLoaded block below so the banner appears (and,
+   if already accepted, GA fires) as early as possible. RGPD: tracking cookies
+   cannot be set before consent — do not remove the consent gate. */
+const GA_MEASUREMENT_ID = 'G-ZFYNMVWVBT';
+const GA_CONSENT_KEY = 'portfolio_cookie_consent'; // "accepted" | "rejected"
+
+function loadGoogleAnalytics() {
+  if (window.__gaLoaded) return;
+  window.__gaLoaded = true;
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+  document.head.appendChild(script);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+}
+
+function getCookieConsent() {
+  try { return window.localStorage.getItem(GA_CONSENT_KEY); } catch (e) { return null; }
+}
+function setCookieConsent(value) {
+  try { window.localStorage.setItem(GA_CONSENT_KEY, value); } catch (e) {}
+}
+
+function showCookieBanner() {
+  if (document.getElementById('cookie-banner')) return;
+  const banner = document.createElement('div');
+  banner.className = 'cookie-banner';
+  banner.id = 'cookie-banner';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-label', 'Consentimento de cookies');
+  banner.innerHTML =
+    '<p>This site uses Google Analytics to understand traffic. You can accept or decline — it won’t affect browsing.</p>' +
+    '<div class="cookie-banner__actions">' +
+      '<button type="button" class="cookie-banner__reject" id="cookie-reject">Decline</button>' +
+      '<button type="button" class="cookie-banner__accept" id="cookie-accept">Accept</button>' +
+    '</div>';
+  document.body.appendChild(banner);
+  document.getElementById('cookie-accept').addEventListener('click', () => {
+    setCookieConsent('accepted');
+    loadGoogleAnalytics();
+    banner.remove();
+  });
+  document.getElementById('cookie-reject').addEventListener('click', () => {
+    setCookieConsent('rejected');
+    banner.remove();
+  });
+}
+
+function initCookieConsent() {
+  const consent = getCookieConsent();
+  if (consent === 'accepted') { loadGoogleAnalytics(); return; }
+  if (consent === 'rejected') { return; }
+  showCookieBanner();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+
+  initCookieConsent();
+
+  const pfLinks = document.querySelector('.pf-links');
+  if (pfLinks && !document.getElementById('footer-cookie-settings')) {
+    const settingsBtn = document.createElement('button');
+    settingsBtn.type = 'button';
+    settingsBtn.id = 'footer-cookie-settings';
+    settingsBtn.className = 'pf-cookie-settings';
+    settingsBtn.textContent = 'Cookie settings';
+    settingsBtn.addEventListener('click', () => {
+      try { window.localStorage.removeItem(GA_CONSENT_KEY); } catch (e) {}
+      showCookieBanner();
+    });
+    pfLinks.appendChild(settingsBtn);
+  }
 
   /* ---------- Scroll reveals ---------- */
   const revealEls = document.querySelectorAll('.reveal');
