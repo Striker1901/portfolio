@@ -114,7 +114,7 @@
          com uma regra só. */
 .nav__drawer { margin-left: auto; }
 
-.nav__logo { display: inline-flex; align-items: center; font-weight: 800; letter-spacing: -0.01em; color: var(--c-fg, #17140F); } /* logótipo de texto — Ultrabold PP Telegraf herdada do body, sem SVG */
+.nav__logo { display: inline-flex; align-items: center; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; color: var(--c-fg, #17140F); } /* logótipo de texto — Ultrabold PP Telegraf herdada do body, sem SVG */
 .nav__logo-mark { height: 1.75em; width: auto; } /* só entra em jogo se um dia trocares o texto por um SVG aqui dentro */
 
 .nav__links { display: flex; gap: var(--sp-8, 32px); list-style: none; }
@@ -178,14 +178,66 @@
    causa disto — não mudar para branco sem medir o contraste real primeiro. */
 .nav__cta:hover .nav__cta-inner { background: var(--c-dark-bg, #17140F); color: var(--c-bg-cream, #FFFFFF); }
 
+/* ── ALTERNADOR DE LÍNGUA — trazido da SOLITSU, 03-09-2026 ────
+   WHAT  Um chip que desliza entre "PT" e "EN" — a mecânica visual (CSS) vem
+         tal e qual da componente Nav Island original (nunca tinha sido
+         ligada, o Portfolio era só inglês até agora); a lógica que troca o
+         texto da página está em `lang.js`.
+   WHY   Os tokens de tema já definidos no topo deste ficheiro (`--c-fg`,
+         `--c-bg`) dão automaticamente o resultado certo no escuro — chip
+         quase-branco (`--c-fg`), texto do botão activo escuro (`--c-bg`)
+         por cima dele — sem precisar de nenhum valor novo aqui. */
+.lang-toggle { display: inline-flex; border-radius: var(--r-full, 999px); padding: 6px; margin-left: -24px; } /* negativo maior do que o padding próprio (6px) — o excesso "come" parte do gap herdado do flex (32px) do `.nav`, aproximando o toggle do botão CTA sem os colar */
+.lang-toggle__track {
+  --lang-thumb-d: 32px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 11px;
+  border-radius: var(--r-full, 999px);
+  background: color-mix(in srgb, var(--c-fg, #17140F) 8%, transparent);
+}
+.lang-toggle__indicator {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--lang-indicator-w, var(--lang-thumb-d));
+  height: var(--lang-thumb-d);
+  margin-top: calc(var(--lang-thumb-d) / -2);
+  border-radius: var(--r-full, 999px);
+  background: var(--c-fg, #17140F);
+  transition: transform var(--dur-short, 260ms) var(--ease-in-out, cubic-bezier(.65,0,.35,1)), width var(--dur-short, 260ms) var(--ease-in-out, cubic-bezier(.65,0,.35,1));
+  transform: translateX(var(--lang-indicator-x, 0px));
+}
+.lang-toggle__option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding-inline: var(--sp-2, 8px);
+  border: 0;
+  background: none;
+  font-weight: var(--fw-body, 500);
+  font-size: var(--fs-sm, 15px);
+  text-transform: uppercase;
+  color: var(--c-fg, #17140F);
+  cursor: pointer;
+  transition: color var(--dur-short, 260ms) var(--ease-in-out, cubic-bezier(.65,0,.35,1));
+}
+.lang-toggle__option[aria-pressed="true"] { color: var(--c-bg, #FCFCFC); }
+
 /* ── BOTÕES — reset obrigatório ─────────────────────────────
-   WHAT  Desliga o desenho nativo do sistema operativo em `.nav__toggle`.
+   WHAT  Desliga o desenho nativo do sistema operativo em `.nav__toggle` e nos
+         `.lang-toggle__option`.
    WHY   Bug real, só visível no Safari, apanhado no site de origem: sem isto,
          passar o rato num botão pintava o realce nativo do macOS por cima do
          estilo do site — lia-se como "inverte as cores" em Dark Mode. Nunca
          reproduzido no Chrome, por isso é fácil de nunca apanhar sem testar
          no Safari a sério. */
-.nav__toggle { appearance: none; -webkit-appearance: none; font: inherit; color: inherit; }
+.nav__toggle, .lang-toggle__option { appearance: none; -webkit-appearance: none; font: inherit; color: inherit; }
 
 /* ── HAMBÚRGUER (só aparece ≤ breakpoint móvel, ver media query abaixo) ── */
 .nav__toggle { display: none; min-width: 44px; min-height: 44px; border: 0; background: none; cursor: pointer; padding: var(--sp-2, 8px); }
@@ -223,7 +275,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-header, .nav__roll, .nav__links a::after, .nav__cta, .nav__cta-inner, .nav__drawer {
+  .site-header, .nav__roll, .nav__links a::after, .nav__cta, .nav__cta-inner, .nav__drawer, .lang-toggle__indicator, .lang-toggle__option {
     transition-duration: 1ms !important;
   }
 }

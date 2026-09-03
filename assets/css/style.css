@@ -463,10 +463,6 @@ ul {
   row-gap: 4rem;
 }
 
-.about .label {
-  grid-column: 1 / 4;
-}
-
 .about .about-text {
   grid-column: 3 / 10;
   max-width: 62ch;

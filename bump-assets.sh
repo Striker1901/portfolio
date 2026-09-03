@@ -21,6 +21,8 @@ for f in *.html; do
     -e "s|assets/css/nav\.css(\?v=[0-9]+)?|assets/css/nav.css?v=$V|g" \
     -e "s|assets/js/vendor/lenis\.min\.js(\?v=[0-9]+)?|assets/js/vendor/lenis.min.js?v=$V|g" \
     -e "s|assets/js/nav\.js(\?v=[0-9]+)?|assets/js/nav.js?v=$V|g" \
+    -e "s|assets/js/lang-flag\.js(\?v=[0-9]+)?|assets/js/lang-flag.js?v=$V|g" \
+    -e "s|assets/js/lang\.js(\?v=[0-9]+)?|assets/js/lang.js?v=$V|g" \
     -e "s|assets/js/hero-pixels\.js(\?v=[0-9]+)?|assets/js/hero-pixels.js?v=$V|g" \
     -e "s|assets/js/main\.js(\?v=[0-9]+)?|assets/js/main.js?v=$V|g" \
     "$f"

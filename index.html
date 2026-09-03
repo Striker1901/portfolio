@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="assets/js/lang-flag.js?v=1788472919"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Francisco Martins — Brand &amp; Web Designer</title>
   <meta name="description" content="Brand and website for early-stage products — designed and built by the same person. Visual identity, typography and web. Francisco Martins, Lisbon, Portugal.">
@@ -19,26 +20,34 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1788471311">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1788471311">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788472919">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788472919">
 </head>
-<body>
+<body data-page="home">
 
 <div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
 <!-- Nav Island -->
 <header class="site-header" data-open="false" data-scrolled="false">
   <nav class="nav container">
-    <a class="nav__logo" href="index.html" aria-label="Francisco Martins — home">Francisco Martins</a>
+    <a class="nav__logo" href="#hero" aria-label="Francisco Martins — home">Francisco Martins</a>
 
     <div class="nav__drawer" id="nav-links">
       <ul class="nav__links">
-        <li><a href="#works">Works</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="#works" data-i18n="nav.works">Works</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
       </ul>
     </div>
 
-    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner">Work with me</span></a>
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner" data-i18n="nav.ctaWork">Work with me</span></a>
+
+    <div class="lang-toggle" role="group" aria-label="Site language / Idioma do site">
+      <div class="lang-toggle__track">
+        <span class="lang-toggle__indicator" aria-hidden="true"></span>
+        <button type="button" class="lang-toggle__option" data-lang-option="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-toggle__option" data-lang-option="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
 
     <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -56,7 +65,7 @@
   <a href="#work-2" data-target="work-2">Litet Snitt</a>
   <a href="#work-3" data-target="work-3">1543</a>
   <a href="#work-4" data-target="work-4">Clube de Xadrez</a>
-  <a href="#work-5" data-target="work-5">Photography</a>
+  <a href="#work-5" data-target="work-5" data-i18n="works.photoTitle">Photography</a>
 </nav>
 
 <main>
@@ -64,10 +73,10 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
     <canvas class="hero-pixels" aria-hidden="true"></canvas>
-    <h1 class="hero-title">PORTFOLIO</h1>
+    <h1 class="hero-title" data-i18n="hero.title">PORTFOLIO</h1>
     <div class="hero-actions">
-      <a class="hero-action" href="mailto:francisco1901martins@gmail.com">Contact me <span aria-hidden="true">↙</span></a>
-      <a class="hero-action hero-action--end" href="#works"><span aria-hidden="true">↘</span> Look down</a>
+      <a class="hero-action" href="mailto:francisco1901martins@gmail.com"><span data-i18n="hero.contact">Contact me</span> <span aria-hidden="true">↙</span></a>
+      <a class="hero-action hero-action--end" href="#works"><span aria-hidden="true">↘</span> <span data-i18n="hero.lookDown">Look down</span></a>
     </div>
   </section>
 
@@ -78,7 +87,7 @@
       <div class="work-no reveal">01</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Poliempreende</div>
-        <div class="work-disc label">Rebranding — Identity</div>
+        <div class="work-disc label" data-i18n="works.poliDisc">Rebranding — Identity</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/poli-logo.png" alt="Poliempreende symbol" width="1000" height="1000" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/poli-thumb.jpg" alt="Poliempreende tote bag" width="642" height="900" loading="lazy"></div>
@@ -89,7 +98,7 @@
       <div class="work-no reveal">02</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Litet Snitt</div>
-        <div class="work-disc label">Typeface Design</div>
+        <div class="work-disc label" data-i18n="works.litetDisc">Typeface Design</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/litet-02.png" alt="Litet Snitt glyph set" width="1920" height="1358" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/litet-thumb.jpg" alt="Litet Snitt type specimen" width="636" height="900" loading="lazy"></div>
@@ -100,7 +109,7 @@
       <div class="work-no reveal">03</div>
       <div class="work-head reveal d-1">
         <div class="work-title">1543</div>
-        <div class="work-disc label">Packaging — Special Edition</div>
+        <div class="work-disc label" data-i18n="works.n1543Disc">Packaging — Special Edition</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/1543-03.jpg" alt="1543 packaging box, open" width="1920" height="1440" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/1543-photo-thumb.jpg" alt="1543 olive oil bottle" width="675" height="900" loading="lazy"></div>
@@ -111,7 +120,7 @@
       <div class="work-no reveal">04</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Clube de Xadrez do Barreiro</div>
-        <div class="work-disc label">Rebranding — Identity</div>
+        <div class="work-disc label" data-i18n="works.xadrezDisc">Rebranding — Identity</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/xadrez-symbol.png" alt="Clube de Xadrez do Barreiro symbol" width="1075" height="721" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/xadrez-thumb-2.jpg" alt="Clube de Xadrez do Barreiro business cards" width="675" height="900" loading="lazy"></div>
@@ -121,8 +130,8 @@
     <a class="work-entry we-5 grid" id="work-5" href="photography.html">
       <div class="work-no reveal">05</div>
       <div class="work-head reveal d-1">
-        <div class="work-title">Photography</div>
-        <div class="work-disc label">Portrait &amp; Film</div>
+        <div class="work-title" data-i18n="works.photoTitle">Photography</div>
+        <div class="work-disc label" data-i18n="works.photoDisc">Portrait &amp; Film</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/filipa-thumb-2.jpg" alt="Portrait by the sea at sunset" width="900" height="600" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/beah-thumb.jpg" alt="Studio portrait" width="600" height="900" loading="lazy"></div>
@@ -131,12 +140,11 @@
 
   <!-- ============ ABOUT ============ -->
   <section class="about grid" id="about">
-    <span class="label reveal">Bio</span>
     <div class="about-text reveal d-1">
-      <p>I started in Computer Engineering, realised it wasn't my place, and switched. No regrets. Now I'm finishing my degree in Graphic Design and Multimedia at ESAD.CR and building something that actually feels like mine.</p>
-      <p>I work across visual identity, branding, packaging, and typography. I'm drawn to design that solves real problems. I'm also genuinely interested in where design and technology meet, and that's the territory I want to keep pushing into.</p>
-      <p>Outside of the screen I play piano, do photography, and have done theatre and volunteering. I'm curious about most things and stubborn about the ones that matter. I take what I commit seriously. When I decide I'm going somewhere, I get there.</p>
-      <p>This portfolio is the work so far. There's more coming.</p>
+      <p data-i18n="about.p1">I started in Computer Engineering, realised it wasn't my place, and switched. No regrets. Now I'm finishing my degree in Graphic Design and Multimedia at ESAD.CR and building something that actually feels like mine.</p>
+      <p data-i18n="about.p2">I work across visual identity, branding, packaging, and typography. I'm drawn to design that solves real problems. I'm also genuinely interested in where design and technology meet, and that's the territory I want to keep pushing into.</p>
+      <p data-i18n="about.p3">Outside of the screen I play piano, do photography, and have done theatre and volunteering. I'm curious about most things and stubborn about the ones that matter. I take what I commit seriously. When I decide I'm going somewhere, I get there.</p>
+      <p data-i18n="about.p4">This portfolio is the work so far. There's more coming.</p>
     </div>
     <div class="about-photo reveal d-2"><img src="assets/images/about-portrait.jpg" alt="Francisco Martins" width="1685" height="1920" loading="lazy"></div>
   </section>
@@ -150,17 +158,18 @@
       </div>
       <div class="pf-meta">
         <span>&copy; 2026 Francisco Martins</span>
-        <span>Lisbon, Portugal</span>
-        <span>Designed &amp; built by Francisco</span>
+        <span data-i18n="footer.location">Lisbon, Portugal</span>
+        <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
       </div>
     </div>
   </footer>
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1788471311"></script>
-<script src="assets/js/nav.js?v=1788471311"></script>
-<script src="assets/js/hero-pixels.js?v=1788471311"></script>
-<script src="assets/js/main.js?v=1788471311"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788472919"></script>
+<script src="assets/js/nav.js?v=1788472919"></script>
+<script src="assets/js/lang.js?v=1788472919"></script>
+<script src="assets/js/hero-pixels.js?v=1788472919"></script>
+<script src="assets/js/main.js?v=1788472919"></script>
 </body>
 </html>

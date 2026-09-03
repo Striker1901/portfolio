@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="assets/js/lang-flag.js?v=1788472919"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Photography — Francisco Martins</title>
   <meta name="description" content="Photography by Francisco Martins — portrait series.">
@@ -19,10 +20,10 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1788471311">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1788471311">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788472919">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788472919">
 </head>
-<body>
+<body data-page="photo">
 
 <div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
@@ -33,11 +34,19 @@
 
     <div class="nav__drawer" id="nav-links">
       <ul class="nav__links">
-        <li><a href="index.html#photography">&larr; Index</a></li>
+        <li><a href="index.html#photography" data-i18n="nav.backIndex">&larr; Index</a></li>
       </ul>
     </div>
 
-    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner">Get in touch</span></a>
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner" data-i18n="nav.ctaContact">Get in touch</span></a>
+
+    <div class="lang-toggle" role="group" aria-label="Site language / Idioma do site">
+      <div class="lang-toggle__track">
+        <span class="lang-toggle__indicator" aria-hidden="true"></span>
+        <button type="button" class="lang-toggle__option" data-lang-option="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-toggle__option" data-lang-option="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
 
     <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -52,8 +61,8 @@
 <main>
 
   <section class="case-hero grid">
-    <h1 class="case-title reveal">Photography</h1>
-    <p class="case-tagline reveal d-1">Portrait series — natural light, studio, and film.</p>
+    <h1 class="case-title reveal" data-i18n="photo.title">Photography</h1>
+    <p class="case-tagline reveal d-1" data-i18n="photo.tagline">Portrait series — natural light, studio, and film.</p>
   </section>
 
   <section class="photo-index grid">
@@ -61,7 +70,7 @@
       <div class="work-no reveal">01</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Filipa</div>
-        <div class="work-disc label">Seaside &amp; studio sessions</div>
+        <div class="work-disc label" data-i18n="photo.filipaDisc">Seaside &amp; studio sessions</div>
       </div>
       <div class="work-img reveal"><img src="assets/images/filipa-thumb.jpg" alt="Filipa, seaside portrait" width="600" height="900" loading="lazy"></div>
     </a>
@@ -69,28 +78,29 @@
       <div class="work-no reveal">02</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Beah</div>
-        <div class="work-disc label">Studio sessions</div>
+        <div class="work-disc label" data-i18n="photo.beahDisc">Studio sessions</div>
       </div>
       <div class="work-img reveal"><img src="assets/images/beah-thumb.jpg" alt="Beah, studio portrait" width="600" height="900" loading="lazy"></div>
     </a>
   </section>
 
   <nav class="case-nav grid">
-    <a class="prev reveal" href="index.html#photography"><span class="label">Back</span>&larr; Index</a>
+    <a class="prev reveal" href="index.html#photography"><span class="label" data-i18n="caseLabel.back">Back</span><span data-i18n="photo.navBack">&larr; Index</span></a>
   </nav>
 
   <div class="grid case-footer">
     <footer class="site-footer">
       <span>&copy; 2026 Francisco Martins</span>
-      <span>Lisbon, Portugal</span>
-      <span>Designed &amp; built by Francisco</span>
+      <span data-i18n="footer.location">Lisbon, Portugal</span>
+      <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
     </footer>
   </div>
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1788471311"></script>
-<script src="assets/js/nav.js?v=1788471311"></script>
-<script src="assets/js/main.js?v=1788471311"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788472919"></script>
+<script src="assets/js/nav.js?v=1788472919"></script>
+<script src="assets/js/lang.js?v=1788472919"></script>
+<script src="assets/js/main.js?v=1788472919"></script>
 </body>
 </html>
