@@ -18,6 +18,10 @@ n=0
 for f in *.html; do
   sed -i '' -E \
     -e "s|assets/css/style\.css(\?v=[0-9]+)?|assets/css/style.css?v=$V|g" \
+    -e "s|assets/css/nav\.css(\?v=[0-9]+)?|assets/css/nav.css?v=$V|g" \
+    -e "s|assets/js/vendor/lenis\.min\.js(\?v=[0-9]+)?|assets/js/vendor/lenis.min.js?v=$V|g" \
+    -e "s|assets/js/nav\.js(\?v=[0-9]+)?|assets/js/nav.js?v=$V|g" \
+    -e "s|assets/js/hero-pixels\.js(\?v=[0-9]+)?|assets/js/hero-pixels.js?v=$V|g" \
     -e "s|assets/js/main\.js(\?v=[0-9]+)?|assets/js/main.js?v=$V|g" \
     "$f"
   n=$((n + 1))

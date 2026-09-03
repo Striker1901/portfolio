@@ -1,6 +1,63 @@
 // Francisco Martins — portfolio interactions
-// Scroll reveals, active work-list tracking, scroll progress line.
+// Smooth scroll (Lenis), scroll reveals, active work-list tracking, scroll progress line.
 // All features guard on element existence so this file is shared by every page.
+
+/* WHAT  Uma só verdade sobre se a pessoa pediu menos movimento ao sistema operativo —
+         lida logo no topo do ficheiro, porque o scroll suave (a seguir) já precisa dela.
+   TERM  `prefers-reduced-motion` — uma media query que lê essa preferência do sistema
+         operativo, não do site; existe por causa de perturbações vestibulares reais
+         (tonturas, náuseas) que animações grandes podem provocar.
+   WHY   Sem isto, quem pediu menos movimento ficava com o scroll a "flutuar" na mesma —
+         o Lenis não pode arrancar para essas pessoas, tem de haver uma verdade só, cedo. */
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── SCROLL SUAVE (Lenis) ──────────────────────────────────────
+   WHAT  Toda a página passa a deslizar com inércia — tanto ao rodar a roda do rato/trackpad
+         como ao clicar num link âncora — em vez de saltar em blocos abruptos. Trazido do
+         site da SOLITSU (mesma biblioteca, mesmo mecanismo), 03-09-2026.
+   TERM  `Lenis` — biblioteca externa, auto-alojada em `assets/js/vendor/lenis.min.js`;
+         intercepta o scroll e anima a posição real da página a cada frame
+         (`requestAnimationFrame`), em vez de a mover de repente. `anchors: false` (o
+         valor por omissão) porque o clique num link âncora é tratado à parte, mais
+         abaixo — o auto-tratamento embutido do Lenis não chama `preventDefault()`, o
+         que deixaria o salto instantâneo nativo do browser a competir com a animação
+         do Lenis ao mesmo tempo.
+   WHY   Não arranca de todo se `reduced` for verdadeiro — nesse caso o scroll fica
+         nativo e instantâneo, o comportamento correcto para quem pediu menos
+         movimento, não uma regressão. */
+let lenis = null;
+if (!reduced) {
+  lenis = new Lenis();
+  const raf = (time) => {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  };
+  requestAnimationFrame(raf);
+}
+
+/* WHAT  Clicar num link âncora (nav, hero, sidebar de trabalhos) desliza suavemente até
+         à secção, com folga por cima para a nav fixa não tapar o título de chegada.
+   TERM  `lenis.scrollTo(alvo, { offset })` — pede ao Lenis para animar até esse elemento;
+         `offset: -118` desloca o destino 118px página abaixo do que seria o alvo exacto —
+         a nav (`.site-header`) mede sempre 102px do topo real do ecrã até ao seu fundo
+         (repouso e encolhida, medido ao vivo), mais uma pequena folga. O mesmo valor
+         está no `scroll-padding-top` de `style.css`, para o salto nativo (sem JS) bater
+         certo também — os dois têm de mudar juntos se a altura da nav mudar.
+   WHY   Sem isto, o `href="#secao"` de cada link ainda funcionaria (é HTML nativo), mas
+         saltaria instantâneo em vez de animado — o resto da página desliza suave, só os
+         links âncora ficariam abruptos, uma inconsistência visível. */
+if (lenis) {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href');
+      if (id.length < 2) return; // só "#" sozinho, sem destino real
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -118 });
+    });
+  });
+}
 
 /* ---------- Google Analytics — gated behind explicit cookie consent ---------- */
 /* Runs outside the DOMContentLoaded block below so the banner appears (and,
@@ -137,6 +194,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  /* ── NAV ACTIVO AO FAZER SCROLL ──────────────────────────────
+     WHAT  Enquanto se percorre a página, o link do menu que corresponde à secção visível
+           ganha o mesmo sublinhado que já aparece ao passar o rato — para se saber sempre
+           "em que secção estou", mesmo sem mexer no rato. Trazido do main.js da SOLITSU,
+           03-09-2026, sem alterações — a CSS do sublinhado (`.nav__links a::after` /
+           `.is-active`) já vinha com a componente Nav Island, só faltava isto a ligar
+           a classe.
+     TERM  `IntersectionObserver` — a mesma API já usada no scroll-reveal e no work-list
+           acima, aqui a vigiar as secções da página em vez de elementos que aparecem
+           uma vez. `rootMargin` negativo nos dois lados cria uma faixa fina a meio do
+           ecrã; uma secção só conta como "actual" quando o seu conteúdo passa por essa
+           faixa.
+     WHY   Nas páginas de case study o único link da nav é `href="index.html#works"`
+           (não começa por "#"), por isso `sectionsByLink` fica vazio lá e o observer
+           nem chega a ser criado — não precisa de nenhuma guarda extra, o próprio
+           selector já isola isto à home. */
+  const navLinks = document.querySelectorAll('.nav__links a[href^="#"]');
+  const sectionsByLink = new Map();
+  navLinks.forEach((link) => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (section) sectionsByLink.set(section, link);
+  });
+
+  if (sectionsByLink.size) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        sectionsByLink.get(entry.target)?.classList.toggle('is-active', entry.isIntersecting);
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sectionsByLink.forEach((_, section) => spy.observe(section));
+  }
+
   /* ---------- Scroll progress line ---------- */
   const progress = document.querySelector('.progress-line');
 
@@ -156,221 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
     update();
   }
-
-  const reduceMotion = window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- Terminal hero (home): type the lines out in sequence ---------- */
-  const term = document.querySelector('.hero .term');
-  let heroTyped = false;
-
-  const startHeroType = () => {
-    if (!term || heroTyped) return;
-    heroTyped = true;
-
-    const lines = Array.from(term.querySelectorAll('.t-line'));
-    const caret = term.querySelector('.term-caret');
-
-    // No animation: just show everything (also the no-JS default state).
-    if (reduceMotion) return;
-
-    term.classList.add('is-typing');
-
-    // Stash command text so we can retype it char-by-char.
-    const cmds = lines.map((line) => {
-      const typed = line.querySelector('.t-typed');
-      if (typed) { const t = typed.textContent; typed.textContent = ''; return t; }
-      return null;
-    });
-
-    let i = 0;
-    const nextLine = () => {
-      if (i >= lines.length) return;
-      const line = lines[i];
-      line.classList.add('is-shown');
-      if (caret && line.classList.contains('t-cmd')) line.appendChild(caret);
-
-      if (cmds[i] != null) {
-        // command line: type the command, then move on
-        const typedEl = line.querySelector('.t-typed');
-        const text = cmds[i];
-        let c = 0;
-        const tick = () => {
-          typedEl.textContent = text.slice(0, c);
-          if (c++ < text.length) { setTimeout(tick, 42); }
-          else { i++; setTimeout(nextLine, 260); } // pause, then output/next
-        };
-        tick();
-      } else {
-        // output / comment line: appears at once
-        if (caret && line.classList.contains('t-comment')) line.appendChild(caret);
-        i++;
-        setTimeout(nextLine, line.classList.contains('t-out') ? 360 : 0);
-      }
-    };
-    setTimeout(nextLine, 250);
-  };
-
-  /* ---------- Hero LED "digital grain" fill (pharmacy-cross style) ----------
-     Orange neon grains rain down and stack to fill the hero, hold, then switch
-     off — and loop. Lives behind the terminal window (z-index 0). Paused while
-     the hero is off-screen; skipped entirely under reduced-motion.            */
-  const startHeroGrain = () => {
-    const canvas = document.querySelector('.hero .hero-grain');
-    if (!canvas || reduceMotion) return;
-    const hero = canvas.closest('.hero');
-    const ctx = canvas.getContext('2d');
-
-    const CELL = 16;          // grid cell size (CSS px)
-    const DOT  = 7;           // lit LED diameter (CSS px)
-    const FALL = 760;         // grain fall speed (px / s)
-    const FILL_SECONDS = 4.5; // target time to fill the whole field
-    const BAND = CELL * 9;    // scatter zone above the rising front (gradual fill)
-
-    let dpr, w, h, cols, rows, total, offY;
-    let stack, pending, grains, lit;
-    let settled, sctx;        // offscreen layer of already-lit LEDs
-    let sprite;               // pre-rendered glowing dot (avoids per-cell shadowBlur)
-    let phase, phaseT, spawnAcc, last;
-    let running = false, rafId = 0;
-
-    // pre-render one glowing orange LED into an offscreen canvas
-    const makeSprite = () => {
-      const s = Math.ceil(CELL * dpr);
-      const c = document.createElement('canvas');
-      c.width = c.height = s;
-      const g = c.getContext('2d');
-      const cx = s / 2, r = (DOT * dpr) / 2;
-      const halo = g.createRadialGradient(cx, cx, 0, cx, cx, r * 2.3);
-      halo.addColorStop(0,    'rgba(255, 190, 110, 0.95)');
-      halo.addColorStop(0.45, 'rgba(255, 92, 0, 0.85)');
-      halo.addColorStop(1,    'rgba(255, 92, 0, 0)');
-      g.fillStyle = halo;
-      g.beginPath(); g.arc(cx, cx, r * 2.3, 0, Math.PI * 2); g.fill();
-      g.fillStyle = 'rgba(255, 214, 160, 0.95)'; // bright core
-      g.beginPath(); g.arc(cx, cx, r * 0.62, 0, Math.PI * 2); g.fill();
-      sprite = c;
-    };
-
-    const reset = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      // canvas stops above the divider bar — size to the canvas, not the hero
-      w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width  = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cols = Math.ceil(w / CELL);
-      rows = Math.floor(h / CELL);          // whole rows only — no clipped bottom row
-      offY = h - rows * CELL;               // bottom-align: remainder absorbed at the top
-      total = cols * rows;
-      stack = new Array(cols).fill(0);   // settled LEDs per column (from bottom)
-      pending = new Array(cols).fill(0); // grains currently falling toward a column
-      grains = [];
-      lit = 0;
-      makeSprite();
-      settled = document.createElement('canvas');
-      settled.width = canvas.width; settled.height = canvas.height;
-      sctx = settled.getContext('2d');
-      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      phase = 'fill'; phaseT = 0; spawnAcc = 0; last = 0;
-    };
-
-    const stamp = (col, level) => { // paint a settled LED onto the offscreen layer
-      const x = col * CELL;
-      const y = offY + (rows - 1 - level) * CELL;
-      sctx.drawImage(sprite, x, y, CELL, CELL);
-    };
-
-    const frame = (t) => {
-      if (!running) return;
-      if (!last) last = t;
-      let dt = (t - last) / 1000; last = t;
-      if (dt > 0.05) dt = 0.05; // clamp after tab-switches
-      phaseT += dt;
-
-      ctx.clearRect(0, 0, w, h);
-
-      if (phase === 'fill') {
-        // spawn new grains into not-yet-claimed columns
-        spawnAcc += (total / FILL_SECONDS) * dt;
-        let toSpawn = Math.floor(spawnAcc);
-        spawnAcc -= toSpawn;
-        let guard = cols * 2;
-        while (toSpawn > 0 && lit + grains.length < total && guard-- > 0) {
-          const col = (Math.random() * cols) | 0;
-          if (stack[col] + pending[col] < rows) {
-            // appear in a short scatter band just above this column's surface,
-            // so the lit dots hug a rising front instead of a full-height curtain
-            const surfaceY = offY + (rows - 1 - stack[col]) * CELL;
-            grains.push({ col, y: surfaceY - (CELL + Math.random() * BAND) });
-            pending[col]++;
-            toSpawn--;
-          }
-        }
-        // lowest grains settle first so columns stack cleanly
-        grains.sort((a, b) => b.y - a.y);
-        for (let k = grains.length - 1; k >= 0; k--) {
-          const gr = grains[k];
-          gr.y += FALL * dt;
-          const surface = offY + (rows - 1 - stack[gr.col]) * CELL; // top of next empty cell
-          if (gr.y >= surface) {
-            stamp(gr.col, stack[gr.col]);
-            stack[gr.col]++; pending[gr.col]--; lit++;
-            grains.splice(k, 1);
-          }
-        }
-        // draw settled field + the falling grains (with a faint trail)
-        ctx.drawImage(settled, 0, 0, w, h);
-        for (const gr of grains) {
-          const x = gr.col * CELL;
-          ctx.globalAlpha = 0.35;
-          ctx.drawImage(sprite, x, gr.y - CELL, CELL, CELL);
-          ctx.globalAlpha = 1;
-          ctx.drawImage(sprite, x, gr.y, CELL, CELL);
-        }
-        if (lit >= total) { phase = 'hold'; phaseT = 0; }
-
-      } else if (phase === 'hold') {
-        ctx.drawImage(settled, 0, 0, w, h); // fully lit — brief glow
-        if (phaseT > 0.9) { phase = 'off'; phaseT = 0; }
-
-      } else if (phase === 'off') {
-        const k = Math.min(phaseT / 0.7, 1);             // fade the whole field out
-        ctx.globalAlpha = (1 - k) * (0.85 + Math.random() * 0.15); // LED flicker
-        ctx.drawImage(settled, 0, 0, w, h);
-        ctx.globalAlpha = 1;
-        if (k >= 1) { phase = 'wait'; phaseT = 0; }
-
-      } else { // 'wait' — dark beat before looping
-        if (phaseT > 0.8) reset();
-      }
-
-      rafId = requestAnimationFrame(frame);
-    };
-
-    const start = () => { if (!running) { running = true; last = 0; rafId = requestAnimationFrame(frame); } };
-    const stop  = () => { running = false; if (rafId) cancelAnimationFrame(rafId); };
-
-    reset();
-    start();
-
-    // pause while the hero is scrolled out of view (battery + focus)
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((entries) => {
-        entries.forEach((e) => e.isIntersecting ? start() : stop());
-      }, { threshold: 0 }).observe(hero);
-    }
-
-    // re-fit on resize (debounced)
-    let rt;
-    window.addEventListener('resize', () => {
-      clearTimeout(rt);
-      rt = setTimeout(() => { stop(); reset(); start(); }, 200);
-    }, { passive: true });
-  };
-
-  /* ---------- Hero: start the terminal type-out + LED grain on load ---------- */
-  startHeroType();
-  startHeroGrain();
 
 });

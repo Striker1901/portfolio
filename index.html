@@ -19,23 +19,33 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1785437699">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788471311">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788471311">
 </head>
 <body>
 
-<!-- Fixed header -->
-<header class="site-header grid">
-  <nav class="header-nav">
-    <a href="#works">Works,</a>
-    <a href="#about">About,</a>
-    <a href="#contact">Work with me</a>
+<div id="nav-scroll-sentinel" aria-hidden="true"></div>
+
+<!-- Nav Island -->
+<header class="site-header" data-open="false" data-scrolled="false">
+  <nav class="nav container">
+    <a class="nav__logo" href="index.html" aria-label="Francisco Martins — home">Francisco Martins</a>
+
+    <div class="nav__drawer" id="nav-links">
+      <ul class="nav__links">
+        <li><a href="#works">Works</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner">Work with me</span></a>
+
+    <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+      </svg>
+    </button>
   </nav>
-  <div class="header-name"><a href="index.html">Francisco Martins</a></div>
-  <div class="header-social">
-    <a href="https://www.instagram.com/fran_ciscotbh?igsh=eDQyNnRwM2U1MTV4&utm_source=qr" target="_blank" rel="noopener">Ig,</a>
-    <a href="https://www.linkedin.com/in/francisco-martins-973597196/" target="_blank" rel="noopener">In,</a>
-    <a href="mailto:francisco1901martins@gmail.com">Em</a>
-  </div>
 </header>
 
 <div class="progress-line" aria-hidden="true"></div>
@@ -51,36 +61,18 @@
 
 <main>
 
-  <!-- ============ HERO — terminal ============ -->
-  <section class="hero dark-section" id="hero">
-    <canvas class="hero-grain" aria-hidden="true"></canvas>
-    <div class="term">
-      <div class="term-bar" aria-hidden="true">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span class="term-title">francisco — zsh</span>
-      </div>
-      <div class="term-body">
-        <div class="t-line t-cmd"><span class="t-prompt">$ </span><span class="t-typed">whoami</span></div>
-        <div class="t-line t-out term-name">Francisco Martins</div>
-        <div class="t-line t-cmd"><span class="t-prompt">$ </span><span class="t-typed">cat role</span></div>
-        <div class="t-line t-out">Brand &amp; Web Designer</div>
-        <div class="t-line t-cmd"><span class="t-prompt">$ </span><span class="t-typed">cat location</span></div>
-        <div class="t-line t-out">Lisbon, Portugal · ESAD.CR</div>
-        <div class="t-line t-comment"># Welcome to my Portfolio<span class="term-caret" aria-hidden="true"></span></div>
-      </div>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <canvas class="hero-pixels" aria-hidden="true"></canvas>
+    <h1 class="hero-title">PORTFOLIO</h1>
+    <div class="hero-actions">
+      <a class="hero-action" href="mailto:francisco1901martins@gmail.com">Contact me <span aria-hidden="true">↙</span></a>
+      <a class="hero-action hero-action--end" href="#works"><span aria-hidden="true">↘</span> Look down</a>
     </div>
-    <div class="hero-foot" aria-hidden="true"></div>
-    <div class="hero-divider" aria-hidden="true"></div>
-    <span class="hero-scroll" aria-hidden="true">scroll ↓</span>
   </section>
 
   <!-- ============ WORK INDEX ============ -->
   <section class="works" id="works">
-    <div class="section-head grid reveal">
-      <span class="label">Selected Work</span>
-      <p class="section-note">Visual identity, type, packaging and photography — five projects.</p>
-    </div>
-
     <!-- 01 Poliempreende -->
     <a class="work-entry we-1 grid" id="work-1" href="poliempreende.html">
       <div class="work-no reveal">01</div>
@@ -147,42 +139,6 @@
       <p>This portfolio is the work so far. There's more coming.</p>
     </div>
     <div class="about-photo reveal d-2"><img src="assets/images/about-portrait.jpg" alt="Francisco Martins" width="1685" height="1920" loading="lazy"></div>
-
-    <div class="about-block reveal">
-      <span class="label">Index</span>
-      <ul class="block-body selected-list">
-        <li><span class="no">01</span><span>Poliempreende</span><span class="meta">Rebranding</span></li>
-        <li><span class="no">02</span><span>Litet Snitt</span><span class="meta">Typeface</span></li>
-        <li><span class="no">03</span><span>1543</span><span class="meta">Packaging</span></li>
-        <li><span class="no">04</span><span>Clube de Xadrez do Barreiro</span><span class="meta">Rebranding</span></li>
-        <li><span class="no">05</span><span>Photography</span><span class="meta">Portrait &amp; Film</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ WORK WITH ME — terminal (offer + contact) ============ -->
-  <section class="work-with-me dark-section" id="contact">
-    <div class="term wm-term reveal">
-      <div class="term-bar" aria-hidden="true">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-        <span class="term-title">work-with-me — zsh</span>
-      </div>
-      <div class="term-body">
-        <div class="t-line t-comment"># what I do</div>
-        <div class="t-line t-out">Brand &amp; website for early-stage products — designed and built by the same person. No dev needed after.</div>
-        <div class="t-line">&nbsp;</div>
-        <div class="t-line t-cmd"><span class="t-prompt">$ </span>ls packages/</div>
-        <ul class="wm-pkg">
-          <li><span class="pk-name">essential</span><span class="pk-scope">Base identity + 1-page landing, built</span></li>
-          <li><span class="pk-name">complete</span><span class="pk-scope">Full identity + multi-section site + handoff</span></li>
-          <li><span class="pk-name">custom</span><span class="pk-scope">Beyond that — let's scope it</span></li>
-        </ul>
-        <div class="t-line">&nbsp;</div>
-        <div class="t-line t-cmd"><span class="t-prompt">$ </span>./start --project<span class="term-caret" aria-hidden="true"></span></div>
-        <a class="wm-cta" href="mailto:francisco1901martins@gmail.com">&gt; francisco1901martins@gmail.com</a>
-        <div class="t-line t-comment"># tell me what you're building — I'll send packages + a quote</div>
-      </div>
-    </div>
   </section>
 
   <!-- ============ Footer — plain black, compact ============ -->
@@ -202,6 +158,9 @@
 
 </main>
 
-<script src="assets/js/main.js?v=1785437699"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788471311"></script>
+<script src="assets/js/nav.js?v=1788471311"></script>
+<script src="assets/js/hero-pixels.js?v=1788471311"></script>
+<script src="assets/js/main.js?v=1788471311"></script>
 </body>
 </html>

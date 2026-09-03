@@ -1,0 +1,229 @@
+/* ============================================================================
+   NAV ISLAND — componente reutilizável, adaptada ao Portfolio (03-09-2026)
+   Original em ~/Desktop/Agency/AA-SOLITSU/Components/Nav-Island/ (extraída do
+   site da SOLITSU, 02-09-2026). Ver o README.md dessa pasta para o contrato
+   completo de tokens e o histórico de bugs já corrigidos nesta componente.
+   Sem o alternador de língua PT/EN do original — este site é só inglês.
+   ============================================================================ */
+
+/* ── TEMA — tokens que esta componente lê, ligados às variáveis do Portfolio.
+   A Nav Island foi extraída de um site CLARO (SOLITSU, fundo creme); os
+   fallbacks de cada var() abaixo (--c-bg:#FCFCFC, --c-fg:#17140F, etc.)
+   assumem isso. Este bloco sobrepõe-se a esses fallbacks com os valores do
+   Portfolio (fundo escuro desde 28-07-2026), para a pílula não ficar branca
+   sobre preto. */
+:root {
+  --c-bg: #141414;        /* fundo da pílula depois de encolher — mesmo tom já usado em .term */
+  --c-bg-cream: #141414;  /* mesmo valor — só existe como nome separado no original por causa do tema creme de origem */
+  --c-fg: var(--ink);     /* cor do texto dos links — reaproveita o token já existente do site */
+  --c-border: var(--line);/* contorno da pílula — reaproveita o hairline já existente do site */
+  --c-accent: var(--accent); /* cor do CTA — o laranja já usado no resto do site */
+  --c-on-accent: #0d0d0d; /* texto do CTA — escuro, não branco: branco sobre este laranja falha o contraste (ver aviso mais abaixo, no bloco .nav__cta-inner) */
+  --c-dark-bg: var(--ink);/* fundo do CTA ao passar o rato — inverte para claro */
+  --fw-body: 400;          /* a PP Telegraf do site só tem os cortes 200/400/800 — 400 explícito em vez do fallback 500 que não existe nesta fonte */
+}
+
+/* Sentinela observada pelo nav.js para saber quando a página deixa de estar
+   no topo (ver nav.js § ESTADO DA NAV AO SCROLL). Classe em vez de `style=""`
+   inline no HTML porque o CSP do site (`style-src 'self'`) bloqueia estilos
+   inline — só folhas de estilo carregadas por ficheiro passam.
+   `height: 180px` (não 1px) — igual à SOLITSU (`base.css`, Ronda 11,
+   19-08-2026): com 1px, a nav muda para "encolhida" ao primeiro toque na
+   roda do rato (cedo demais, medido ao vivo — o próprio Francisco confirmou
+   03-09-2026 que não estava igual). 180px dá à página uma distância real de
+   afastamento do topo antes de trocar de estado, nas duas direcções. */
+#nav-scroll-sentinel { position: absolute; top: 0; left: 0; width: 1px; height: 180px; }
+
+/* ── BARRA — pílula flutuante, encolhe ao fazer scroll ────────
+   WHAT  A barra fica fixa no topo, larga e sem bordo enquanto a página está no
+         topo; assim que se sai do topo (`[data-scrolled="true"]`, ligado pelo
+         JS — ver nav.js § ESTADO DA NAV AO SCROLL), encolhe para uma pílula
+         com bordo e fundo, à largura exacta do conteúdo real.
+   TERM  `max-width` (não `width`) é a propriedade que anima — com `left`/
+         `right` fixos e `margin-inline: auto`, um `max-width` mais estreito do
+         que o espaço disponível centra-se sozinho (a caixa fica
+         "sobre-restringida": o browser mete o excesso nas margens automáticas,
+         dos dois lados por igual).
+   WHY   Bug real desta extracção (não existia no site original, porque lá o
+         `max-width` do estado encolhido era um número FIXO calibrado à mão
+         para o conteúdo daquele site em específico): `width: fit-content`
+         pareceria a solução óbvia para "encolher à volta do conteúdo real",
+         mas é uma PALAVRA-CHAVE, não um número — o CSS não sabe interpolar
+         entre palavras-chave, por isso a largura salta em vez de animar
+         (confirmado ao vivo nesta sessão: aos 80ms de uma transição de 900ms,
+         `fit-content` já estava no valor final). Por isso este ficheiro usa
+         `max-width: var(--nav-tight-w, 52rem)` — um NÚMERO em px, escrito pelo
+         `nav.js` depois de medir o conteúdo real (ver essa função) — que anima
+         correctamente e se adapta sozinho a qualquer link/CTA que acrescentes,
+         sem precisares de calibrar nada à mão. */
+.site-header {
+  position: fixed;
+  top: var(--sp-3, 12px);
+  left: var(--pad); /* margem lateral em repouso — igual à do resto do site, não o --sp-3 genérico da componente */
+  right: var(--pad);
+  z-index: 50;
+  max-width: calc(100vw - (var(--pad) * 2)); /* mesma largura que left/right:var(--pad) já produzem, mas como NÚMERO — "none" não anima (é uma palavra-chave, não interpola com o max-width em px do estado encolhido), causava o salto instantâneo em vez de encolher suavemente */
+  margin-inline: auto;
+  background: transparent;
+  border-radius: var(--r-full, 999px);
+  padding-block: 0;
+  padding-inline: var(--sp-3, 12px);
+  border: 1px solid transparent; /* largura já reservada — só a COR aparece/desaparece em fade, nunca a largura a saltar */
+  transition: max-width var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
+              border-radius var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
+              padding var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
+              background-color var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
+              border-color var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1));
+}
+
+/* Em repouso (barra transparente, sem contorno visível), o conteúdo deve ir
+   até aos mesmos limites --pad do resto do site — sem este reset, o padding
+   herdado da componente (pensado só para quando a pílula está visível) deixa
+   um recuo extra de ~28px antes de "Francisco Martins"/"Work with me". */
+.site-header:not([data-scrolled="true"]) { padding-inline: 0; }
+.site-header:not([data-scrolled="true"]) .nav.container { padding-inline: 0; }
+
+.site-header[data-scrolled="true"] {
+  max-width: var(--nav-tight-w, 52rem); /* número em px escrito por nav.js — ver o WHY acima; 52rem só entra em jogo antes do 1º cálculo do JS correr */
+  border-radius: var(--r-full, 999px);
+  background: var(--c-bg, #FCFCFC);
+  border-color: var(--c-border, #E5E0DA);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--sp-8, 32px);
+  padding-block: var(--sp-4, 16px);
+}
+.nav.container { padding-inline: var(--sp-4, 16px); }
+
+/* WHAT  Logo à esquerda; links+CTA agrupados à direita, colados ao logo pelo
+         espaço que sobrar.
+   TERM  `margin-left: auto` num filho `flex` come TODO o espaço livre à
+         esquerda desse filho — como é recalculado a cada frame de layout
+         (não só no início/fim), anima sozinho junto com o `max-width` da
+         barra acima, sem precisar de nenhuma regra à parte para o estado
+         encolhido. (Uma versão anterior desta ideia, no site de origem, tinha
+         uma regra `margin-left: 0` só para o estado encolhido — não trazer
+         essa técnica: `auto→0` não é interpolável, o conteúdo salta para o
+         sítio final no 1º frame da transição em vez de deslizar.)
+   WHY   Extraído tal como estava no site de origem — mecanismo já resolve os
+         dois estados (barra larga no topo, pílula apertada depois de encolher)
+         com uma regra só. */
+.nav__drawer { margin-left: auto; }
+
+.nav__logo { display: inline-flex; align-items: center; font-weight: 800; letter-spacing: -0.01em; color: var(--c-fg, #17140F); } /* logótipo de texto — Ultrabold PP Telegraf herdada do body, sem SVG */
+.nav__logo-mark { height: 1.75em; width: auto; } /* só entra em jogo se um dia trocares o texto por um SVG aqui dentro */
+
+.nav__links { display: flex; gap: var(--sp-8, 32px); list-style: none; }
+.nav__links a {
+  font-weight: var(--fw-body, 500);
+  font-size: var(--fs-sm, 15px);
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+  color: var(--c-fg, #17140F);
+}
+/* WHAT  Passar o rato faz o rótulo deslizar para cima e ser substituído por
+         uma 2ª cópia idêntica — nav.js gera esta estrutura sozinho a partir
+         do texto do <a> (ver § LINKS — EFEITO "ROLL" no nav.js), não precisas
+         de escrever os spans à mão no HTML.
+   TERM  `.nav__roll-clip` é a "janela" (`overflow: clip`, altura de uma
+         linha); `.nav__roll` é a coluna com as duas cópias — `translateY(-50%)`
+         desloca-a metade da SUA PRÓPRIA altura, por isso é sempre exactamente
+         uma cópia, não depende de medir pixels.
+   WHY   `height`/`line-height` têm de usar o MESMO token (`--lh-body`) — se
+         ficarem diferentes, a janela corta descendentes ("ç", "g", "j") de uma
+         das duas cópias. Bug real já cometido e corrigido no site de origem. */
+.nav__roll-clip { display: block; overflow: clip; height: calc(var(--lh-body, 1.6) * 1em); line-height: var(--lh-body, 1.6); }
+.nav__roll { display: flex; flex-direction: column; transition: transform var(--dur-short, 260ms) var(--ease-out, cubic-bezier(.16,1,.3,1)); }
+.nav__links a:hover .nav__roll,
+.nav__links a:focus-visible .nav__roll { transform: translateY(-50%); }
+/* Sublinhado da secção actual — liga/desliga a classe `.is-active` no <a> certo (JS do TEU site, scroll-spy; este componente não decide qual secção está activa). */
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 100%; height: 2px;
+  background: var(--c-accent, #2563EB);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-micro, 150ms) var(--ease-out, cubic-bezier(.16,1,.3,1));
+}
+.nav__links a.is-active::after { transform: scaleX(1); }
+
+/* ── CTA — moldura transparente por fora, bloco preenchido por dentro ── */
+.nav__cta { display: inline-flex; border-radius: var(--r-full, 999px); padding: 6px; transition: transform var(--dur-micro, 150ms) var(--ease-out, cubic-bezier(.16,1,.3,1)); flex-shrink: 0; white-space: nowrap; }
+.nav__cta:hover { transform: translateY(-1px); }
+.nav__cta-inner {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--sp-6, 24px);
+  border-radius: var(--r-full, 999px);
+  background: var(--c-accent, #2563EB);
+  color: var(--c-on-accent, #FFFFFF);
+  font-weight: var(--fw-body, 500);
+  font-size: var(--fs-sm, 15px);
+  line-height: 1; /* remove o espaçamento herdado do body (1.45) — a PP Telegraf tem uma proporção ascent/descent diferente da fonte da SOLITSU, por isso herdar o line-height do body deixava o texto visivelmente desalinhado dentro da pílula */
+  text-transform: uppercase;
+  transition: background-color var(--dur-micro, 150ms) var(--ease-out, cubic-bezier(.16,1,.3,1));
+}
+/* AVISO DE CONTRASTE — não copiar `--c-on-accent: #FFFFFF` às cegas: no projecto
+   de origem, branco sobre o laranja de marca falhava o contraste (2,79:1,
+   abaixo do mínimo de 3:1 mesmo para texto grande) — foi preciso trocar para
+   texto escuro. O bloco TEMA no topo deste ficheiro já usa `#0d0d0d` por
+   causa disto — não mudar para branco sem medir o contraste real primeiro. */
+.nav__cta:hover .nav__cta-inner { background: var(--c-dark-bg, #17140F); color: var(--c-bg-cream, #FFFFFF); }
+
+/* ── BOTÕES — reset obrigatório ─────────────────────────────
+   WHAT  Desliga o desenho nativo do sistema operativo em `.nav__toggle`.
+   WHY   Bug real, só visível no Safari, apanhado no site de origem: sem isto,
+         passar o rato num botão pintava o realce nativo do macOS por cima do
+         estilo do site — lia-se como "inverte as cores" em Dark Mode. Nunca
+         reproduzido no Chrome, por isso é fácil de nunca apanhar sem testar
+         no Safari a sério. */
+.nav__toggle { appearance: none; -webkit-appearance: none; font: inherit; color: inherit; }
+
+/* ── HAMBÚRGUER (só aparece ≤ breakpoint móvel, ver media query abaixo) ── */
+.nav__toggle { display: none; min-width: 44px; min-height: 44px; border: 0; background: none; cursor: pointer; padding: var(--sp-2, 8px); }
+.nav__toggle svg { width: 24px; height: 24px; }
+
+/* ============================================================================
+   MÓVEL — breakpoint único, editável (mantém em sincronia com nav.js
+   NAV_BREAKPOINT — os dois têm de mudar juntos)
+   ============================================================================ */
+@media (max-width: 820px) {
+  .nav__drawer {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    margin-left: 0; /* anula o auto da regra base — a gaveta já é fixada pelo left/right */
+    display: grid;
+    grid-template-rows: 0fr;
+    max-height: 60vh;
+    overflow: hidden;
+    background: var(--c-bg, #FCFCFC);
+    border-bottom: 1px solid var(--c-border, #E5E0DA);
+    transition: grid-template-rows var(--dur-short, 260ms) var(--ease-out, cubic-bezier(.16,1,.3,1));
+  }
+  .site-header[data-open="true"] .nav__drawer { grid-template-rows: 1fr; }
+  .nav__links { min-height: 0; overflow: hidden; flex-direction: column; gap: 0; }
+  .nav__links a { display: block; padding: var(--sp-4, 16px) var(--sp-6, 24px); border-top: 1px solid var(--c-border, #E5E0DA); }
+  .nav__toggle { display: flex; align-items: center; justify-content: center; }
+  .nav .nav__cta { display: none; } /* o CTA já existe no hero ("Contact me") — remove esta linha se quiseres o CTA visível também em móvel */
+  .site-header, .site-header[data-scrolled="true"] {
+    max-width: none;
+    border-radius: var(--r-full, 999px);
+    padding-inline: var(--sp-3, 12px);
+    background: color-mix(in srgb, var(--c-bg-cream, #FCFCFC) 90%, black);
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .nav__roll, .nav__links a::after, .nav__cta, .nav__cta-inner, .nav__drawer {
+    transition-duration: 1ms !important;
+  }
+}

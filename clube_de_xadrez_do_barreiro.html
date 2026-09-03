@@ -19,18 +19,32 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1785437699">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788471311">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788471311">
 </head>
 <body>
 
-<header class="site-header grid">
-  <nav class="header-nav">
-    <a href="index.html#works">&larr; Index</a>
+<div id="nav-scroll-sentinel" aria-hidden="true"></div>
+
+<!-- Nav Island -->
+<header class="site-header" data-open="false" data-scrolled="false">
+  <nav class="nav container">
+    <a class="nav__logo" href="index.html" aria-label="Francisco Martins — home">Francisco Martins</a>
+
+    <div class="nav__drawer" id="nav-links">
+      <ul class="nav__links">
+        <li><a href="index.html#works">&larr; Index</a></li>
+      </ul>
+    </div>
+
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner">Get in touch</span></a>
+
+    <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+      </svg>
+    </button>
   </nav>
-  <div class="header-name"><a href="index.html">Francisco Martins</a></div>
-  <div class="header-social">
-    <a href="mailto:francisco1901martins@gmail.com">Get in touch</a>
-  </div>
 </header>
 
 <div class="progress-line" aria-hidden="true"></div>
@@ -90,6 +104,8 @@
 
 </main>
 
-<script src="assets/js/main.js?v=1785437699"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788471311"></script>
+<script src="assets/js/nav.js?v=1788471311"></script>
+<script src="assets/js/main.js?v=1788471311"></script>
 </body>
 </html>

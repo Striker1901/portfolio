@@ -6,39 +6,28 @@
    ============================================================ */
 
 /* ---------- Fonts ---------- */
+/* `PP Telegraf` — mesma família usada no site da SOLITSU. Só existem 3 cortes reais
+   (200/400/800); os pesos 500/700 pedidos noutras regras deste ficheiro são
+   remapeados para o corte mais próximo (ver secção "font-weight" mais abaixo). */
 @font-face {
-  font-family: "PP Neue Montreal";
-  src: url("../fonts/PPNeueMontreal-Book.woff2") format("woff2");
+  font-family: "PP Telegraf"; /* nome exato a usar em qualquer font-family: var(--font) */
+  src: url("../fonts/PPTelegraf-Ultralight.woff2") format("woff2"); /* corte fino — só entra se algum dia se usar font-weight: 200 */
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap; /* mostra o fallback do sistema até a fonte carregar, evita texto invisível */
+}
+@font-face {
+  font-family: "PP Telegraf";
+  src: url("../fonts/PPTelegraf-Regular.woff2") format("woff2"); /* corte usado no corpo de texto (peso 400) */
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "PP Neue Montreal";
-  src: url("../fonts/PPNeueMontreal-Medium.woff2") format("woff2");
-  font-weight: 500;
+  font-family: "PP Telegraf";
+  src: url("../fonts/PPTelegraf-Ultrabold.woff2") format("woff2"); /* corte usado em títulos/destaques (peso 800) */
+  font-weight: 800;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "PP Neue Montreal";
-  src: url("../fonts/PPNeueMontreal-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "PP Neue Montreal";
-  src: url("../fonts/PPNeueMontreal-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "PP Neue Montreal";
-  src: url("../fonts/PPNeueMontreal-SemiBoldItalic.woff2") format("woff2");
-  font-weight: 600;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -50,7 +39,7 @@
   --muted: #9a9a9a;
   --line: rgba(255, 255, 255, 0.14);
 
-  --font: "PP Neue Montreal", "Inter", -apple-system, sans-serif;
+  --font: "PP Telegraf", -apple-system, BlinkMacSystemFont, sans-serif; /* stack de fallback do sistema caso a PP Telegraf falhe a carregar; "Inter" saiu porque nunca esteve realmente ligada */
 
   --text-xs: 11px;
   --text-s: 13px;
@@ -62,7 +51,7 @@
   --case-title: clamp(32px, 5.4vw, 80px); /* case page titles */
 
   --gap: 1rem;
-  --pad: clamp(16px, 1.8vw, 28px);
+  --pad: 2rem; /* margem lateral do site — igual ao --sp-8 (desktop) da SOLITSU */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
 }
 
@@ -76,7 +65,10 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* No native `scroll-behavior: smooth` here — main.js now drives ALL scrolling
+     via Lenis (inertia-based, same library as the SOLITSU site), and running
+     both at once makes them fight each other over the same scroll position. */
+  scroll-padding-top: 118px; /* clears the fixed nav (measured bottom edge: 102px) + a little breathing room, for anchor jumps when Lenis/JS isn't running (no-JS, prefers-reduced-motion) */
 }
 
 body {
@@ -127,7 +119,7 @@ ul {
 /* ---------- Labels / small type ---------- */
 .label {
   font-size: var(--text-xs);
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
@@ -135,60 +127,6 @@ ul {
 
 .small {
   font-size: var(--text-s);
-}
-
-/* ---------- Fixed header ---------- */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 50;
-  align-items: baseline;
-  padding-top: 22px;
-  padding-bottom: 22px;
-  font-size: var(--text-s);
-  font-weight: 500;
-  /* frosted-glass bar: translucent fill + backdrop blur, hairline edge to
-     define it against the content scrolling underneath */
-  color: #f2f2f2;
-  background: rgba(13, 13, 13, 0.6);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  pointer-events: none;
-}
-
-.site-header a {
-  pointer-events: auto;
-}
-
-/* All three groups share row 1 (columns overlap at col 5, so pin the row to
-   stop grid auto-placement from bumping the name/social onto a second row) */
-.header-nav {
-  grid-row: 1;
-  grid-column: 1 / 6;
-  display: flex;
-  gap: 0.35em;
-  white-space: nowrap;
-}
-
-.header-name {
-  grid-row: 1;
-  grid-column: 5 / 12;
-}
-
-.header-name a {
-  font-weight: 500;
-}
-
-.header-social {
-  grid-row: 1;
-  grid-column: 12 / 17;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.35em;
-  white-space: nowrap;
 }
 
 /* ---------- Scroll progress line ---------- */
@@ -227,275 +165,73 @@ ul {
     transform: none;
     transition: none;
   }
-  html {
-    scroll-behavior: auto;
-  }
+  /* No `scroll-behavior: auto` override needed here anymore — the base `html`
+     rule no longer sets `smooth` at all (see the comment there); Lenis is what
+     used to need this override, and it already refuses to start under
+     reduced-motion (see main.js), so native scroll is already instant. */
 }
 
 /* ============================================================
    HOME
    ============================================================ */
 
-/* ---------- Dark section — shared field (hero + work-with-me) ---------- */
-.dark-section {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  color: #e8e8e8;
-  /* layered background: faint blueprint grid + soft accent glow over near-black */
-  background-color: #0d0d0d;
-  background-image:
-    radial-gradient(58% 50% at 50% 44%, rgba(255, 92, 0, 0.15), transparent 70%),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 100% 100%, 44px 44px, 44px 44px;
-  background-position: center center, center center, center center;
-}
-
-/* film grain — sits above the grid/glow, below the content */
-.dark-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---------- Hero — terminal (code/tech style) ---------- */
+/* ---------- Hero — simplified: PORTFOLIO + edge actions ---------- */
 .hero {
-  --hero-strip: clamp(56px, 9vh, 96px); /* bottom band: divider + scroll cue */
+  position: relative; /* containing block for .hero-pixels below, which needs inset:0 to size itself off this box */
   min-height: 100vh;
   min-height: 100svh;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* pins the title + actions row to the bottom, like the SOLITSU hero */
   padding: var(--pad);
 }
 
-/* LED "digital grain" fill — pharmacy-cross style, behind the terminal window.
-   Stops at the divider so the grains stack onto the bar, leaving the scroll
-   cue on a clean strip below. */
-.hero-grain {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  width: 100%;
-  height: calc(100% - var(--hero-strip)); /* stop at the divider bar */
-  pointer-events: none;
+/* Fine white pixel grid, brought over from the SOLITSU hero (assets/js/hero-pixels.js
+   there) and adapted 03-09-2026: reads --ink (white) instead of --c-accent (orange).
+   Tuning went through several passes the same day, ending on sparse bright
+   "sparks" over a near-invisible dim field (see the JS file's AJUSTES block)
+   plus this fade mask, brought back from the SOLITSU original — same technique,
+   same ~12% proportion top/bottom, fading the field out near the nav and near
+   the title/links so it never fights either. See assets/js/hero-pixels.js for
+   the animation itself. */
+.hero-pixels {
+  position: absolute; /* leaves normal flow, covers the section without pushing the title/links */
+  inset: 0;             /* stretches to all 4 corners of .hero — the JS reads this box's real size */
+  z-index: 0;            /* sits behind the title/actions below, which get z-index:1 */
+  pointer-events: none;  /* clicks pass through to whatever's underneath */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%); /* fades the field out near the top and bottom edges — widened from 12/88 to 28/72 for a more gradual fade, per Francisco's request */
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%);
 }
 
-/* Plain strip below the divider — masks the blueprint grid behind the scroll cue */
-.hero-foot {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--hero-strip);
-  z-index: 0;
-  background: #0d0d0d; /* section base colour, no grid lines */
-  pointer-events: none;
+.hero-title {
+  position: relative; /* needed for z-index below to actually apply (static elements ignore it) */
+  z-index: 1;          /* keeps the title above .hero-pixels */
+  font: 800 var(--display) / 0.95 var(--font); /* Ultrabold PP Telegraf, the site's shared display size */
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
-/* Full-width bar dividing the LED animation from the scroll indicator */
-.hero-divider {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: var(--hero-strip);
+.hero-actions {
+  position: relative; /* same reason as .hero-title above */
   z-index: 1;
-  height: 2px;
-  background: var(--accent);
-  box-shadow: 0 0 10px rgba(255, 92, 0, 0.8), 0 0 22px rgba(255, 92, 0, 0.5);
-  pointer-events: none;
-}
-
-.term {
-  position: relative;
-  z-index: 1;
-  width: min(92vw, 760px);
-  font-family: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-  background: #141414;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-}
-
-/* Hero terminal plotted onto the 44px blueprint grid: square corners, sized to
-   whole cells (17 × 10) so all four edges land exactly on grid lines. A centred
-   box only stays aligned in 2-cell (88px) steps, so to shave one line off the
-   bottom we keep the TOP fixed and shrink upward: translateY(-22px) holds the
-   top on its line while the bottom moves up one cell. Dims: 748 (17) × 440 (10).
-   (Scoped to the hero; the work-with-me terminal keeps its rounded panel.) */
-.hero .term {
-  width: min(92vw, 748px);             /* 17 × 44px grid cells */
-  min-height: 440px;                   /* 10 × 44px grid cells */
-  transform: translateY(-22px);        /* hold the top edge on its grid line */
-  border: 1px solid rgba(255, 255, 255, 0.14); /* thin grid-line-style outline */
-  border-radius: 0;                    /* square — match the straight grid lines */
-  overflow: visible;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
-}
-
-.term-bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 0.9rem;
-  background: #1d1d1d;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.term-bar .dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #3a3a3a;
-}
+.hero-action--end { margin-left: auto; } /* pushes "Look down" to the right edge of the hero's padding box */
 
-.term-bar .dot:nth-child(1) { background: #ff5f56; }
-.term-bar .dot:nth-child(2) { background: #ffbd2e; }
-.term-bar .dot:nth-child(3) { background: #27c93f; }
-
-.term-title {
-  margin-left: auto;
-  margin-right: auto;
+.hero-action {
   font-size: var(--text-xs);
-  letter-spacing: 0.03em;
-  color: #888;
-}
-
-.term-body {
-  padding: clamp(1.2rem, 2.6vw, 2.2rem);
-  font-size: clamp(14px, 1.7vw, 20px);
-  line-height: 1.7;
-}
-
-.t-line { display: block; white-space: pre-wrap; }
-
-/* syntax palette — coloured like a real code editor */
-.t-prompt {
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(255, 92, 0, 0.55); /* neon bloom */
-}
-
-.t-cmd .t-typed { color: #f2f2f2; }
-
-.t-out { color: #e8e8e8; }
-
-/* design × code: the name output is the vibrant focal beat — warm amber + glow */
-.term-name {
-  font-size: clamp(26px, 4.6vw, 54px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  margin: 0.15em 0 0.45em;
-  color: #ffb24d;
-  text-shadow: 0 0 22px rgba(255, 150, 40, 0.45);
-}
-
-/* editor-style comment colour */
-.t-comment { color: #6a9c6a; margin-top: 0.6em; }
-
-.term-caret {
-  display: inline-block;
-  width: 0.6ch;
-  height: 1.05em;
-  margin-left: 0.12em;
-  transform: translateY(0.18em);
-  background: var(--accent);
-  box-shadow: 0 0 12px rgba(255, 92, 0, 0.7); /* glow as it blinks */
-  animation: term-blink 1s steps(1) infinite;
-}
-
-@keyframes term-blink {
-  0%, 50% { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
-}
-
-/* While the type-out animation runs, lines start hidden (JS reveals them) */
-.term.is-typing .t-line { opacity: 0; }
-.term.is-typing .t-line.is-shown { opacity: 1; }
-
-.hero-scroll {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 4vh;
-  z-index: 1;
-  text-align: center;
-  font-size: var(--text-xs);
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--accent);
   text-shadow: 0 0 8px rgba(255, 92, 0, 0.7), 0 0 18px rgba(255, 92, 0, 0.45);
-  animation: hero-bob 1.8s var(--ease) infinite;
 }
-
-@keyframes hero-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .term-caret { animation: none; }
-  .hero-scroll { animation: none; }
-  .term.is-typing .t-line { opacity: 1; }
-  .hero-grain { display: none; }
-}
-
-/* ---------- Work with me — terminal offer (closing dark section) ---------- */
-.work-with-me {
-  display: grid;
-  place-items: center;
-  padding: 12vh var(--pad);
-}
-
-.wm-term { width: min(92vw, 820px); }
-
-.wm-term .term-body { font-size: clamp(14px, 1.6vw, 18px); }
-
-/* package list */
-.wm-pkg {
-  list-style: none;
-  margin: 0.2em 0 0;
-  padding: 0;
-}
-
-.wm-pkg li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.1em 1.2em;
-  padding: 0.4em 0 0.4em 1.6ch;
-  position: relative;
-}
-
-.wm-pkg li::before {
-  content: "›";
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-}
-
-.pk-name { color: #ffb24d; min-width: 9ch; }
-
-.pk-scope { color: #cfcfcf; }
-
-/* email CTA */
-.wm-cta {
-  display: inline-block;
-  margin: 0.5em 0 0.7em;
-  font-size: clamp(18px, 2.4vw, 30px);
-  font-weight: 500;
-  color: var(--accent);
-  text-shadow: 0 0 14px rgba(255, 92, 0, 0.5);
-  word-break: break-all;
-}
-
-.wm-cta:hover { color: #ff7a33; }
 
 /* ---------- Page footer — plain black, compact ---------- */
 .page-footer {
@@ -515,7 +251,7 @@ ul {
 .pf-links {
   display: flex;
   gap: 1.4em;
-  font-weight: 500;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.65);
 }
 
@@ -554,7 +290,7 @@ ul {
   flex: 1;
   font-family: var(--font);
   font-size: var(--text-s);
-  font-weight: 500;
+  font-weight: 400;
   padding: 0.6em 1em;
   cursor: pointer;
   border: 1px solid transparent;
@@ -591,7 +327,7 @@ ul {
   z-index: 40;
   text-align: right;
   font-size: var(--text-s);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.7;
   opacity: 0;
   pointer-events: none;
@@ -624,21 +360,6 @@ ul {
   padding-bottom: 6vh;
 }
 
-.section-head {
-  margin-bottom: 10vh;
-  row-gap: 0.5rem;
-}
-
-.section-head .label {
-  grid-column: 1 / 4;
-}
-
-.section-head .section-note {
-  grid-column: 5 / 12;
-  font-size: var(--text-s);
-  color: var(--muted);
-}
-
 .work-entry {
   margin-bottom: 16vh;
   row-gap: 1.2rem;
@@ -647,7 +368,7 @@ ul {
 .work-entry .work-no {
   grid-column: 1 / 3;
   font-size: var(--num);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
   letter-spacing: -0.01em;
 }
@@ -660,7 +381,7 @@ ul {
 
 .work-entry .work-title {
   font-size: var(--text-l);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -731,7 +452,7 @@ ul {
   grid-column: 3 / 10;
   margin-top: 3rem;
   font-size: var(--text-l);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* ---------- About ---------- */
@@ -747,7 +468,7 @@ ul {
 }
 
 .about .about-text {
-  grid-column: 5 / 12;
+  grid-column: 3 / 10;
   max-width: 62ch;
 }
 
@@ -756,46 +477,8 @@ ul {
 }
 
 .about .about-photo {
-  grid-column: 13 / 17;
+  grid-column: 11 / 16;
   align-self: start;
-}
-
-.about-block {
-  grid-column: 1 / 17;
-  display: grid;
-  grid-template-columns: subgrid;
-}
-
-.about-block .label {
-  grid-column: 1 / 4;
-}
-
-.about-block .block-body {
-  grid-column: 5 / 12;
-}
-
-.selected-list li {
-  display: flex;
-  gap: 1.5em;
-  padding: 0.55em 0;
-  border-bottom: 1px solid var(--line);
-  font-size: var(--text-s);
-  font-weight: 500;
-}
-
-.selected-list li:first-child {
-  border-top: 1px solid var(--line);
-}
-
-.selected-list .no {
-  color: var(--muted);
-  min-width: 2em;
-}
-
-.selected-list .meta {
-  margin-left: auto;
-  color: var(--muted);
-  text-align: right;
 }
 
 /* ---------- Contact ---------- */
@@ -813,7 +496,7 @@ ul {
 .contact-email {
   grid-column: 1 / 17;
   font-size: clamp(22px, 4.6vw, 72px);
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.01em;
   line-height: 1.1;
   word-break: break-all;
@@ -824,7 +507,7 @@ ul {
   display: flex;
   gap: 0.35em;
   font-size: var(--text-s);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .site-footer {
@@ -856,14 +539,14 @@ ul {
 .case-hero .case-no {
   grid-column: 1 / 3;
   font-size: var(--num);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
 }
 
 .case-hero .case-title {
   grid-column: 1 / 17;
   font-size: var(--case-title);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
   letter-spacing: -0.015em;
   text-transform: uppercase;
@@ -882,7 +565,7 @@ ul {
   padding-top: 1rem;
   border-top: 1px solid var(--line);
   font-size: var(--text-s);
-  font-weight: 500;
+  font-weight: 400;
   row-gap: 0.4rem;
 }
 
@@ -961,7 +644,7 @@ ul {
   padding-bottom: 5vh;
   border-top: 1px solid var(--line);
   font-size: var(--text-m);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .case-nav .prev {
@@ -1006,7 +689,7 @@ ul {
 .photo-entry .work-no {
   grid-column: 1 / 3;
   font-size: var(--num);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
 }
 
@@ -1017,7 +700,7 @@ ul {
 
 .photo-entry .work-title {
   font-size: var(--text-l);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .photo-entry .work-img {
@@ -1045,18 +728,7 @@ ul {
 @media (max-width: 810px) {
   :root {
     --num: 40px;
-  }
-
-  .header-name {
-    display: none;
-  }
-
-  .header-nav {
-    grid-column: 1 / 10;
-  }
-
-  .header-social {
-    grid-column: 10 / 17;
+    --pad: 1rem; /* margem lateral em ecrãs pequenos — igual ao --sp-4 (tablet) da SOLITSU */
   }
 
   .work-list {
@@ -1075,11 +747,6 @@ ul {
   .hero-meta .m-based,
   .hero-meta .m-current {
     grid-column: 1 / 17;
-  }
-
-  .section-head .section-note {
-    grid-column: 1 / 17;
-    margin-top: 0.5em;
   }
 
   .work-entry {
@@ -1138,11 +805,6 @@ ul {
   .about .about-photo {
     grid-column: 1 / 17;
     margin-top: 2rem;
-  }
-
-  .about-block .block-body {
-    grid-column: 1 / 17;
-    margin-top: 1rem;
   }
 
   .contact-links {
