@@ -423,13 +423,20 @@ ul {
 .we-4 .img-b,
 .we-5 .img-b { grid-column: 11 / 16; align-self: end; }
 
-/* Clube de Xadrez logo is a light mark on transparent bg, sits directly on the
-   page. The img-a box stretches to the tall img-b beside it, so center the
-   mark vertically inside the frame. */
+/* WHAT  `.img-a` já não é um ícone transparente pequeno a flutuar — é agora um
+         cartão branco opaco (mesmo tratamento do `xadrez-symbol.png` atual),
+         por isso já não deve esticar para a altura toda da linha (herdada por
+         omissão do grid, para bater certo com o `.img-b` mais alto ao lado) e
+         sobrar espaço preto vazio à volta dele.
+   TERM  `align-self: start` tira este item do stretch por omissão do grid —
+         a caixa passa a ter só a altura natural da imagem, alinhada ao topo
+         da linha (mesmo topo do `.img-b`), sem sobra nem recorte.
+   WHY   Pedido do Francisco 04-09-2026: "make it aligned and the same size" —
+         a caixa vazia à volta do cartão branco lia mal ao lado do `.img-b`;
+         o antigo comentário (ícone transparente a "flutuar", centrado de
+         propósito) já não se aplica com o cartão opaco de hoje. */
 .we-4 .img-a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  align-self: start;
 }
 
 /* ---------- Photography teaser ---------- */
@@ -601,27 +608,53 @@ ul {
   max-width: 62ch;
 }
 
-/* case images */
+/* case images
+   WHAT  Reference grid system (romeuribeiro.com/bba, pedido do Francisco 04-09-2026):
+         cantos arredondados + gap pequeno IGUAL nas duas direcções entre imagens,
+         em vez do respiro enorme vertical que só existia aqui antes.
+   TERM  `row-gap: var(--gap)` substitui `9vh` — o `--gap` (1rem) já era o valor
+         horizontal entre pares (herdado do `.grid` via subgrid), por isso isto
+         iguala os dois eixos com um token que já existe, em vez de inventar um
+         valor novo copiado à letra do site de referência.
+   WHY   Pedido do Francisco: "pay attention to the corners of the images and the
+         vertical and horizontal gap between images", a apontar para o grid system
+         do romeuribeiro.com/bba (medido ao vivo: 14.4px de raio, ~7px de gap igual
+         nas duas direcções — valores aproximados aqui pelos tokens já existentes
+         do próprio site, não copiados ao byte). NÃO se aplica a `.case-slides`
+         (o deck de 70 imagens) — pedido explícito para deixar essa grelha intacta. */
 .case-images {
   padding-top: 10vh;
-  row-gap: 9vh;
+  row-gap: var(--gap);
 }
 
 .case-img {
   position: relative;
 }
 
-.case-img.full   { grid-column: 1 / 17; }
-.case-img.wide   { grid-column: 3 / 15; }
-.case-img.left   { grid-column: 1 / 11; }
-.case-img.right  { grid-column: 7 / 17; }
-.case-img.mid    { grid-column: 5 / 13; }
+.case-images img {
+  border-radius: 12px;  /* cantos arredondados, fixo (não proporcional ao tamanho da imagem) — igual em todas as variantes (full/wide/mid/pair) */
+}
+
+/* WHAT  `.wide`/`.left`/`.right`/`.mid` deixaram de ter uma largura própria mais
+         estreita que as 16 colunas — passam todas a `1/17`, iguais a `.full`.
+   WHY   Pedido do Francisco: "dont let gaps I always want the images to fill
+         their row even if it is one in a single row" — uma imagem sozinha na
+         linha nunca deve deixar espaço vazio dos lados. Isto é só sobre espaço
+         HORIZONTAL: um `.img-pair` continua a dividir a linha ao meio e cada
+         imagem mantém a sua própria altura natural (sem `object-fit`, sem
+         esticar) — confirmado por ele com um exemplo real (par com alturas
+         diferentes onde a mais baixa deixa espaço por baixo, propositadamente). */
+.case-img.full,
+.case-img.wide,
+.case-img.left,
+.case-img.right,
+.case-img.mid    { grid-column: 1 / 17; }
 
 .img-pair {
   grid-column: 1 / 17;
   display: grid;
   grid-template-columns: subgrid;
-  row-gap: 9vh;
+  row-gap: var(--gap);
 }
 
 .img-pair .case-img.a { grid-column: 1 / 9; }
@@ -631,6 +664,24 @@ ul {
   margin-top: 0.7em;
   font-size: var(--text-xs);
   color: var(--muted);
+}
+
+/* case slides — grelha densa dos 70 diapositivos da apresentação original, usada em
+   poliempreende.html e clube_de_xadrez_do_barreiro.html.
+   TERM  `.case-slides__grid` é a única secção do site com uma `grid-template-columns`
+         própria em vez de encaixar nas 16 colunas normais do `.grid` — como
+         `.img-pair` acima, ocupa `grid-column: 1/17` (a largura toda) e por
+         dentro define a sua PRÓPRIA grelha de 10 colunas, porque 16 não
+         divide por 10 sem sobras.
+   WHY   Pedido do Francisco: 10 colunas × 7 linhas, uma imagem por célula. */
+.case-slides {
+  padding-top: var(--gap);  /* pedido do Francisco 04-09-2026: mesmo gap pequeno que já existe entre as imagens da `.case-images` acima, não os 10vh de antes — a transição para o deck fica no mesmo ritmo apertado */
+}
+.case-slides__grid {
+  grid-column: 1 / 17;  /* ocupa as 16 colunas do `.grid` pai, como o `.img-pair` acima */
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);  /* 10 colunas iguais — mudar o "10" muda o nº de imagens por linha em desktop */
+  gap: var(--gap);  /* mesmo espaçamento entre células que o resto do site usa entre colunas */
 }
 
 /* prev / next ---------- */
@@ -857,6 +908,14 @@ ul {
 
   .img-pair {
     row-gap: 4vh;
+  }
+
+  /* 10 colunas cabem em desktop, não num telemóvel — desce para 3, mantendo
+     as 70 imagens na mesma ordem, só mais linhas. Mudar o "3" muda quantas
+     miniaturas cabem por linha neste breakpoint. */
+  .case-slides__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
   }
 
   .photo-entry .work-no {
