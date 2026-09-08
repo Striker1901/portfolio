@@ -38,10 +38,10 @@ const I18N = {
       photoDisc: 'Portrait &amp; Film',
     },
     about: {
-      p1: "I started in Computer Engineering, realised it wasn't my place, and switched. No regrets. Now I'm finishing my degree in Graphic Design and Multimedia at ESAD.CR and building something that actually feels like mine.",
-      p2: "I work across visual identity, branding, packaging, and typography. I'm drawn to design that solves real problems. I'm also genuinely interested in where design and technology meet, and that's the territory I want to keep pushing into.",
-      p3: "Outside of the screen I play piano, do photography, and have done theatre and volunteering. I'm curious about most things and stubborn about the ones that matter. I take what I commit seriously. When I decide I'm going somewhere, I get there.",
-      p4: 'This portfolio is the work so far. There&rsquo;s more coming.',
+      p1: "I started out in Computer Engineering, then switched to Graphic Design and Multimedia, which I completed at ESAD.CR. That shift never erased the systems thinking I carry from engineering. It shows up in everything I design, from visual identity and branding to packaging and typography.",
+      p2: "That technical background is a real asset today. Understanding technology from the inside gives me the confidence to navigate this new era where design and AI increasingly overlap, and I use AI tools as execution assistants: they speed up the process, they never replace creative direction.",
+      p3: "I'm determined and focused on whatever I set out to do, and that same technical rigor is what I bring to every project.",
+      p4: 'I split the rest of my time between piano, photography, drawing, and 3D printing, more out of curiosity than as hobbies in the usual sense. I genuinely love learning new things, and that curiosity runs through everything I do, on and off the screen.',
     },
     footer: {
       location: 'Lisbon, Portugal',
@@ -145,10 +145,10 @@ const I18N = {
       photoDisc: 'Retrato &amp; Filme',
     },
     about: {
-      p1: 'Comecei em Engenharia Informática, percebi que não era o meu sítio, e mudei. Sem arrependimentos. Agora estou a terminar a licenciatura em Design Gráfico e Multimédia na ESAD.CR e a construir algo que sinto mesmo como meu.',
-      p2: 'Trabalho em identidade visual, branding, packaging e tipografia. Interessa-me o design que resolve problemas reais. Também tenho um interesse genuíno no ponto de encontro entre design e tecnologia, e é esse o território onde quero continuar a avançar.',
-      p3: 'Fora do ecrã toco piano, faço fotografia, e já fiz teatro e voluntariado. Sou curioso sobre a maior parte das coisas e teimoso nas que importam. Levo a sério aquilo a que me comprometo. Quando decido chegar a algum lado, chego.',
-      p4: 'Este portefólio é o trabalho até agora. Vem mais aí.',
+      p1: 'Comecei o percurso académico em Engenharia Informática, mas mudei para Design Gráfico e Multimédia, curso que terminei na ESAD.CR. Essa mudança não apagou a lógica de sistema que trago da engenharia: está presente em tudo o que desenho, seja identidade visual, branding, packaging ou tipografia.',
+      p2: 'Esse background técnico é hoje uma vantagem concreta. Perceber tecnologia por dentro dá-me confiança para navegar esta nova era em que design e IA se cruzam cada vez mais, e uso ferramentas de IA como assistentes de execução: aceleram o processo, nunca substituem a direção criativa.',
+      p3: 'Sou determinado e focado no que me proponho a fazer, e é esse rigor técnico que levo para cada projeto.',
+      p4: 'Divido o resto do tempo a tocar piano, fotografia, desenho e impressão 3D, mais por curiosidade do que por hobby propriamente dito. Gosto genuinamente de aprender coisas novas, e essa vontade atravessa tudo o que faço, dentro e fora do ecrã.',
     },
     footer: {
       location: 'Lisboa, Portugal',

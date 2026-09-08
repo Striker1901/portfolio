@@ -114,7 +114,7 @@
          com uma regra só. */
 .nav__drawer { margin-left: auto; }
 
-.nav__logo { display: inline-flex; align-items: center; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; color: var(--c-fg, #17140F); } /* logótipo de texto — Ultrabold PP Telegraf herdada do body, sem SVG */
+.nav__logo { display: inline-flex; align-items: center; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; color: var(--c-fg, #17140F); white-space: nowrap; flex-shrink: 0; } /* logótipo de texto — Ultrabold PP Telegraf herdada do body, sem SVG; `white-space`+`flex-shrink` iguais ao `.nav__cta` (linha abaixo) — sem eles, quando a barra flex fica curta demais para logo+links+CTA, o browser encolhe o logo abaixo da largura do texto e "Francisco Martins" quebra em duas linhas */
 .nav__logo-mark { height: 1.75em; width: auto; } /* só entra em jogo se um dia trocares o texto por um SVG aqui dentro */
 
 .nav__links { display: flex; gap: var(--sp-8, 32px); list-style: none; }

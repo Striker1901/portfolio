@@ -31,6 +31,19 @@
   font-display: swap;
 }
 
+/* `Litet Snitt` — self-host só para o specimen animado (08-09-2026), único
+   sítio do site que usa esta fonte. Substituiu um <video> renderizado no
+   After Effects: comprimir tipografia vetorial em H.264 introduz chroma
+   subsampling nas arestas (ver .litet-specimen mais abaixo) — texto real com
+   webfont fica sempre nítido, a qualquer tamanho de ecrã. */
+@font-face {
+  font-family: "LitetSnitt-Regular"; /* mesmo nome já usado no SVG do specimen (assets/images/litet-specimen.svg) */
+  src: url("../fonts/LitetSnitt-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---------- Tokens ---------- */
 :root {
   --bg: #0d0d0d;
@@ -87,6 +100,7 @@ img {
   width: 100%;
   height: auto;
 }
+
 
 a {
   color: inherit;
@@ -232,6 +246,22 @@ ul {
   color: var(--accent);
   text-shadow: 0 0 8px rgba(255, 92, 0, 0.7), 0 0 18px rgba(255, 92, 0, 0.45);
 }
+
+/* WHAT  A seta SVG ao lado de "Contact me"/"Look down" — tamanho e cor
+         seguem o texto em vez de teres de os afinar à parte.
+   TERM  `1em` num `width`/`height` de SVG lê o `font-size` HERDADO do
+         elemento (aqui `.hero-action` → var(--text-xs)) — se um dia mudares
+         esse `--text-xs`, a seta acompanha sozinha, sem tocar aqui.
+   WHY   Antes eram caracteres Unicode (↙/↘) sem controlo de tamanho nem de
+         espelho — a fonte PP Telegraf não tem esses glifos e o browser
+         trocava de fonte a meio da palavra. */
+.hero-arrow {
+  width: 1em; /* acompanha o font-size do link — não precisas de mexer aqui se mudares o tamanho do texto */
+  height: 1em; /* mesma lógica do width — mantém a seta quadrada */
+  display: inline-block; /* deixa o vertical-align abaixo fazer efeito (spans/svg inline puro ignora-o) */
+  vertical-align: -0.15em; /* baixa a seta para alinhar com a linha de base do texto maiúsculo ao lado */
+}
+.hero-arrow--flip { transform: scaleX(-1); } /* espelha a MESMA seta na horizontal em vez de desenhares um 2º path — 08-09-2026: voltou a ser só horizontal (o espelho vertical de antes ficava a apontar para cima, errado); as duas setas apontam para baixo, uma para cada lado */
 
 /* ---------- Page footer — plain black, compact ---------- */
 .page-footer {
@@ -393,6 +423,16 @@ ul {
   position: relative;
   overflow: hidden;
 }
+
+/* WHAT  Cartão branco atrás do símbolo do Xadrez (04-09-2026, troca PNG→SVG).
+   TERM  O PNG antigo tinha o fundo branco "queimado" nos próprios píxeis
+         (RGB opaco); o SVG novo só tem o traço — sem isto, o traço quase
+         preto (#020302) ficava invisível sobre o fundo quase-preto da
+         página (#0d0d0d).
+   WHY   Reproduz o mesmo cartão de marca que o Poliempreende já tem (a cor
+         de fundo dele também vem queimada no próprio ficheiro), só que aqui
+         a cor tem de vir do CSS porque o ficheiro é vector transparente. */
+.we-4 .img-a { background: #fff; }
 
 .work-entry .work-img img {
   transition: transform 0.8s var(--ease);
@@ -635,6 +675,51 @@ ul {
   border-radius: 12px;  /* cantos arredondados, fixo (não proporcional ao tamanho da imagem) — igual em todas as variantes (full/wide/mid/pair) */
 }
 
+/* WHAT  Specimen animado da Litet Snitt (08-09-2026) — texto real (webfont
+         self-hosted, ver @font-face "LitetSnitt-Regular" no topo do ficheiro)
+         que `assets/js/litet-specimen.js` troca a cada 100ms, em vez do
+         <video> renderizado no After Effects que aqui esteve antes.
+   TERM  `container-type: inline-size` faz o `cqw` abaixo ser relativo à
+         LARGURA DESTE BLOCO, não à do ecrã inteiro — dá o mesmo efeito de
+         "enche a coluna" que um `<img>`/`<video>` a 100% já tem, mas para
+         `font-size`, que não tem um `object-fit` equivalente.
+   WHY   Um vídeo comprime tipografia vetorial com perdas (chroma subsampling
+         nas arestas do H.264); texto real com webfont fica sempre nítido,
+         a qualquer tamanho de ecrã, e pesa ~14KB em vez dos ~3MB do mp4. */
+.litet-specimen {
+  container-type: inline-size;   /* referência para o cqw do glifo abaixo */
+  aspect-ratio: 16 / 9;           /* reserva o espaço da linha sem precisar de width/height fixos (evita CLS) */
+  border-radius: 12px;            /* mesmo raio das imagens desta secção — .case-images img não se aplica aqui (não é um <img>) */
+  background: #000;               /* fundo preto pedido, igual ao specimen original */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;                /* nunca deixa um glifo largo (ex: "W") empurrar o layout para fora do bloco */
+}
+.litet-specimen__glyph {
+  font-family: "LitetSnitt-Regular", sans-serif; /* fonte self-hosted acima; sans-serif só entra antes dela carregar */
+  color: #64ff00;                  /* verde exacto pedido */
+  font-size: 32cqw;                /* escala com a largura do PRÓPRIO bloco (cqw), não com o ecrã inteiro */
+  line-height: 1;                  /* remove o espaço extra que o line-height do body deixaria acima/abaixo do glifo */
+  user-select: none;               /* decorativo — não faz sentido poder seleccionar/copiar um caracter que troca sozinho */
+}
+/* Fotossensibilidade / distração: quem pede menos movimento não deve ver 216
+   caracteres a trocar 10×/segundo — `litet-specimen.js` lê esta classe para
+   decidir se corre o intervalo ou fica num único glifo fixo. */
+@media (prefers-reduced-motion: reduce) {
+  .litet-specimen__glyph { transition: none; }
+}
+
+/* WHAT  Cartão branco atrás do símbolo do Xadrez na PRÓPRIA página do case
+         study (08-09-2026) — mesmo problema e mesma solução da home (ver
+         `.we-4 .img-a` em ~linha 421).
+   TERM  `background` num `<img>` pinta por trás das zonas transparentes da
+         própria imagem — por isso o rectângulo branco aparece exactamente
+         onde o SVG não tem traço, sem precisares de outra `<div>`.
+   WHY   O SVG do símbolo só tem o traço, sem fundo desenhado lá dentro — sem
+         isto ficava quase invisível sobre o fundo escuro da página. */
+.case-img--mark img { background: #fff; }
+
 /* WHAT  `.wide`/`.left`/`.right`/`.mid` deixaram de ter uma largura própria mais
          estreita que as 16 colunas — passam todas a `1/17`, iguais a `.full`.
    WHY   Pedido do Francisco: "dont let gaps I always want the images to fill
@@ -659,6 +744,35 @@ ul {
 
 .img-pair .case-img.a { grid-column: 1 / 9; }
 .img-pair .case-img.b { grid-column: 9 / 17; }
+
+/* WHAT  Variante a 3 do `.img-pair` acima (08-09-2026) — mesma mecânica
+         (`subgrid` sobre as 16 colunas do `.case-images`), só que reparte em
+         3 fatias quase iguais em vez de 2 metades.
+   TERM  16 não é divisível por 3 — por isso 6/5/5 colunas (não 3× iguais)
+         é a repartição mais próxima do meio sem sobrar coluna nenhuma.
+   WHY   Precisas de mostrar 3 imagens juntas na mesma linha (ex: 3 mockups
+         de poster) sem inventar outra grelha à parte — reaproveita o
+         `--gap` e o `row-gap` que já existem no `.img-pair`. */
+.img-trio {
+  grid-column: 1 / 17;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--gap);
+}
+.img-trio .case-img.a { grid-column: 1 / 7; }
+.img-trio .case-img.b { grid-column: 7 / 12; }
+.img-trio .case-img.c { grid-column: 12 / 17; }
+
+/* WHAT  As 3 imagens do trio preenchem a caixa toda, sem sobrar fundo preto
+         por baixo (08-09-2026).
+   TERM  `object-fit: cover` faz a imagem cortar (não esticar) para encher a
+         `height` dada — aqui `100%` da altura da própria `.case-img`.
+   WHY   Colunas 6/5/5 não são iguais (16 não divide por 3) — a mesma foto em
+         3 larguras diferentes rendia 3 alturas diferentes, e a `.case-img`
+         das colunas mais estreitas esticava (grid `align-items: stretch`
+         por omissão) sem a imagem lá dentro acompanhar, deixando um espaço
+         vazio a mostrar o fundo escuro da página. */
+.img-trio .case-img img { height: 100%; object-fit: cover; }
 
 .img-caption {
   margin-top: 0.7em;
@@ -907,6 +1021,16 @@ ul {
   }
 
   .img-pair {
+    row-gap: 4vh;
+  }
+
+  .img-trio .case-img.a,
+  .img-trio .case-img.b,
+  .img-trio .case-img.c {
+    grid-column: 1 / 17;  /* mesma lógica do .img-pair acima — 3 colunas finas não cabem num telemóvel, empilha as 3 a toda a largura */
+  }
+
+  .img-trio {
     row-gap: 4vh;
   }
 

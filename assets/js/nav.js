@@ -86,6 +86,21 @@
   }
   scheduleWidthUpdate();
 
+  /* WHAT  Remede a pílula assim que TODAS as webfonts da página acabarem de
+           carregar (08-09-2026).
+     TERM  `document.fonts.ready` só resolve quando o browser já trocou
+           qualquer texto que estivesse na fonte de fallback pela fonte real.
+     WHY   Bug real: as fontes do site usam `font-display: swap` (mostram já
+           a fonte de fallback, trocam mais tarde) — a medição de cima corre
+           ao arranque, antes dessa troca terminar em ligações mais lentas ou
+           com mais fontes a carregar ao mesmo tempo. Sem isto, `--nav-tight-w`
+           fica calibrado à largura do texto na fonte ERRADA, e os links da
+           nav (ex: "Index") ficam desalinhados dentro da pílula depois da
+           fonte real entrar. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleWidthUpdate);
+  }
+
   let resizeTimer = null;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);

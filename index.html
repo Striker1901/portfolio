@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1788521973"></script>
+  <script src="assets/js/lang-flag.js?v=1788866116"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Francisco Martins — Brand &amp; Web Designer</title>
   <meta name="description" content="Brand and website for early-stage products — designed and built by the same person. Visual identity, typography and web. Francisco Martins, Lisbon, Portugal.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1788521973">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1788521973">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788866116">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788866116">
 </head>
 <body data-page="home">
 
@@ -74,9 +74,10 @@
   <section class="hero" id="hero">
     <canvas class="hero-pixels" aria-hidden="true"></canvas>
     <h1 class="hero-title" data-i18n="hero.title">PORTFOLIO</h1>
+    <!-- `.hero-arrow` seta em SVG (não Unicode ↙/↘) — a fonte PP Telegraf não tem esses glifos, por isso o browser caía para uma fonte de sistema diferente a meio da palavra; SVG com `stroke="currentColor"` herda a cor/glow do link e escala em `em` (ver .hero-arrow em style.css). A 2ª seta reutiliza o MESMO path, só espelhado com `.hero-arrow--flip` (transform: scaleX(-1)) em vez de desenhar outro path do zero. 08-09-2026: o `--flip` está agora na seta da ESQUERDA (Contact me, esquerda→direita para baixo); a da DIREITA (Look down) fica sem flip (direita→esquerda para baixo) — troca de lado se um dia quiseres inverter outra vez. -->
     <div class="hero-actions">
-      <a class="hero-action" href="mailto:francisco1901martins@gmail.com"><span data-i18n="hero.contact">Contact me</span> <span aria-hidden="true">↙</span></a>
-      <a class="hero-action hero-action--end" href="#works"><span aria-hidden="true">↘</span> <span data-i18n="hero.lookDown">Look down</span></a>
+      <a class="hero-action" href="mailto:francisco1901martins@gmail.com"><span data-i18n="hero.contact">Contact me</span> <svg class="hero-arrow hero-arrow--flip" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M13 3 L3 13 M3 13 L3 7 M3 13 L9 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="hero-action hero-action--end" href="#works"><svg class="hero-arrow" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="M13 3 L3 13 M3 13 L3 7 M3 13 L9 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> <span data-i18n="hero.lookDown">Look down</span></a>
     </div>
   </section>
 
@@ -89,7 +90,8 @@
         <div class="work-title">Poliempreende</div>
         <div class="work-disc label" data-i18n="works.poliDisc">Rebranding — Identity</div>
       </div>
-      <div class="work-img img-a reveal"><img src="assets/images/poli-logo.png" alt="Poliempreende symbol" width="1000" height="1000" loading="lazy"></div>
+      <!-- SVG em vez de PNG (08-09-2026, exportado pelo Francisco) — mesmo tratamento do símbolo do Xadrez acima: traço nítido em qualquer tamanho. Este SVG já traz o próprio fundo amarelo desenhado lá dentro (um <rect> a preencher o viewBox), por isso não precisa de nenhum "cartão" de cor à parte em CSS, ao contrário do Xadrez. width/height seguem o viewBox real do SVG (1700.79x1698.52), não os píxeis do PNG antigo. -->
+      <div class="work-img img-a reveal"><img src="assets/images/poli-symbol.svg" alt="Poliempreende symbol" width="1701" height="1699" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/poli-thumb.jpg" alt="Poliempreende tote bag" width="642" height="900" loading="lazy"></div>
     </a>
 
@@ -101,7 +103,8 @@
         <div class="work-disc label" data-i18n="works.litetDisc">Typeface Design</div>
       </div>
       <div class="work-img img-a reveal"><img src="assets/images/litet-02.png" alt="Litet Snitt glyph set" width="1920" height="1358" loading="lazy"></div>
-      <div class="work-img img-b reveal d-1"><img src="assets/images/litet-thumb.jpg" alt="Litet Snitt type specimen" width="636" height="900" loading="lazy"></div>
+      <!-- SVG em vez de JPG (08-09-2026) — mesmo tratamento das outras trocas: traço/texto nítido em qualquer tamanho. width/height seguem o viewBox real do SVG (1190.8x1684.03), não os píxeis do JPG antigo. -->
+      <div class="work-img img-b reveal d-1"><img src="assets/images/litet-specimen.svg" alt="Litet Snitt type specimen" width="1191" height="1684" loading="lazy"></div>
     </a>
 
     <!-- 03 1543 -->
@@ -122,7 +125,8 @@
         <div class="work-title">Clube de Xadrez do Barreiro</div>
         <div class="work-disc label" data-i18n="works.xadrezDisc">Rebranding — Identity</div>
       </div>
-      <div class="work-img img-a reveal"><img src="assets/images/xadrez-symbol.png" alt="Clube de Xadrez do Barreiro symbol" width="1075" height="721" loading="lazy"></div>
+      <!-- SVG em vez de PNG (04-09-2026) — traço nítido em qualquer tamanho, sem manchas de upscale no hover-zoom (`transform: scale(1.03)` em style.css). width/height seguem o viewBox real do SVG (240.94x155.91), não os píxeis do PNG antigo, só para reservar o espaço certo antes da imagem carregar. -->
+      <div class="work-img img-a reveal"><img src="assets/images/xadrez-symbol.svg" alt="Clube de Xadrez do Barreiro symbol" width="241" height="156" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/xadrez-thumb-2.jpg" alt="Poster series announcing the 28th chess circuit" width="675" height="900" loading="lazy"></div>
     </a>
 
@@ -141,10 +145,10 @@
   <!-- ============ ABOUT ============ -->
   <section class="about grid" id="about">
     <div class="about-text reveal d-1">
-      <p data-i18n="about.p1">I started in Computer Engineering, realised it wasn't my place, and switched. No regrets. Now I'm finishing my degree in Graphic Design and Multimedia at ESAD.CR and building something that actually feels like mine.</p>
-      <p data-i18n="about.p2">I work across visual identity, branding, packaging, and typography. I'm drawn to design that solves real problems. I'm also genuinely interested in where design and technology meet, and that's the territory I want to keep pushing into.</p>
-      <p data-i18n="about.p3">Outside of the screen I play piano, do photography, and have done theatre and volunteering. I'm curious about most things and stubborn about the ones that matter. I take what I commit seriously. When I decide I'm going somewhere, I get there.</p>
-      <p data-i18n="about.p4">This portfolio is the work so far. There's more coming.</p>
+      <p data-i18n="about.p1">I started out in Computer Engineering, then switched to Graphic Design and Multimedia, which I completed at ESAD.CR. That shift never erased the systems thinking I carry from engineering. It shows up in everything I design, from visual identity and branding to packaging and typography.</p>
+      <p data-i18n="about.p2">That technical background is a real asset today. Understanding technology from the inside gives me the confidence to navigate this new era where design and AI increasingly overlap, and I use AI tools as execution assistants: they speed up the process, they never replace creative direction.</p>
+      <p data-i18n="about.p3">I'm determined and focused on whatever I set out to do, and that same technical rigor is what I bring to every project.</p>
+      <p data-i18n="about.p4">I split the rest of my time between piano, photography, drawing, and 3D printing, more out of curiosity than as hobbies in the usual sense. I genuinely love learning new things, and that curiosity runs through everything I do, on and off the screen.</p>
     </div>
     <div class="about-photo reveal d-2"><img src="assets/images/about-portrait.jpg" alt="Francisco Martins" width="1685" height="1920" loading="lazy"></div>
   </section>
@@ -166,10 +170,10 @@
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1788521973"></script>
-<script src="assets/js/nav.js?v=1788521973"></script>
-<script src="assets/js/lang.js?v=1788521973"></script>
-<script src="assets/js/hero-pixels.js?v=1788521973"></script>
-<script src="assets/js/main.js?v=1788521973"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788866116"></script>
+<script src="assets/js/nav.js?v=1788866116"></script>
+<script src="assets/js/lang.js?v=1788866116"></script>
+<script src="assets/js/hero-pixels.js?v=1788866116"></script>
+<script src="assets/js/main.js?v=1788866116"></script>
 </body>
 </html>

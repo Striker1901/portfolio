@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1788521973"></script>
+  <script src="assets/js/lang-flag.js?v=1788866116"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Litet Snitt — Francisco Martins</title>
   <meta name="description" content="Litet Snitt — a geometric, futuristic typeface inspired by Scandinavian typography. Designed at ESAD.CR.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1788521973">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1788521973">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788866116">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788866116">
 </head>
 <body data-page="litet">
 
@@ -88,9 +88,67 @@
   </section>
 
   <section class="case-images grid">
-    <div class="case-img mid reveal"><img src="assets/images/litet-01.png" alt="Litet Snitt type specimen poster" width="1357" height="1920"></div>
+    <!-- Specimen animado (08-09-2026, trocado de <video> para texto ao vivo no
+         mesmo dia — o vídeo do After Effects perdia nitidez nas arestas por
+         chroma subsampling do H.264). Webfont self-hosted (ver @font-face
+         "LitetSnitt-Regular" em style.css) + assets/js/litet-specimen.js troca
+         os 216 glifos visíveis da fonte a cada 100ms, fundo preto, cor #64FF00.
+         Vem primeiro no bloco porque mostra a fonte em uso antes das imagens
+         estáticas do specimen. -->
+    <div class="case-img full reveal litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
+      <span class="litet-specimen__glyph" aria-hidden="true">A</span>
+    </div>
+    <!-- SVG em vez de PNG (08-09-2026) — mesmo ficheiro usado na home (assets/images/litet-specimen.svg), texto/traço nítido em qualquer tamanho de ecrã. -->
+    <div class="case-img mid reveal"><img src="assets/images/litet-specimen.svg" alt="Litet Snitt type specimen poster" width="1191" height="1684"></div>
     <div class="case-img full reveal"><img src="assets/images/litet-02.png" alt="Litet Snitt full glyph set" width="1920" height="1358" loading="lazy"></div>
     <div class="case-img wide reveal"><img src="assets/images/litet-03.png" alt="Litet Snitt — Aa characters" width="1920" height="1701" loading="lazy"></div>
+  </section>
+
+  <!-- WHAT  Os 31 diapositivos da apresentação (08-09-2026: eram 32, a página 31
+       ficou de fora da exportação PNG mais recente — decisão do Francisco foi
+       ficar com 31 em vez de reconstituir a página em falta), em grelha densa
+       (10 colunas desktop / 3 no breakpoint móvel, ver `.case-slides__grid` em
+       style.css) — mesmo padrão da secção equivalente em
+       poliempreende.html/clube_de_xadrez_do_barreiro.html. Secção nova,
+       separada da `.case-images` curada acima porque é uma linguagem visual
+       diferente (miniaturas uniformes vs. poucas imagens grandes). Padrão
+       repetido: cada `<img>` só muda no número do ficheiro/slide — um único
+       comentário aqui explica os 31, não 31 comentários iguais. `loading="lazy"`
+       em todas (secção sempre fora do ecrã inicial). -->
+  <section class="case-slides grid">
+    <div class="case-slides__grid reveal">
+      <img src="assets/images/litet-slide-01.webp" alt="Litet Snitt presentation — slide 01" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-02.webp" alt="Litet Snitt presentation — slide 02" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-03.webp" alt="Litet Snitt presentation — slide 03" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-04.webp" alt="Litet Snitt presentation — slide 04" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-05.webp" alt="Litet Snitt presentation — slide 05" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-06.webp" alt="Litet Snitt presentation — slide 06" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-07.webp" alt="Litet Snitt presentation — slide 07" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-08.webp" alt="Litet Snitt presentation — slide 08" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-09.webp" alt="Litet Snitt presentation — slide 09" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-10.webp" alt="Litet Snitt presentation — slide 10" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-11.webp" alt="Litet Snitt presentation — slide 11" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-12.webp" alt="Litet Snitt presentation — slide 12" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-13.webp" alt="Litet Snitt presentation — slide 13" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-14.webp" alt="Litet Snitt presentation — slide 14" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-15.webp" alt="Litet Snitt presentation — slide 15" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-16.webp" alt="Litet Snitt presentation — slide 16" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-17.webp" alt="Litet Snitt presentation — slide 17" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-18.webp" alt="Litet Snitt presentation — slide 18" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-19.webp" alt="Litet Snitt presentation — slide 19" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-20.webp" alt="Litet Snitt presentation — slide 20" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-21.webp" alt="Litet Snitt presentation — slide 21" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-22.webp" alt="Litet Snitt presentation — slide 22" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-23.webp" alt="Litet Snitt presentation — slide 23" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-24.webp" alt="Litet Snitt presentation — slide 24" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-25.webp" alt="Litet Snitt presentation — slide 25" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-26.webp" alt="Litet Snitt presentation — slide 26" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-27.webp" alt="Litet Snitt presentation — slide 27" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-28.webp" alt="Litet Snitt presentation — slide 28" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-29.webp" alt="Litet Snitt presentation — slide 29" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-30.webp" alt="Litet Snitt presentation — slide 30" width="420" height="236" loading="lazy">
+      <img src="assets/images/litet-slide-31.webp" alt="Litet Snitt presentation — slide 31" width="420" height="236" loading="lazy">
+    </div>
   </section>
 
   <nav class="case-nav grid">
@@ -108,9 +166,11 @@
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1788521973"></script>
-<script src="assets/js/nav.js?v=1788521973"></script>
-<script src="assets/js/lang.js?v=1788521973"></script>
-<script src="assets/js/main.js?v=1788521973"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788866116"></script>
+<script src="assets/js/nav.js?v=1788866116"></script>
+<script src="assets/js/lang.js?v=1788866116"></script>
+<script src="assets/js/main.js?v=1788866116"></script>
+<!-- Só usado nesta página (não nas outras 7) — por isso fora de bump-assets.sh; muda o "?v=" à mão se voltares a editar este ficheiro. -->
+<script src="assets/js/litet-specimen.js?v=1788869000"></script>
 </body>
 </html>

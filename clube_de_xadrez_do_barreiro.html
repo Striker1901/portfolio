@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1788521973"></script>
+  <script src="assets/js/lang-flag.js?v=1788866116"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clube de Xadrez do Barreiro — Francisco Martins</title>
   <meta name="description" content="Rebranding of Clube de Xadrez do Barreiro, a chess association with over 25 years of history.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1788521973">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1788521973">
+  <link rel="stylesheet" href="assets/css/style.css?v=1788866116">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1788866116">
 </head>
 <body data-page="xadrez">
 
@@ -88,10 +88,17 @@
   </section>
 
   <section class="case-images grid">
-    <div class="case-img full reveal"><img src="assets/images/xadrez-symbol.png" alt="Clube de Xadrez do Barreiro symbol" width="1075" height="721"></div>
-    <div class="case-img wide reveal"><img src="assets/images/xadrez-02.jpg" alt="Poster series on a concrete wall" width="1920" height="1440" loading="lazy"></div>
+    <!-- SVG do símbolo isolado de volta como 1ª imagem (08-09-2026) — o mockup do sinal (`xadrez-signage.jpg`) mudou-se para a 3ª linha, a substituir o `xadrez-04.png`. Leva outra vez a classe `case-img--mark` (fundo branco em CSS) porque o SVG é transparente — ver style.css. -->
+    <div class="case-img full reveal case-img--mark"><img src="assets/images/xadrez-symbol.svg" alt="Clube de Xadrez do Barreiro symbol" width="241" height="156"></div>
+    <!-- 3 mockups de poster lado a lado em vez de 1 imagem só (08-09-2026) — `.img-trio` é o mesmo mecanismo do `.img-pair` acima (subgrid de 16 colunas), só que a 3, ver style.css. -->
+    <div class="img-trio">
+      <div class="case-img a reveal"><img src="assets/images/xadrez-09.jpg" alt="Poster mockup on stone steps, angled view" width="2000" height="1500" loading="lazy"></div>
+      <div class="case-img b reveal d-1"><img src="assets/images/xadrez-10.jpg" alt="Poster mockup draped over a stone ledge, 35th anniversary announcement" width="2000" height="1500" loading="lazy"></div>
+      <div class="case-img c reveal d-2"><img src="assets/images/xadrez-11.jpg" alt="Poster mockup leaning on stone, chess tournament announcement" width="2000" height="1500" loading="lazy"></div>
+    </div>
+    <!-- Mockup do sinal de parede em vez do símbolo isolado (08-09-2026) — mostra a marca aplicada em contexto, não só o traço sozinho; mudou-se para aqui a substituir o `xadrez-04.png`. -->
     <div class="img-pair">
-      <div class="case-img a reveal"><img src="assets/images/xadrez-04.png" alt="Clube de Xadrez do Barreiro symbol mark" width="1920" height="1440" loading="lazy"></div>
+      <div class="case-img a reveal"><img src="assets/images/xadrez-signage.jpg" alt="Clube de Xadrez do Barreiro identity on an illuminated wall sign" width="2000" height="1500" loading="lazy"></div>
       <div class="case-img b reveal d-1"><img src="assets/images/xadrez-05.jpg" alt="Poster series on an outdoor wall, announcing the 28th chess circuit" width="1920" height="1440" loading="lazy"></div>
     </div>
     <div class="img-pair">
@@ -99,7 +106,6 @@
       <div class="case-img b reveal d-1"><img src="assets/images/xadrez-08.jpg" alt="White cap mockup, three-quarter view" width="1920" height="1440" loading="lazy"></div>
     </div>
     <div class="case-img full reveal"><img src="assets/images/xadrez-06.jpg" alt="Billboard announcing the 28th chess circuit" width="1920" height="1440" loading="lazy"></div>
-    <div class="case-img mid reveal"><img src="assets/images/xadrez-03.jpg" alt="Poster series, alternate view" width="1920" height="1440" loading="lazy"></div>
   </section>
 
   <!-- WHAT  Os 70 diapositivos da apresentação original, em grelha densa (10 colunas
@@ -200,9 +206,9 @@
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1788521973"></script>
-<script src="assets/js/nav.js?v=1788521973"></script>
-<script src="assets/js/lang.js?v=1788521973"></script>
-<script src="assets/js/main.js?v=1788521973"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1788866116"></script>
+<script src="assets/js/nav.js?v=1788866116"></script>
+<script src="assets/js/lang.js?v=1788866116"></script>
+<script src="assets/js/main.js?v=1788866116"></script>
 </body>
 </html>
