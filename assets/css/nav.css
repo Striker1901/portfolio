@@ -118,6 +118,30 @@
 .nav__logo-mark { height: 1.75em; width: auto; } /* só entra em jogo se um dia trocares o texto por um SVG aqui dentro */
 
 .nav__links { display: flex; gap: var(--sp-8, 32px); list-style: none; }
+
+/* ── ITEM DA LISTA — corrige alinhamento vertical só no Safari ──────
+   WHAT  Cada `<li>` passa a ser o seu próprio contentor flex, com o `<a>`
+         lá dentro centrado por `align-items: center`.
+   TERM  Sem isto, o `<li>` alinha o `<a>` (`display: inline-block`) pela
+         BASELINE do texto — o mecanismo normal do CSS para elementos
+         inline dentro de uma caixa de bloco.
+   WHY   Bug real, só visível no Safari (WebKit), confirmado ao vivo
+         09-09-2026 (Chrome e Safari comparados lado a lado, mesma URL): o
+         conteúdo do `<a>` é um bloco cortado (`.nav__roll-clip`, usa
+         `overflow: clip`, ver bloco "LINKS — EFEITO ROLL" acima) em vez de
+         texto normal — e a spec do CSS não define bem qual deve ser a
+         BASELINE de um inline-block nesse caso. Chrome e Safari calculam-
+         na de forma diferente: no Safari, o link "← Index" ficava ~3px
+         mais alto do que o logótipo e o botão CTA ao lado dele, só neste
+         browser (medido: centro do link a 54px vs. 57px dos outros). Ligar
+         `display: flex` no `<li>` tira o `<a>` desse cálculo de baseline —
+         passa a ser centrado como CAIXA inteira (`align-items: center`),
+         o mesmo mecanismo já usado no resto desta componente, com o mesmo
+         resultado nos três motores (confirmado: Chrome já tinha os 4
+         elementos da nav alinhados ao mesmo eixo antes desta regra; agora
+         o Safari também tem). */
+.nav__links li { display: flex; align-items: center; }
+
 .nav__links a {
   font-weight: var(--fw-body, 500);
   font-size: var(--fs-sm, 15px);
