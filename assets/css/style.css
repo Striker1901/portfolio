@@ -442,6 +442,21 @@ ul {
   transform: scale(1.03);
 }
 
+/* WHAT  Mesmas regras acima, mas para `<svg>` — a miniatura "Litet Snitt" no
+         work-index é o SVG do specimen inline (ver litet_snitt.html), não um
+         `<img>`, por isso não herda nem o tamanho (`img{}` no topo do
+         ficheiro) nem o hover-zoom sem estas duas linhas extra. */
+.work-entry .work-img svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.8s var(--ease);
+}
+
+.work-entry:hover .work-img svg {
+  transform: scale(1.03);
+}
+
 .work-entry:hover .work-title {
   color: var(--accent);
 }
@@ -671,8 +686,20 @@ ul {
   position: relative;
 }
 
-.case-images img {
+.case-images img,
+.case-images svg {
   border-radius: 12px;  /* cantos arredondados, fixo (não proporcional ao tamanho da imagem) — igual em todas as variantes (full/wide/mid/pair) */
+}
+
+/* WHAT  Tamanho para os 3 SVGs de specimen inline (litet_snitt.html) — `img { width:100%; height:auto }`
+         só se aplica a `<img>`, e estes SVGs deixaram de ser `<img>` (ver comentário no HTML).
+   TERM  `overflow: hidden` aqui é o que faz o `border-radius` acima recortar de facto os cantos —
+         um `<svg>` sem isto ignora o raio, porque o seu próprio `<rect>` de fundo pinta por cima. */
+.case-images svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
 /* WHAT  Specimen animado da Litet Snitt (08-09-2026) — texto real (webfont
@@ -1059,4 +1086,222 @@ ul {
     right: var(--pad);
     max-width: none;
   }
+}
+
+
+/* WHAT  Regras `.cls-sp-N`/`.cls-02-N`/`.cls-03-N` dos 3 SVGs de specimen inline em litet_snitt.html
+         (specimen poster, glyph set completo, "Aa").
+   TERM  Estas regras viviam num `<style>` dentro de cada `<svg>` — o CSP do site (`style-src 'self'`)
+         bloqueia qualquer `<style>` inline, por isso tiveram de sair para aqui (ficheiro carregado,
+         não inline) para continuarem a aplicar-se. font-family aponta para a mesma "LitetSnitt-Regular"
+         já carregada acima (@font-face perto do topo deste ficheiro) — os SVGs deixaram de trazer a
+         sua própria cópia da fonte.
+   WHY   Cada SVG tinha nomes de classe genéricos ("cls-1", "cls-2"...) que colidiam entre si assim que
+         os 3 ficaram inline no mesmo documento — por isso cada um recebeu um prefixo (sp/02/03) antes
+         de sair do SVG. Não editar estas classes sem editar o `class="..."` correspondente no HTML. */
+
+/* -- litet-specimen.svg (inline) -- */
+.cls-sp-1, .cls-sp-2, .cls-sp-3, .cls-sp-4, .cls-sp-5, .cls-sp-6, .cls-sp-7, .cls-sp-8, .cls-sp-9 {
+  font-family: LitetSnitt-Regular, 'Litet Snitt ';
+}
+
+.cls-sp-1, .cls-sp-2, .cls-sp-3, .cls-sp-5, .cls-sp-10, .cls-sp-9 {
+  fill: #64ff00;
+}
+
+.cls-sp-1, .cls-sp-9 {
+  font-size: 95px;
+}
+
+.cls-sp-2 {
+  font-size: 106px;
+}
+
+.cls-sp-3 {
+  font-size: 67.46px;
+}
+
+.cls-sp-4 {
+  font-size: 94.82px;
+  letter-spacing: .03em;
+}
+
+.cls-sp-4, .cls-sp-11, .cls-sp-6, .cls-sp-7, .cls-sp-8 {
+  fill: #fff;
+}
+
+.cls-sp-12 {
+  stroke-width: 5.15px;
+}
+
+.cls-sp-12, .cls-sp-13 {
+  stroke: #fff;
+}
+
+.cls-sp-12, .cls-sp-13, .cls-sp-14, .cls-sp-15, .cls-sp-16, .cls-sp-17 {
+  fill: none;
+  stroke-miterlimit: 10;
+}
+
+.cls-sp-13 {
+  stroke-width: 3px;
+}
+
+.cls-sp-5 {
+  font-size: 133.52px;
+  letter-spacing: .03em;
+}
+
+.cls-sp-14 {
+  stroke-width: 8.64px;
+}
+
+.cls-sp-14, .cls-sp-15, .cls-sp-16, .cls-sp-17 {
+  stroke: #64ff00;
+}
+
+.cls-sp-6 {
+  font-size: 25px;
+}
+
+.cls-sp-15 {
+  stroke-width: 5px;
+}
+
+.cls-sp-16 {
+  stroke-width: 3.83px;
+}
+
+.cls-sp-17 {
+  stroke-width: 4.14px;
+}
+
+.cls-sp-7 {
+  font-size: 56px;
+}
+
+.cls-sp-18 {
+  letter-spacing: -.07em;
+}
+
+.cls-sp-19 {
+  letter-spacing: -.06em;
+}
+
+.cls-sp-20 {
+  letter-spacing: -.02em;
+}
+
+.cls-sp-21 {
+  letter-spacing: -.02em;
+}
+
+.cls-sp-22 {
+  letter-spacing: -.02em;
+}
+
+.cls-sp-8 {
+  font-size: 47px;
+  letter-spacing: .03em;
+}
+
+.cls-sp-23 {
+  letter-spacing: -.01em;
+}
+
+.cls-sp-24 {
+  letter-spacing: 0em;
+}
+
+.cls-sp-25 {
+  letter-spacing: 0em;
+}
+
+.cls-sp-26 {
+  letter-spacing: 0em;
+}
+
+.cls-sp-27 {
+  letter-spacing: .07em;
+}
+
+.cls-sp-28 {
+  letter-spacing: .02em;
+}
+
+.cls-sp-29 {
+  letter-spacing: .05em;
+}
+
+.cls-sp-30 {
+  letter-spacing: .05em;
+}
+
+.cls-sp-31 {
+  letter-spacing: .05em;
+}
+
+.cls-sp-32 {
+  letter-spacing: .03em;
+}
+
+.cls-sp-33 {
+  letter-spacing: .03em;
+}
+
+.cls-sp-34 {
+  letter-spacing: .03em;
+}
+
+.cls-sp-9 {
+  letter-spacing: .07em;
+}
+
+.cls-sp-35 {
+  letter-spacing: 0em;
+}
+
+.cls-sp-36 {
+  letter-spacing: 0em;
+}
+
+.cls-sp-37 {
+  letter-spacing: 0em;
+}
+
+/* -- litet-02.svg (inline) -- */
+.cls-02-1 {
+  font-size: 60px;
+}
+
+.cls-02-1, .cls-02-2 {
+  fill: #64ff00;
+  font-family: LitetSnitt-Regular, 'Litet Snitt ';
+}
+
+.cls-02-2 {
+  font-size: 800px;
+}
+
+.cls-02-3 {
+  letter-spacing: -.02em;
+}
+
+.cls-02-4 {
+  letter-spacing: -.02em;
+}
+
+.cls-02-5 {
+  letter-spacing: -.03em;
+}
+
+.cls-02-6 {
+  letter-spacing: .02em;
+}
+
+/* -- litet-03.svg (inline) -- */
+.cls-03-1 {
+  fill: #64ff00;
+  font-family: LitetSnitt-Regular, 'Litet Snitt ';
+  font-size: 800px;
 }
