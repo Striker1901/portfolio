@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388.18 850.5">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 60px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #64ff00;
+        font-family: LitetSnitt-Regular, 'Litet Snitt ';
+      }
+
+      .cls-2 {
+        font-size: 800px;
+      }
+
+      .cls-3 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-6 {
+        letter-spacing: .02em;
+      }
+    </style>
+  </defs>
+  <rect x="0" width="1388.18" height="850.5"/>
+  <text class="cls-2" transform="translate(-1279.2868 703.7164)"><tspan x="0" y="0">Aa</tspan></text>
+  <text class="cls-1" transform="translate(146.81 192.72)"><tspan x="0" y="0">ABCDEFGHIJ</tspan><tspan class="cls-3" x="380.64" y="0">K</tspan><tspan x="423.42" y="0">LMNOPQR</tspan><tspan class="cls-4" x="739.79" y="0">ST</tspan><tspan x="815.81" y="0">U</tspan><tspan class="cls-6" x="862.43" y="0">VW</tspan><tspan x="975.83" y="0">XYZ</tspan><tspan x="120.93" y="72">abcdefghijklmn</tspan><tspan class="cls-3" x="562.28" y="72">o</tspan><tspan x="597.98" y="72">pq</tspan><tspan class="cls-5" x="671.06" y="72">r</tspan><tspan x="696.86" y="72">stuvwxyz</tspan><tspan x="134.13" y="144">0123456789%$€£¥#+-=÷±&lt;&gt;</tspan><tspan x="192.48" y="216">:;.,…“”‘’!¡?¿&amp;¶ªº*©®@(){}[]</tspan><tspan x="130.98" y="288">«»-_–—/|\ÁÀÂÃÄÅÇÈÉÊËÌÍÎÏ</tspan><tspan x="263.52" y="360">ÒÓÔÕÖØÑÙÚÛÜÝ</tspan><tspan x="5.85" y="432">ÐÞáàâãäåaçèéêëìíîïòóôõöøñöšßùúûü</tspan><tspan x="315.63" y="504">Ææ Œœ fi fl ð þ</tspan></text>
+</svg>

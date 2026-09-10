@@ -38,10 +38,11 @@ const I18N = {
       photoDisc: 'Portrait &amp; Film',
     },
     about: {
-      p1: "I started out in Computer Engineering, then switched to Graphic Design and Multimedia, which I completed at ESAD.CR. That shift never erased the systems thinking I carry from engineering. It shows up in everything I design, from visual identity and branding to packaging and typography.",
-      p2: "That technical background is a real asset today. Understanding technology from the inside gives me the confidence to navigate this new era where design and AI increasingly overlap, and I use AI tools as execution assistants: they speed up the process, they never replace creative direction.",
-      p3: "I'm determined and focused on whatever I set out to do, and that same technical rigor is what I bring to every project.",
-      p4: 'I split the rest of my time between piano, photography, drawing, and 3D printing, more out of curiosity than as hobbies in the usual sense. I genuinely love learning new things, and that curiosity runs through everything I do, on and off the screen.',
+      p1: "I started out in Computer Engineering, then switched to Graphic Design and Multimedia, which I completed at ESAD.CR. That shift never erased the systems thinking I carry from engineering, and I find it useful. It shows up in my designs, from visual identity and branding to packaging and typography, and it gives me another way to perceive things.",
+      p2: "That technical background is a real asset today. Understanding technology from the inside gives me the confidence to navigate this new era where design and AI increasingly overlap. I use AI tools as execution assistants: they speed up the process, but they never replace creative direction.",
+      p3: "I'm determined and focused on whatever I set out to do, and that same technical rigour is what I bring to every project.",
+      p4: 'Outside work I split my time between piano, photography, drawing and 3D printing, more out of curiosity than as hobbies in the usual sense. I genuinely love learning new things, and that curiosity runs through everything I do, on and off the screen.',
+      p5: "I'm certainly not the best designer out there, but I always give the best of myself in what I set out to do, even when I don't enjoy it.",
     },
     footer: {
       location: 'Lisbon, Portugal',
@@ -145,10 +146,11 @@ const I18N = {
       photoDisc: 'Retrato &amp; Filme',
     },
     about: {
-      p1: 'Comecei o percurso académico em Engenharia Informática, mas mudei para Design Gráfico e Multimédia, curso que terminei na ESAD.CR. Essa mudança não apagou a lógica de sistema que trago da engenharia: está presente em tudo o que desenho, seja identidade visual, branding, packaging ou tipografia.',
-      p2: 'Esse background técnico é hoje uma vantagem concreta. Perceber tecnologia por dentro dá-me confiança para navegar esta nova era em que design e IA se cruzam cada vez mais, e uso ferramentas de IA como assistentes de execução: aceleram o processo, nunca substituem a direção criativa.',
-      p3: 'Sou determinado e focado no que me proponho a fazer, e é esse rigor técnico que levo para cada projeto.',
-      p4: 'Divido o resto do tempo a tocar piano, fotografia, desenho e impressão 3D, mais por curiosidade do que por hobby propriamente dito. Gosto genuinamente de aprender coisas novas, e essa vontade atravessa tudo o que faço, dentro e fora do ecrã.',
+      p1: 'Comecei o percurso académico em Engenharia Informática, mas mudei para Design Gráfico e Multimédia, curso que terminei na ESAD.CR. Essa mudança nunca apagou a lógica de sistema que trago da engenharia, e considero-a útil — está presente nos meus designs, de identidade visual e branding a packaging e tipografia, e dá-me uma outra forma de perceber as coisas.',
+      p2: 'Esse background técnico é hoje uma vantagem concreta. Perceber tecnologia por dentro dá-me confiança para navegar esta nova era em que design e IA se cruzam cada vez mais. Uso ferramentas de IA como assistentes de execução: aceleram o processo, mas nunca substituem a direção criativa.',
+      p3: 'Sou determinado e focado no que me proponho a fazer, e é esse mesmo rigor técnico que levo para cada projeto.',
+      p4: 'Fora do trabalho, divido o meu tempo entre piano, fotografia, desenho e impressão 3D, mais por curiosidade do que por hobby propriamente dito. Gosto genuinamente de aprender coisas novas, e essa curiosidade atravessa tudo o que faço, dentro e fora do ecrã.',
+      p5: 'Não sou certamente o melhor designer que existe, mas dou sempre o meu melhor naquilo a que me proponho, mesmo quando não gosto de o fazer.',
     },
     footer: {
       location: 'Lisboa, Portugal',
