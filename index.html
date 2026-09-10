@@ -90,8 +90,12 @@
         <div class="work-title">Poliempreende</div>
         <div class="work-disc label" data-i18n="works.poliDisc">Rebranding — Identity</div>
       </div>
-      <!-- SVG em vez de PNG (08-09-2026, exportado pelo Francisco) — mesmo tratamento do símbolo do Xadrez acima: traço nítido em qualquer tamanho. Este SVG já traz o próprio fundo amarelo desenhado lá dentro (um <rect> a preencher o viewBox), por isso não precisa de nenhum "cartão" de cor à parte em CSS, ao contrário do Xadrez. width/height seguem o viewBox real do SVG (1700.79x1698.52), não os píxeis do PNG antigo. -->
-      <div class="work-img img-a reveal"><img src="assets/images/poli-symbol.svg" alt="Poliempreende symbol" width="1701" height="1699" loading="lazy"></div>
+      <!-- SVG em vez de PNG (08-09-2026, exportado pelo Francisco) — mesmo tratamento do símbolo do Xadrez acima: traço nítido em qualquer tamanho. Este SVG já traz o próprio fundo amarelo desenhado lá dentro (um <rect> a preencher o viewBox), por isso não precisa de nenhum "cartão" de cor à parte em CSS, ao contrário do Xadrez.
+           CORTE 11-09-2026: `poli-symbol-wide.svg` é uma variante SÓ desta miniatura — mesmo ficheiro, mesma marca, só o `viewBox` mudou (corta o
+           amarelo a mais por cima/baixo, mantendo a marca perfeitamente centrada) para o cartão ficar retângulo como os outros 3 do work-index, em
+           vez do quadrado que `poli-symbol.svg` é de origem. O `poli-symbol.svg` original fica intacto — a página do case study (poliempreende.html)
+           continua a mostrar o quadrado completo, que é a apresentação certa lá. width/height seguem o novo viewBox (1700.79x1100.57). -->
+      <div class="work-img img-a reveal"><img src="assets/images/poli-symbol-wide.svg" alt="Poliempreende symbol" width="1701" height="1101" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/poli-thumb.jpg" alt="Poliempreende tote bag" width="642" height="900" loading="lazy"></div>
     </a>
 

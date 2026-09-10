@@ -494,6 +494,18 @@ ul {
   align-self: start;
 }
 
+/* WHAT  Mesmo tratamento acima, para o cartão amarelo do Poliempreende (11-09-2026).
+   TERM  `align-self: start` (ver comentário completo em `.we-4 .img-a` acima) tira o
+         item do stretch por omissão do grid.
+   WHY   `poli-symbol-wide.svg` (ver index.html) tem agora um canvas retângulo, não
+         quadrado — sem isto, o grid volta a esticar a caixa para a altura da linha
+         (ditada pelo `.img-b` mais alto ao lado), reintroduzindo o mesmo espaço vazio
+         por baixo da imagem que este truque já resolveu para o Xadrez, só que desta
+         vez visível a sério, porque o cartão é amarelo opaco em vez de preto. */
+.we-1 .img-a {
+  align-self: start;
+}
+
 /* ---------- Photography teaser ---------- */
 .photography {
   padding-top: 8vh;
