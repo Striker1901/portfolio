@@ -749,6 +749,42 @@ ul {
   .litet-specimen__glyph { transition: none; }
 }
 
+/* WHAT  Animação de ajuste da Litet Snitt (11-09-2026, remontada a 12-09) — um
+         `<canvas>` onde `assets/js/litet-construct.js` corta entre quatro
+         grandes planos de detalhes de letras diferentes: em cada um, uma pega
+         de Bézier roda até assentar no eixo e a curva fica na forma verdadeira
+         da fonte. Sem linhas-guia — só a letra. Os contornos são os reais da
+         fonte (ver assets/js/litet-outlines.js, gerado a partir do .otf).
+   TERM  `aspect-ratio` dá altura ao bloco a partir da largura ANTES de o JS
+         medir seja o que for. Sem isto o canvas nascia com 0px de altura e a
+         página saltava ao ser preenchido — é o que se chama `CLS` (Cumulative
+         Layout Shift), a métrica que o Google mede.
+   WHY   Fica ACIMA do specimen animado: primeiro conta-se como a letra foi
+         feita, só depois o specimen mostra o alfabeto inteiro já pronto. */
+.litet-construct {
+  aspect-ratio: 16 / 9;            /* proporção do bloco em ecrã largo — muda aqui para um enquadramento mais alto ou mais baixo */
+  border-radius: 12px;             /* mesmo raio das restantes imagens desta secção (.case-images img não se aplica: isto não é um <img>) */
+  background: #000;                /* preto puro por baixo do canvas — é o fundo da animação e tapa o bloco antes de o JS arrancar */
+  overflow: hidden;                /* obriga o border-radius a recortar mesmo os cantos do canvas, que de outra forma pintaria por cima deles */
+  display: block;                  /* o canvas lá dentro é dimensionado a 100%, por isso o bloco não precisa de flexbox como o .litet-specimen */
+}
+
+/* O canvas tem DOIS tamanhos: o de CSS (aqui) e o número real de píxeis que o
+   JS lhe põe nos atributos width/height, multiplicado pelo `devicePixelRatio`.
+   Estas duas regras fixam o primeiro; sem elas o canvas usaria o seu tamanho
+   por omissão de 300×150 e a animação aparecia esmagada num canto. */
+.litet-construct canvas {
+  display: block;                  /* remove a linha-base de texto que o canvas herdaria por ser inline, e com ela a faixa de 4px por baixo */
+  width: 100%;                     /* preenche a largura do bloco */
+  height: 100%;                    /* e a altura que o aspect-ratio acima definiu */
+}
+
+/* Em ecrã estreito o 16/9 deixaria a letra pequena de mais dentro de uma coluna
+   já estreita — 4/3 devolve-lhe altura sem a deixar sair do bloco. */
+@media (max-width: 810px) {
+  .litet-construct { aspect-ratio: 4 / 3; }  /* proporção mais alta no telemóvel — o mesmo ponto de corte (810px) que o --pad do site já usa */
+}
+
 /* WHAT  Cartão branco atrás do símbolo do Xadrez na PRÓPRIA página do case
          study (08-09-2026) — mesmo problema e mesma solução da home (ver
          `.we-4 .img-a` em ~linha 421).

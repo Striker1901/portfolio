@@ -25,6 +25,9 @@ for f in *.html; do
     -e "s|assets/js/lang\.js(\?v=[0-9]+)?|assets/js/lang.js?v=$V|g" \
     -e "s|assets/js/hero-pixels\.js(\?v=[0-9]+)?|assets/js/hero-pixels.js?v=$V|g" \
     -e "s|assets/js/main\.js(\?v=[0-9]+)?|assets/js/main.js?v=$V|g" \
+    -e "s|assets/js/litet-specimen\.js(\?v=[0-9]+)?|assets/js/litet-specimen.js?v=$V|g" \
+    -e "s|assets/js/litet-outlines\.js(\?v=[0-9]+)?|assets/js/litet-outlines.js?v=$V|g" \
+    -e "s|assets/js/litet-construct\.js(\?v=[0-9]+)?|assets/js/litet-construct.js?v=$V|g" \
     "$f"
   n=$((n + 1))
 done
