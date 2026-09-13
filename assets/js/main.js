@@ -11,6 +11,20 @@
          o Lenis não pode arrancar para essas pessoas, tem de haver uma verdade só, cedo. */
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* WHAT  Se esta página tem `.case-scroll` (só a litet_snitt.html, 13-09-2026), é ela
+         que faz scroll — não a página inteira — sempre que o ecrã for largo o
+         suficiente para caber a coluna de projectos ao lado.
+   TERM  `SPLIT_BREAKPOINT` tem de bater certo com o `@media (max-width: 810px)` de
+         style.css — é o mesmo ponto de corte que já desliga a coluna de projectos e
+         a devolve ao fluxo normal da página no telemóvel.
+   WHY   Nas outras 7 páginas `caseScroll` é `null` e `isSplitActive()` nunca dá
+         verdadeiro — todo este bloco fica inerte, o comportamento de hoje continua
+         exactamente igual. */
+const caseScroll = document.querySelector('.case-scroll');
+const SPLIT_BREAKPOINT = 810;
+const splitQuery = matchMedia(`(max-width: ${SPLIT_BREAKPOINT}px)`);
+const isSplitActive = () => !!(caseScroll && !splitQuery.matches);
+
 /* ── SCROLL SUAVE (Lenis) ──────────────────────────────────────
    WHAT  Toda a página passa a deslizar com inércia — tanto ao rodar a roda do rato/trackpad
          como ao clicar num link âncora — em vez de saltar em blocos abruptos. Trazido do
@@ -24,15 +38,45 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
          do Lenis ao mesmo tempo.
    WHY   Não arranca de todo se `reduced` for verdadeiro — nesse caso o scroll fica
          nativo e instantâneo, o comportamento correcto para quem pediu menos
-         movimento, não uma regressão. */
+         movimento, não uma regressão.
+
+   `createLenis()` (13-09-2026) — antes disto só corria uma vez, sempre em modo
+   "janela". Agora corre outra vez sempre que se cruza o `SPLIT_BREAKPOINT` a meio
+   de uma sessão (redimensionar a janela, rodar o telemóvel): `wrapper`/`content`
+   dizem ao Lenis para fazer scroll virtual dentro de `.case-scroll`, em vez da
+   janela inteira — a mesma opção já usada pela versão instalada em
+   `assets/js/vendor/lenis.min.js` (confirmado antes de escrever isto). O `raf`
+   abaixo lê sempre a variável `lenis` mais recente, por isso não precisa de saber
+   que a instância mudou por baixo dele. */
 let lenis = null;
+
+function createLenis() {
+  if (lenis) lenis.destroy(); // fecha os listeners da instância antiga antes de a substituir — sem isto, as duas ficavam a competir pelo mesmo scroll
+  lenis = null;
+  if (reduced) return; // nunca arranca para quem pediu menos movimento — nem em modo janela, nem em modo coluna
+  if (isSplitActive()) {
+    // lerp/wheelMultiplier (14-09-2026, pedido do Francisco: "scroll mais controlável,
+    // reage mais depressa" dentro da coluna de projecto) — só aqui, não no modo janela:
+    // `lerp` mais baixo = cada frame percorre mais da distância que falta até ao alvo
+    // (default do Lenis ~0.1, aqui 0.15 — chega mais depressa, continua suavizado, não
+    // instantâneo); `wheelMultiplier` amplia o quanto cada "tick" da roda do rato conta.
+    lenis = new Lenis({ wrapper: caseScroll, content: caseScroll.querySelector('.case-scroll__inner'), lerp: 0.15, wheelMultiplier: 1.3 });
+  } else {
+    lenis = new Lenis();
+  }
+}
+createLenis();
+
 if (!reduced) {
-  lenis = new Lenis();
   const raf = (time) => {
-    lenis.raf(time);
+    if (lenis) lenis.raf(time);
     requestAnimationFrame(raf);
   };
   requestAnimationFrame(raf);
+}
+
+if (caseScroll) {
+  splitQuery.addEventListener('change', createLenis); // recria a instância certa ao cruzar os 810px em direto
 }
 
 /* WHAT  Clicar num link âncora (nav, hero, sidebar de trabalhos) desliza suavemente até
@@ -226,24 +270,52 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionsByLink.forEach((_, section) => spy.observe(section));
   }
 
-  /* ---------- Scroll progress line ---------- */
+  /* ---------- Scroll progress line ----------
+     WHAT  A barra fininha à direita do ecrã que enche à medida que se avança na
+           página. Lê a posição de scroll de `window` normalmente — mas na
+           litet_snitt.html (13-09-2026), quando `.case-scroll` é quem faz scroll
+           de verdade, passa a ler a posição DESSA coluna em vez da janela.
+     TERM  `currentSource` guarda QUEM está a ser escutado agora (a janela ou a
+           `.case-scroll`) para `attach()` conseguir desligar o escutador antigo
+           antes de ligar o novo — sem isto, ao cruzar o `SPLIT_BREAKPOINT` ficavam
+           os dois ligados ao mesmo tempo, a escrever valores errados por cima um
+           do outro. */
   const progress = document.querySelector('.progress-line');
 
   if (progress) {
     let ticking = false;
+    let currentSource = null;
+
     const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      let max, pos;
+      if (currentSource === window) {
+        max = document.documentElement.scrollHeight - window.innerHeight;
+        pos = window.scrollY;
+      } else {
+        max = currentSource.scrollHeight - currentSource.clientHeight;
+        pos = currentSource.scrollTop;
+      }
+      const ratio = max > 0 ? Math.min(pos / max, 1) : 0;
       progress.style.transform = 'scaleY(' + ratio + ')';
       ticking = false;
     };
-    window.addEventListener('scroll', () => {
+
+    const onScroll = () => {
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(update);
       }
-    }, { passive: true });
-    update();
+    };
+
+    const attach = () => {
+      if (currentSource) currentSource.removeEventListener('scroll', onScroll); // larga a fonte antiga, se havia uma
+      currentSource = isSplitActive() ? caseScroll : window; // escolhe a fonte certa para o estado actual
+      currentSource.addEventListener('scroll', onScroll, { passive: true });
+      update(); // recalcula já, sem esperar pelo próximo scroll — evita a barra "congelada" no valor antigo até a pessoa mexer
+    };
+
+    attach();
+    if (caseScroll) splitQuery.addEventListener('change', attach); // troca de fonte ao cruzar os 810px em direto
   }
 
 });

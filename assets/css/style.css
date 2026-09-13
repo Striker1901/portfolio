@@ -46,7 +46,7 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --bg: #0d0d0d;
+  --bg: #000000; /* preto absoluto (13-09-2026, era #0d0d0d) — o Francisco pediu para escurecer mais, e este valor já é o mesmo preto que o fundo do SVG "Aa" e os cartões da litet_snitt.html usam por omissão, por isso o site inteiro passa a ter um único preto, não dois */
   --ink: #f2f2f2;
   --accent: #ff5c00;
   --muted: #9a9a9a;
@@ -65,6 +65,8 @@
 
   --gap: 1rem;
   --pad: 2rem; /* margem lateral do site — igual ao --sp-8 (desktop) da SOLITSU */
+  --rail-w: clamp(240px, 22vw, 300px); /* largura da coluna de projectos (case studies): 300px num ecrã grande, encolhe até 240px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte */
+  --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do Lenis — se a nav mudar de altura, muda aqui também */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
 }
 
@@ -384,6 +386,253 @@ ul {
   font-size: 0.7em;
 }
 
+/* ---------- Coluna de projectos (páginas de case study) ----------
+   WHAT  A coluna de cartões encostada à direita nas 6 páginas de case study, para
+         se poder saltar para outro projecto em qualquer ponto do scroll — até aqui
+         só existiam os links "← Anterior / Seguinte →" no fundo da página.
+   TERM  `position: fixed` tira o elemento do fluxo e prende-o à JANELA (não à
+         página), por isso ele fica parado enquanto o resto faz scroll — é o mesmo
+         mecanismo do `.work-list` aqui em cima, a única diferença é que este tem
+         cartões em vez de texto e faz scroll por dentro quando não cabe.
+   WHY   Referência dada pelo Francisco: portorocha.com (lá a lista está à esquerda;
+         ele pediu à direita). Não leva JavaScript nenhum: o cartão "activo" é
+         sempre a página em que já estás, por isso é marcado à mão no HTML de cada
+         ficheiro em vez de ser calculado com um IntersectionObserver. */
+.project-rail {
+  position: fixed;                    /* preso à janela: não faz scroll com a página — muda para `sticky` se algum dia o quiseres a acompanhar uma secção só */
+  top: var(--rail-top);               /* folga por baixo da nav flutuante — o valor vive no :root para não andar espalhado */
+  bottom: var(--pad);                 /* respiro igual ao da margem lateral no fundo; com top+bottom definidos a altura é calculada sozinha */
+  right: var(--pad);                  /* encostado à mesma margem lateral do resto do site — nunca colado ao bordo */
+  width: var(--rail-w);               /* largura fixa da coluna; altera o token no :root e o conteúdo reajusta-se junto */
+  z-index: 40;                        /* mesmo nível do .work-list: por baixo da nav (50) e da barra de progresso (60) */
+  display: flex;                      /* `flex` para empilhar os cartões e poder mudar de coluna para linha no telemóvel só com uma propriedade */
+  flex-direction: column;             /* cartões empilhados de cima para baixo no desktop */
+  gap: 8px;                           /* espaço entre cartões — voltou a um valor fixo (13-09-2026, era var(--gap)=16px) a pedido do Francisco para apertar a coluna; deixa de bater certo com o --gap usado noutros sítios do site de propósito, não é um esquecimento */
+  overflow-y: auto;                   /* faz scroll por dentro só quando os cartões não cabem na altura disponível */
+  overscroll-behavior: contain;       /* ao chegar ao fim da lista o scroll NÃO passa para a página por trás */
+  scrollbar-width: thin;              /* barra de scroll fina (Firefox); o Chrome ignora e usa a sua por omissão */
+  scrollbar-color: var(--line) transparent; /* puxador discreto sobre fundo transparente, para não roubar atenção aos cartões */
+}
+
+/* WHAT  O cartão em si: marca à esquerda, nome e descrição à direita.
+   TERM  `grid-template-columns: 48px 1fr` dá uma coluna de largura fixa para a
+         marca e manda a outra (`1fr`) ocupar tudo o que sobrar — é o que mantém
+         os nomes alinhados entre cartões mesmo com marcas de formatos diferentes. */
+.rail-card {
+  display: grid;                      /* grelha de 2 colunas dentro do cartão — marca | texto */
+  grid-template-columns: 48px 1fr;    /* 48px para a marca, o resto para o texto; muda o 48px e a marca acompanha (ver .rail-mark) */
+  align-items: center;                /* centra a marca e o texto um em relação ao outro na vertical */
+  gap: 0.75rem;                       /* distância entre a marca e o texto */
+  padding: 0.6rem;                    /* respiro interno do cartão */
+  border: 1px solid var(--line);      /* contorno ténue — é o que separa o cartão do fundo quase preto da página */
+  border-radius: 10px;                /* cantos arredondados, um pouco menores que os 12px das imagens grandes */
+  background: #141414;                /* mesmo cinzento da pastilha da nav — o cartão lê-se como "chapa" sobre o fundo #0d0d0d */
+  color: var(--ink);                  /* cor de texto base; a descrição baixa para --muted mais abaixo */
+  text-decoration: none;              /* tira o sublinhado do link — o cartão inteiro já se lê como clicável */
+  transition: border-color 0.35s var(--ease), background 0.35s var(--ease); /* suaviza o hover; baixa os tempos para uma reacção mais seca */
+}
+
+.rail-card:hover {
+  border-color: var(--accent);        /* o contorno acende-se a laranja no hover — o mesmo sinal que o .work-list já usa */
+  background: #1a1a1a;                /* chapa ligeiramente mais clara, para o cartão "subir" sem precisar de sombra */
+}
+
+.rail-card:hover .rail-title {
+  color: var(--accent);               /* o nome do projecto acompanha o contorno e acende também */
+}
+
+/* WHAT  A marca quadrada do projecto: SVG do símbolo real (Poliempreende, Xadrez)
+         ou um recorte quadrado da miniatura (1543, Filipa, Beah).
+   TERM  `object-fit: cover` manda a imagem encher o quadrado cortando o que sobra,
+         em vez de a espremer — troca para `contain` se preferires ver a marca
+         inteira com barras à volta. */
+.rail-mark {
+  width: 48px;                        /* igual à 1ª coluna da grelha do cartão — se mudares uma, muda a outra */
+  height: 48px;                       /* quadrado perfeito: é o que faz as marcas alinharem todas entre cartões */
+  object-fit: cover;                  /* enche o quadrado sem distorcer (corta o excedente) */
+  border-radius: 8px;                 /* cantos arredondados um pouco menores que os do cartão que a contém */
+  border: 1px solid var(--line);      /* contorno ténue (14-09-2026) — mesmo tratamento das imagens de case study; sem isto uma marca escura (ex: 1543) desaparecia contra o fundo #141414 do cartão */
+  display: block;                     /* remove o espaço fantasma por baixo que as imagens inline deixam */
+}
+
+.rail-mark--contain {
+  object-fit: contain;                /* para os símbolos vectoriais, que têm de aparecer inteiros e não cortados */
+  background: #fff;                   /* chapa branca por trás — o símbolo do Xadrez só tem traço, sem fundo próprio (mesma solução do .case-img--mark) */
+  padding: 6px;                       /* afasta o traço do bordo da chapa para não ficar espremido contra o canto */
+}
+
+/* WHAT  Marca da Litet Snitt: "Aa" escrito ao vivo no próprio tipo de letra, em vez
+         de uma imagem. A miniatura do projecto é uma folha de specimen inteira e a
+         48px ficava ilegível — e sendo um projecto DE tipografia, a marca honesta é
+         a letra em si.
+   WHY   A webfont já está carregada em todas as páginas (ver @font-face
+         "LitetSnitt-Regular" no topo), por isso isto não custa nenhum ficheiro novo. */
+.rail-mark--glyph {
+  display: grid;                      /* grelha só para poder usar o place-items abaixo e centrar a letra sem contas */
+  place-items: center;                /* centra o "Aa" nos dois eixos de uma vez */
+  background: #000;                   /* preto puro, igual ao fundo dos specimens da Litet Snitt */
+  border: 1px solid var(--line);      /* contorno ténue (13-09-2026) — as outras marcas são fotos/logos com aresta própria; esta é uma cor lisa e ficava sem definição nenhuma contra o `#141414` do cartão, ainda mais dimmed a 55% quando `is-current` */
+  color: #64ff00;                     /* verde da própria Litet Snitt (não o laranja do site) — o mesmo do specimen animado */
+  font-family: "LitetSnitt-Regular", sans-serif; /* a webfont self-hosted; o sans-serif só aparece no instante antes de ela carregar */
+  font-size: 22px;                    /* tamanho do "Aa" dentro do quadrado de 48px — sobe/desce para a letra encher mais ou menos */
+  line-height: 1;                     /* tira a entrelinha extra que desalinharia a letra do centro */
+}
+
+/* WHAT  O bloco de texto do cartão (nome + descrição), empilhado.
+   TERM  `min-width: 0` é o que permite ao texto encolher dentro de uma coluna
+         `1fr` — sem isto uma palavra comprida empurra o cartão e rebenta a
+         largura da coluna, porque um item de grelha recusa-se a ficar mais
+         pequeno que o seu conteúdo por omissão. */
+.rail-text {
+  display: flex;                      /* empilha nome e descrição um sobre o outro */
+  flex-direction: column;             /* direcção vertical da pilha */
+  gap: 0.15rem;                       /* distância curta entre o nome e a descrição */
+  min-width: 0;                       /* deixa o texto encolher e cortar em vez de alargar o cartão (ver TERM acima) */
+}
+
+.rail-title {
+  font-size: var(--text-m);           /* tamanho do nome do projecto — token do site, não um valor solto */
+  line-height: 1.25;                  /* entrelinha apertada: os nomes de 2 palavras não se afastam demasiado */
+  transition: color 0.35s var(--ease); /* acompanha a transição do hover definida no cartão */
+}
+
+/* TERM  `-webkit-line-clamp` corta o texto num número exacto de linhas e põe "…"
+         no fim; precisa do trio display/-webkit-box-orient/overflow para funcionar. */
+.rail-disc {
+  font-size: var(--text-xs);          /* descrição mais pequena que o nome, para a hierarquia se ler de relance */
+  color: var(--muted);                /* cinzento: secundário face ao nome */
+  line-height: 1.35;                  /* entrelinha um pouco mais aberta, por ser texto corrido curto */
+  display: -webkit-box;               /* modo de caixa antigo do WebKit — é o único em que o line-clamp pega */
+  -webkit-box-orient: vertical;       /* diz-lhe que as linhas se empilham na vertical */
+  -webkit-line-clamp: 2;              /* máximo de 2 linhas; sobe para 3 se quiseres descrições mais longas */
+  overflow: hidden;                   /* esconde o que passa das 2 linhas (sem isto o corte não acontece) */
+}
+
+/* WHAT  O cartão da página em que já estás: continua visível na lista (para se
+         perceber onde se está no conjunto) mas deixa de ser um link. */
+.rail-card.is-current {
+  border-color: var(--accent);        /* contorno laranja permanente — marca a posição actual sem precisar de texto extra */
+  background: #181818;                /* chapa um pouco mais clara que a dos outros, para se destacar parado */
+  cursor: default;                    /* cursor normal: sinaliza que não há nada para clicar */
+}
+
+.rail-card.is-current .rail-title {
+  color: var(--accent);               /* o nome fica laranja, igual ao estado de hover dos outros cartões */
+}
+
+.rail-card.is-current .rail-mark,
+.rail-card.is-current .rail-text {
+  opacity: 0.55;                      /* marca e texto esbatidos: presente mas claramente "já estás aqui" */
+}
+
+/* WHAT  Reserva o espaço da coluna para o conteúdo do case study nunca correr por
+         baixo dela.
+   TERM  O selector é `main[data-rail]` — um SELECTOR DE ATRIBUTO, que só apanha os
+         <main> que tenham `data-rail` no HTML. É de propósito: a classe `.grid` é
+         partilhada com a index.html, e sem este âmbito a home também encolheria. */
+main[data-rail] .grid {
+  padding-right: calc(var(--rail-w) + var(--pad) * 2); /* largura da coluna + uma margem de cada lado — altera os tokens, não este cálculo */
+}
+
+/* ---------- Scroll de duas colunas independentes (litet_snitt.html só) ----------
+   WHAT  A partir de 13-09-2026 esta página deixa de fazer scroll pela página inteira:
+         só `.case-scroll` desliza. A nav e a coluna de projectos ficam completamente
+         fixas por fora, no seu próprio sítio, sem depender de `position: fixed` a
+         "flutuar" sobre um documento que continua comprido por baixo.
+   TERM  O selector `body[data-split]` só apanha as páginas com esse atributo no
+         `<body>` — hoje só a litet_snitt.html. As outras 5 páginas de case study
+         continuam com o mecanismo antigo (`main[data-rail] .grid`, aqui em cima).
+   WHY   Pedido do Francisco: "make the scroll affect only the column of content on
+         the left" — confirmado por teste que a nav e a rail já não se mexiam ao
+         fazer scroll (position:fixed já funcionava); o que faltava era a PÁGINA em
+         si parar de fazer scroll, para as duas colunas nunca se desalinharem uma da
+         outra em nenhuma posição de scroll — o que estava a causar o "gap" enorme
+         que ele viu entre o conteúdo e a rail.
+   Regra de base = DESKTOP. TEM DE FICAR ANTES do `@media (max-width: 810px)` aqui
+   a seguir — o desfazer para telemóvel vive lá dentro; com a mesma especificidade,
+   quem vier DEPOIS no ficheiro ganha, por isso a ordem entre este bloco e esse
+   `@media` importa tanto quanto o próprio conteúdo das regras. */
+body[data-split] {
+  overflow: hidden;                 /* a página deixa de ter a sua própria barra de scroll */
+  height: 100dvh;                   /* altura fixa ao ecrã — sem isto `overflow:hidden` não teria nada para recortar */
+}
+
+/* WHAT  A coluna que faz scroll: mesma caixa vertical (top/bottom) da `.project-rail`
+         aqui em cima — é isto que faz as "colunas" ficarem sempre alinhadas.
+   TERM  `right` usa `--gap` (1rem), não `--pad` (2rem) — o Francisco achou o
+         espaço entre as colunas grande demais; `--gap` é o mesmo valor que
+         `.img-pair` já usa entre pares de imagem, por isso o espaço passa a
+         bater certo com o resto do site em vez de ser um número novo. */
+.case-scroll {
+  position: fixed;                  /* sai do fluxo da página — a página em si já não tem conteúdo a empurrá-la */
+  top: var(--rail-top);             /* mesmo topo da .project-rail */
+  bottom: var(--pad);               /* mesmo fundo da .project-rail */
+  left: var(--pad);                 /* margem esquerda igual à do resto do site */
+  right: calc(var(--rail-w) + var(--pad) + 8px); /* pára exactamente 8px antes da rail (que começa a `--pad` do bordo) — mesmo valor do gap entre cartões da rail (13-09-2026, era var(--gap)=16px), a pedido do Francisco para os dois ficarem iguais */
+  overflow-y: auto;                 /* é isto que faz esta coluna deslizar — a ÚNICA que desliza na página */
+  overscroll-behavior: contain;     /* ao chegar ao fim não "passa" o scroll para trás para nenhum lado (nem há para onde passar) */
+  scrollbar-width: none;            /* esconde a barra de scroll nativa (Firefox) — pedido do Francisco, o scroll continua a funcionar, só a barra visível desaparece */
+}
+
+/* Chrome/Safari/Edge não respeitam `scrollbar-width` — precisam desta regra à parte,
+   com um pseudo-elemento próprio do WebKit, para a mesma barra desaparecer aí também. */
+.case-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* A `.grid` de cada secção já herda a margem da própria caixa `.case-scroll`
+   (o `left`/`right` acima) — sem isto, o `padding-left/right: var(--pad)` da
+   `.grid` normal somava-se por cima e desalinhava tudo para dentro. */
+body[data-split] .case-scroll .grid {
+  padding-inline: 0;
+}
+
+/* WHAT  Telemóvel: a coluna deixa de estar presa à direita e passa a uma tira
+         horizontal de cartões, logo acima dos links Anterior/Seguinte.
+   WHY   É por isso que o bloco está escrito no HTML mesmo antes de `.case-nav`:
+         no desktop o `position: fixed` tira-o do fluxo e a posição no HTML é
+         indiferente; aqui, sendo `static`, ele cai exactamente onde deve, sem
+         precisar de JavaScript para o mudar de sítio.
+   TERM  810px é o ÚNICO ponto de corte de conteúdo do site (o mesmo do --pad) —
+         não inventes um segundo. */
+@media (max-width: 810px) {
+  main[data-rail] .grid {
+    padding-right: var(--pad);        /* devolve o espaço reservado: no telemóvel já não há coluna à direita */
+  }
+
+  .project-rail {
+    position: static;                 /* volta ao fluxo normal da página, na posição em que está no HTML */
+    inset: auto;                      /* anula de uma vez o top/right/bottom do desktop (`inset` é o atalho para os quatro) */
+    width: auto;                      /* passa a ocupar a largura disponível em vez dos 300px fixos */
+    flex-direction: row;              /* cartões lado a lado em vez de empilhados */
+    gap: 8px;                         /* mesma distância entre cartões da versão desktop (ver WHAT acima) — já vinha herdada da regra de base, repetida aqui só para ficar explícita ao lado do resto desta secção */
+    margin-top: 6vh;                  /* afasta a tira do bloco de imagens que vem antes */
+    padding-inline: var(--pad);       /* margens laterais POR DENTRO do contentor de scroll — ver WHY do scroll-padding abaixo */
+    overflow-x: auto;                 /* é isto que faz a tira deslizar na horizontal */
+    overflow-y: hidden;               /* obrigatório: pôr overflow-x a `auto` activa também o eixo vertical, e sem isto aparece uma barra parasita */
+    scroll-snap-type: x proximity;    /* os cartões encostam-se suavemente ao parar de deslizar (`proximity` só sugere; `mandatory` obriga) */
+    scroll-padding-inline: var(--pad); /* impede o contentor de cortar o 1º e o último cartão contra os bordos ao fazer snap */
+  }
+
+  .rail-card {
+    flex: 0 0 240px;                  /* largura fixa de 240px por cartão: não cresce, não encolhe — é o que dá a sensação de "tira" */
+    scroll-snap-align: start;         /* cada cartão pára alinhado pelo bordo esquerdo da área visível */
+  }
+
+  /* Desfaz o scroll de duas colunas (litet_snitt.html só): no telemóvel a página
+     volta a fazer scroll normal, como todas as outras — sem isto, `overflow:hidden`
+     no body prenderia o conteúdo inteiro dentro de uma janela de 810px de largura. */
+  body[data-split] {
+    overflow: visible;                /* devolve à página a sua própria barra de scroll normal */
+    height: auto;                     /* já não precisa de altura fixa ao ecrã — o conteúdo dita a altura, como seria de esperar */
+  }
+
+  .case-scroll {
+    position: static;                 /* volta ao fluxo normal — a página é que desliza, não esta caixa */
+    overflow: visible;                /* já não corta nada por dentro; o conteúdo aparece por inteiro */
+  }
+}
+
 /* ---------- Work index ---------- */
 .works {
   padding-top: 25px; /* breathing room below the dark hero */
@@ -431,8 +680,11 @@ ul {
          página (#0d0d0d).
    WHY   Reproduz o mesmo cartão de marca que o Poliempreende já tem (a cor
          de fundo dele também vem queimada no próprio ficheiro), só que aqui
-         a cor tem de vir do CSS porque o ficheiro é vector transparente. */
-.we-4 .img-a { background: #fff; }
+         a cor tem de vir do CSS porque o ficheiro é vector transparente.
+   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026) — o Xadrez
+         mudou de posição no reordenamento do índice, e este selector segue o
+         PROJECTO, não o número antigo. */
+.we-3 .img-a { background: #fff; }
 
 .work-entry .work-img img {
   transition: transform 0.8s var(--ease);
@@ -489,20 +741,23 @@ ul {
    WHY   Pedido do Francisco 04-09-2026: "make it aligned and the same size" —
          a caixa vazia à volta do cartão branco lia mal ao lado do `.img-b`;
          o antigo comentário (ícone transparente a "flutuar", centrado de
-         propósito) já não se aplica com o cartão opaco de hoje. */
-.we-4 .img-a {
+         propósito) já não se aplica com o cartão opaco de hoje.
+   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026) — segue o
+         Xadrez para a sua nova posição no índice. */
+.we-3 .img-a {
   align-self: start;
 }
 
 /* WHAT  Mesmo tratamento acima, para o cartão amarelo do Poliempreende (11-09-2026).
-   TERM  `align-self: start` (ver comentário completo em `.we-4 .img-a` acima) tira o
-         item do stretch por omissão do grid.
+   TERM  `align-self: start` (ver comentário completo em `.we-3 .img-a` acima) tira o
+         item do stretch por omissão do grid. Selector actualizado de `.we-1` para
+         `.we-2` (13-09-2026) — segue o Poliempreende para a sua nova posição.
    WHY   `poli-symbol-wide.svg` (ver index.html) tem agora um canvas retângulo, não
          quadrado — sem isto, o grid volta a esticar a caixa para a altura da linha
          (ditada pelo `.img-b` mais alto ao lado), reintroduzindo o mesmo espaço vazio
          por baixo da imagem que este truque já resolveu para o Xadrez, só que desta
          vez visível a sério, porque o cartão é amarelo opaco em vez de preto. */
-.we-1 .img-a {
+.we-2 .img-a {
   align-self: start;
 }
 
@@ -533,7 +788,6 @@ ul {
 .about {
   padding-top: 8vh;
   padding-bottom: 14vh;
-  border-top: 1px solid var(--line);
   row-gap: 4rem;
 }
 
@@ -666,8 +920,15 @@ ul {
   border-top: 1px solid var(--line);
 }
 
+/* WHAT  "OBJECTIVE"/"FINAL PROPOSAL" maiores (13-09-2026) — pedido do Francisco.
+   TERM  `var(--text-m)` (15px) em vez do `var(--text-xs)` (11px) herdado da
+         `.label` genérica — token já existente, não um valor novo inventado.
+         Esta regra é agora a única coisa que usa `.case-text .label`: o
+         Contexto e a ficha Disciplina/Para/Âmbito foram removidos de todas as
+         páginas (13-09-2026), por isso isto só afecta mesmo Objectivo/Proposta. */
 .case-text .label {
   grid-column: 1 / 4;
+  font-size: var(--text-m);
 }
 
 .case-text p {
@@ -675,23 +936,119 @@ ul {
   max-width: 62ch;
 }
 
+/* WHAT  Dois blocos de texto lado a lado (Objectivo | Proposta Final) em vez das
+         linhas empilhadas — por agora só na litet_snitt.html.
+   TERM  `grid-template-columns: subgrid` faz este elemento HERDAR as 16 colunas do
+         `.grid` que está por cima, em vez de criar uma grelha nova só dele — é o que
+         garante que as duas metades assentam nas mesmas colunas das imagens da
+         página. É exactamente o mesmo mecanismo do `.img-pair`, que já fazia isto
+         para pares de imagens.
+   WHY   O Francisco pediu o objectivo à esquerda e a proposta à direita, por baixo
+         da abertura em "Aa". */
+.case-text .text-pair {
+  grid-column: 1 / 17;                /* o par ocupa a largura toda das 16 colunas */
+  display: grid;                      /* grelha própria, para poder herdar as colunas na linha seguinte */
+  grid-template-columns: subgrid;     /* herda as colunas do .grid pai (ver TERM) */
+  column-gap: 8px;                    /* 14-09-2026 — mesmo bug do `.img-pair`/`.img-trio`: `subgrid` herda o `column-gap` do `.grid` pai (16px) em vez de ficar nos 8px do resto dos gaps dos projectos; sem esta linha o espaço entre os dois cartões (Objectivo/Proposta Final) ficava o dobro do dos outros gaps */
+}
+
+/* WHAT  Cada metade passou a ser um CARTÃO (13-09-2026), como os da coluna de
+         projectos — a pedido do Francisco: "everything is cards, so the text under
+         Aa should be too". Antes disto os dois blocos eram só texto plano com um
+         fio a toda a largura por cima/baixo do par; agora cada metade tem o seu
+         próprio fundo/contorno/canto, como o `.rail-card`. */
+/* WHAT  Fundo do cartão: passou por `#141414`, depois `var(--bg)` quando `--bg` ainda
+         era `#0d0d0d` (mais claro que o `<rect>` sem `fill` do SVG "Aa", que por
+         omissão do próprio SVG é preto absoluto), depois `#000` fixo para bater certo
+         com essa referência. Agora que `--bg` do :root passou a ser `#000` também
+         (13-09-2026, pedido do Francisco para escurecer o site inteiro), os dois
+         voltam a ser o mesmo valor — `var(--bg)` volta a usar-se aqui em vez do `#000`
+         fixo, para não haver dois sítios a repetir o mesmo preto à mão. */
+.case-text .text-pair .text-block {
+  grid-column: auto;                  /* anula o `1/17` que o .text-block ganha quando está solto no .case-text */
+  display: block;                     /* dentro do cartão o texto empilha-se normalmente (etiqueta, depois parágrafo) */
+  background: var(--bg);              /* preto absoluto — agora é o mesmo valor do token da página, ver WHAT acima */
+  border: 1px solid var(--line);      /* contorno ténue — sozinho, define onde o cartão começa e acaba */
+  border-radius: 12px;                /* raio das imagens grandes da página (.case-img), maior que o do .rail-card (10px) por ser um cartão maior */
+  padding: 2rem;                      /* respiro interno do cartão — sobe/desce para mais ou menos ar à volta do texto */
+}
+
+.case-text .text-pair .text-block.a { grid-column: 1 / 9; }  /* metade esquerda: colunas 1 a 8 — o Objectivo */
+.case-text .text-pair .text-block.b { grid-column: 9 / 17; } /* metade direita: colunas 9 a 16 — a Proposta Final */
+
+.case-text .text-pair .label {
+  grid-column: auto;                  /* anula o `1/4` do .case-text: aqui a etiqueta ocupa a largura da sua metade */
+  display: block;                     /* força-a para a sua própria linha, com o parágrafo por baixo */
+  margin-bottom: 0.8em;               /* distância entre a etiqueta e o parágrafo */
+}
+
+.case-text .text-pair p {
+  grid-column: auto;                  /* idem para o parágrafo: sem posição fixa, enche a metade onde está */
+  max-width: 46ch;                    /* medida de leitura mais curta que os 62ch do texto a toda a largura — a coluna agora é metade */
+}
+
+/* WHAT  A abertura em "Aa": mesma secção `.case-images`, só com menos espaço por cima,
+         porque vem logo a seguir à ficha Disciplina/Para/Âmbito e não depois de texto. */
+/* WHAT  A abertura em "Aa" passou a ser a PRIMEIRA coisa da página (13-09-2026,
+         removidos o título e a ficha Disciplina/Para/Âmbito) — por isso ganha o
+         mesmo respiro de topo que o `.case-hero` já usava para abrir uma página,
+         em vez do valor apertado de antes (pensado para vir depois de texto). */
+/* WHAT  Alinha o topo da imagem "Aa" com o topo da coluna de projectos (13-09-2026,
+         pedido do Francisco) — a imagem passa a começar exactamente no mesmo nível
+         que o 1º cartão da rail, sem respiro nenhum a mais por cima.
+   TERM  O selector é `.case-images.case-lead` (as DUAS classes juntas, tal como estão
+         no HTML: `class="case-images case-lead grid"`), não só `.case-lead` — um bug
+         real: `.case-lead` sozinho tem a MESMA especificidade que `.case-images`
+         (ambos uma classe), e `.case-images` vem depois no ficheiro, por isso ganhava
+         sempre — a imagem tinha 90px de respiro (10vh, herdado de `.case-images`) em
+         vez do valor que aqui estava escrito. Juntar as duas classes no selector dá-lhe
+         mais especificidade, por isso ganha sempre, não importa a ordem no ficheiro. */
+.case-images.case-lead {
+  padding-top: 0;                     /* flush com o topo da .project-rail — ver WHAT acima */
+}
+
+/* WHAT  Aperta o respiro por cima e por baixo dos cartões Objectivo/Proposta Final —
+         3ª correcção (13-09-2026, mesmo dia): `4vh` (36px) para `var(--gap)` (16px)
+         para bater certo com o `row-gap` das imagens ali dentro, e agora para `8px`
+         fixo, a pedido do Francisco para TODOS os projectos ficarem neste valor —
+         deixa de bater certo com `--gap` (16px) usado noutros sítios do site de
+         propósito, é esse o pedido desta vez.
+   TERM  `body[data-split]` já não é "só a litet_snitt" — as 6 páginas de case study
+         têm todas este atributo desde que a coluna de scroll foi alargada a todas
+         (13-09-2026), por isso esta regra passa a aplicar-se às 6 automaticamente,
+         sem precisar de a repetir em mais nenhum sítio.
+         `.case-text + .case-images` (combinador de IRMÃO ADJACENTE) apanha só a
+         secção de imagens que vem LOGO a seguir ao `.case-text` — não a `.case-lead`
+         (que também é `.case-images` mas vem antes, não depois). */
+body[data-split] .case-text {
+  padding-top: 8px;
+}
+body[data-split] .case-text + .case-images {
+  padding-top: 8px;
+}
+
 /* case images
    WHAT  Reference grid system (romeuribeiro.com/bba, pedido do Francisco 04-09-2026):
          cantos arredondados + gap pequeno IGUAL nas duas direcções entre imagens,
          em vez do respiro enorme vertical que só existia aqui antes.
-   TERM  `row-gap: var(--gap)` substitui `9vh` — o `--gap` (1rem) já era o valor
-         horizontal entre pares (herdado do `.grid` via subgrid), por isso isto
-         iguala os dois eixos com um token que já existe, em vez de inventar um
-         valor novo copiado à letra do site de referência.
+   TERM  `row-gap: 8px` (13-09-2026, era `var(--gap)`=16px) — pedido do Francisco para
+         TODOS os gaps dentro dos projectos ficarem neste valor único. A nota antiga
+         dizia para NÃO tocar em `.case-slides` (pedido explícito de 04-09-2026) —
+         esse pedido foi substituído por este, mais lato: ver `.case-slides__grid`
+         mais abaixo, que agora também usa 8px.
+         `column-gap: 8px` (14-09-2026) — faltava: o `.img-pair`/`.img-trio` abaixo
+         usam `grid-template-columns: subgrid`, que HERDA o `column-gap` do pai em
+         vez de definir o seu próprio — sem esta linha aqui, o gap horizontal entre
+         imagens continuava a vir do `.grid` (16px), diferente do `row-gap` vertical
+         (8px). Medido ao vivo no `.img-trio` do Xadrez antes de perceber a causa.
    WHY   Pedido do Francisco: "pay attention to the corners of the images and the
          vertical and horizontal gap between images", a apontar para o grid system
          do romeuribeiro.com/bba (medido ao vivo: 14.4px de raio, ~7px de gap igual
-         nas duas direcções — valores aproximados aqui pelos tokens já existentes
-         do próprio site, não copiados ao byte). NÃO se aplica a `.case-slides`
-         (o deck de 70 imagens) — pedido explícito para deixar essa grelha intacta. */
+         nas duas direcções). */
 .case-images {
   padding-top: 10vh;
-  row-gap: var(--gap);
+  row-gap: 8px;
+  column-gap: 8px;
 }
 
 .case-img {
@@ -714,6 +1071,20 @@ ul {
   overflow: hidden;
 }
 
+/* WHAT  Contorno ténue em TODAS as imagens de case study, nas 6 páginas (alargado
+         14-09-2026 — nasceu 13-09-2026 só para os SVGs inline da litet_snitt.html:
+         o "Aa" e os 3 posters do specimen). Lê a imagem como o mesmo tipo de "peça"
+         que os cartões e o `.litet-specimen`/`.litet-construct`.
+   TERM  Aplica-se a QUALQUER imagem, não só às que "desaparecem" no fundo preto —
+         pedido do Francisco: mais simples e nunca esquece uma imagem escura nova
+         que apareça no futuro. Numa imagem clara (o amarelo da Poliempreende, as
+         fotos de pedra do Xadrez) uma linha a 14% de branco é quase invisível, por
+         isso o mesmo contorno funciona em qualquer imagem sem ficar estranho. */
+.case-images img,
+.case-images svg {
+  border: 1px solid var(--line);
+}
+
 /* WHAT  Specimen animado da Litet Snitt (08-09-2026) — texto real (webfont
          self-hosted, ver @font-face "LitetSnitt-Regular" no topo do ficheiro)
          que `assets/js/litet-specimen.js` troca a cada 100ms, em vez do
@@ -729,6 +1100,7 @@ ul {
   container-type: inline-size;   /* referência para o cqw do glifo abaixo */
   aspect-ratio: 16 / 9;           /* reserva o espaço da linha sem precisar de width/height fixos (evita CLS) */
   border-radius: 12px;            /* mesmo raio das imagens desta secção — .case-images img não se aplica aqui (não é um <img>) */
+  border: 1px solid var(--line);  /* contorno ténue (13-09-2026) — igual ao dos cartões, para este bloco ler como o mesmo tipo de "peça" que eles */
   background: #000;               /* fundo preto pedido, igual ao specimen original */
   display: flex;
   align-items: center;
@@ -764,6 +1136,7 @@ ul {
 .litet-construct {
   aspect-ratio: 16 / 9;            /* proporção do bloco em ecrã largo — muda aqui para um enquadramento mais alto ou mais baixo */
   border-radius: 12px;             /* mesmo raio das restantes imagens desta secção (.case-images img não se aplica: isto não é um <img>) */
+  border: 1px solid var(--line);   /* contorno ténue (13-09-2026) — igual ao dos cartões e do .litet-specimen acima */
   background: #000;                /* preto puro por baixo do canvas — é o fundo da animação e tapa o bloco antes de o JS arrancar */
   overflow: hidden;                /* obriga o border-radius a recortar mesmo os cantos do canvas, que de outra forma pintaria por cima deles */
   display: block;                  /* o canvas lá dentro é dimensionado a 100%, por isso o bloco não precisa de flexbox como o .litet-specimen */
@@ -787,7 +1160,8 @@ ul {
 
 /* WHAT  Cartão branco atrás do símbolo do Xadrez na PRÓPRIA página do case
          study (08-09-2026) — mesmo problema e mesma solução da home (ver
-         `.we-4 .img-a` em ~linha 421).
+         `.we-3 .img-a`, renomeado de `.we-4` a 13-09-2026 quando o Xadrez
+         mudou de posição no índice).
    TERM  `background` num `<img>` pinta por trás das zonas transparentes da
          própria imagem — por isso o rectângulo branco aparece exactamente
          onde o SVG não tem traço, sem precisares de outra `<div>`.
@@ -814,7 +1188,8 @@ ul {
   grid-column: 1 / 17;
   display: grid;
   grid-template-columns: subgrid;
-  row-gap: var(--gap);
+  row-gap: 8px; /* era var(--gap)=16px; 13-09-2026, pedido do Francisco para todos os gaps dos projectos ficarem neste valor */
+  column-gap: 8px; /* 14-09-2026 — `subgrid` herdava o column-gap do `.case-images` pai (16px) antes deste ganhar o seu próprio; repetido aqui para o valor ficar explícito onde faz efeito */
 }
 
 .img-pair .case-img.a { grid-column: 1 / 9; }
@@ -832,22 +1207,46 @@ ul {
   grid-column: 1 / 17;
   display: grid;
   grid-template-columns: subgrid;
-  row-gap: var(--gap);
+  row-gap: 8px; /* era var(--gap)=16px; mesma correcção de 13-09-2026 do .img-pair acima */
+  column-gap: 8px; /* 14-09-2026 — mesma correcção do .img-pair acima (subgrid herdava 16px do pai) */
 }
 .img-trio .case-img.a { grid-column: 1 / 7; }
 .img-trio .case-img.b { grid-column: 7 / 12; }
 .img-trio .case-img.c { grid-column: 12 / 17; }
 
-/* WHAT  As 3 imagens do trio preenchem a caixa toda, sem sobrar fundo preto
-         por baixo (08-09-2026).
+/* WHAT  Bug real encontrado e corrigido (13-09-2026): dentro de um `.img-pair`/
+         `.img-trio`, quando as duas ou três imagens têm proporções diferentes, o
+         `align-items: stretch` por omissão da grelha estica a DIV `.case-img` mais
+         curta até à altura da mais alta ao lado — mas a própria `<img>` lá dentro
+         (herdando `width:100%; height:auto` do reset global no topo do ficheiro) só
+         cresce até à SUA proporção natural, deixando um vazio (fundo da página a
+         aparecer) por baixo da imagem, dentro da própria caixa esticada.
+   TERM  `object-fit: cover` faz a imagem ENCHER a caixa (agora com `height: 100%`
+         em vez de `auto`) recortando o que sobrar, em vez de parar na sua própria
+         proporção — elimina o vazio sem alterar a proporção do LAYOUT (as colunas
+         continuam 1/9 e 9/17, só a imagem lá dentro passa a preenchê-las sempre).
+   WHY   Pedido do Francisco, apanhado no par `poli-05`/`poli-09` da Poliempreende
+         (0.667 vs 0.713 de proporção — 54px de vazio medidos ao vivo por baixo da
+         imagem mais estreita) mas é um bug geral de QUALQUER par/trio com imagens
+         de proporções diferentes, não só desse projecto — por isso a correcção é
+         nestas duas classes partilhadas, não uma imagem de cada vez. As variantes
+         de imagem única (`.full`/`.wide`/`.mid`/`.left`) não têm par ao lado para
+         desalinhar, por isso ficam de fora do selector e mantêm a proporção natural. */
+/* WHAT  A imagem enche sempre a sua célula, em qualquer par/trio.
    TERM  `object-fit: cover` faz a imagem cortar (não esticar) para encher a
          `height` dada — aqui `100%` da altura da própria `.case-img`.
-   WHY   Colunas 6/5/5 não são iguais (16 não divide por 3) — a mesma foto em
-         3 larguras diferentes rendia 3 alturas diferentes, e a `.case-img`
-         das colunas mais estreitas esticava (grid `align-items: stretch`
-         por omissão) sem a imagem lá dentro acompanhar, deixando um espaço
-         vazio a mostrar o fundo escuro da página. */
-.img-trio .case-img img { height: 100%; object-fit: cover; }
+   WHY   O `.img-trio` já tinha esta correcção sozinho desde 08-09-2026 (colunas
+         6/5/5 não são iguais — 16 não divide por 3 — por isso a mesma foto em
+         3 larguras diferentes rendia 3 alturas diferentes, e a `.case-img` das
+         colunas mais estreitas esticava sem a imagem acompanhar). A 13-09-2026
+         confirmou-se que o `.img-pair` tinha exactamente o mesmo bug (medido ao
+         vivo no par `poli-05`/`poli-09` — 54px de vazio) — por isso as duas
+         classes passam a partilhar UMA regra, em vez de duas quase iguais. */
+.img-pair .case-img img,
+.img-trio .case-img img {
+  height: 100%;
+  object-fit: cover;
+}
 
 .img-caption {
   margin-top: 0.7em;
@@ -864,13 +1263,13 @@ ul {
          divide por 10 sem sobras.
    WHY   Pedido do Francisco: 10 colunas × 7 linhas, uma imagem por célula. */
 .case-slides {
-  padding-top: var(--gap);  /* pedido do Francisco 04-09-2026: mesmo gap pequeno que já existe entre as imagens da `.case-images` acima, não os 10vh de antes — a transição para o deck fica no mesmo ritmo apertado */
+  padding-top: 8px;  /* era var(--gap)=16px; 13-09-2026, pedido do Francisco para todos os gaps dos projectos ficarem neste valor (substitui o pedido anterior de 04-09-2026 de deixar este deck intacto) */
 }
 .case-slides__grid {
   grid-column: 1 / 17;  /* ocupa as 16 colunas do `.grid` pai, como o `.img-pair` acima */
   display: grid;
   grid-template-columns: repeat(10, 1fr);  /* 10 colunas iguais — mudar o "10" muda o nº de imagens por linha em desktop */
-  gap: var(--gap);  /* mesmo espaçamento entre células que o resto do site usa entre colunas */
+  gap: 8px;  /* era var(--gap)=16px; mesma correcção de 13-09-2026 */
 }
 
 /* prev / next ---------- */
@@ -1065,6 +1464,10 @@ ul {
     padding-top: 20vh;
   }
 
+  .case-lead {
+    padding-top: 20vh;                 /* mesmo valor do `.case-hero` no telemóvel — ver WHAT na regra desktop */
+  }
+
   .case-meta div {
     grid-column: span 8;
   }
@@ -1078,6 +1481,19 @@ ul {
     grid-column: 1 / 17;
   }
 
+  /* WHAT  No telemóvel as duas metades (Objectivo | Proposta Final) deixam de ser
+           colunas e empilham-se, como já acontece com todo o resto do case study.
+     TERM  `row-gap` só abre espaço ENTRE as linhas empilhadas — no desktop os dois
+           blocos estão lado a lado na mesma linha, por isso lá não tem efeito. */
+  .case-text .text-pair .text-block.a,
+  .case-text .text-pair .text-block.b {
+    grid-column: 1 / 17;              /* cada metade passa a ocupar a largura toda */
+  }
+
+  .case-text .text-pair {
+    row-gap: 8px;                     /* era 2rem — 13-09-2026, mesmo valor fixo do resto dos gaps dos projectos; respiro entre o Objectivo e a Proposta Final agora que estão um por baixo do outro */
+  }
+
   .case-img.full,
   .case-img.wide,
   .case-img.left,
@@ -1087,7 +1503,7 @@ ul {
   }
 
   .case-images {
-    row-gap: 4vh;
+    row-gap: 8px; /* era 4vh — 13-09-2026, mesmo valor fixo do resto dos gaps dos projectos */
   }
 
   .img-pair .case-img.a,
@@ -1096,7 +1512,7 @@ ul {
   }
 
   .img-pair {
-    row-gap: 4vh;
+    row-gap: 8px; /* era 4vh — mesma correcção de 13-09-2026 */
   }
 
   .img-trio .case-img.a,
@@ -1106,7 +1522,7 @@ ul {
   }
 
   .img-trio {
-    row-gap: 4vh;
+    row-gap: 8px; /* era 4vh — 13-09-2026, mesmo valor fixo do resto dos gaps dos projectos, em vez de um vh à parte só para o telemóvel */
   }
 
   /* 10 colunas cabem em desktop, não num telemóvel — desce para 3, mantendo
@@ -1114,7 +1530,7 @@ ul {
      miniaturas cabem por linha neste breakpoint. */
   .case-slides__grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--gap);
+    gap: 8px; /* era var(--gap)=16px; mesma correcção de 13-09-2026 */
   }
 
   .photo-entry .work-no {
@@ -1137,15 +1553,19 @@ ul {
 }
 
 
-/* WHAT  Regras `.cls-sp-N`/`.cls-02-N`/`.cls-03-N` dos 3 SVGs de specimen inline em litet_snitt.html
-         (specimen poster, glyph set completo, "Aa").
+/* WHAT  Regras `.cls-sp-N`/`.cls-02-N` dos 2 SVGs de specimen inline que restam em
+         litet_snitt.html (specimen poster, glyph set completo). A 3ª família
+         (`.cls-03-N`, o poster "Aa" pequeno) foi removida a 14-09-2026 — o próprio
+         `<div>` que a usava saiu da página (pedido do Francisco: já havia um "Aa"
+         mais acima, vindo do hero movido no dia anterior; este ficava a mais logo
+         antes do deck de slides).
    TERM  Estas regras viviam num `<style>` dentro de cada `<svg>` — o CSP do site (`style-src 'self'`)
          bloqueia qualquer `<style>` inline, por isso tiveram de sair para aqui (ficheiro carregado,
          não inline) para continuarem a aplicar-se. font-family aponta para a mesma "LitetSnitt-Regular"
          já carregada acima (@font-face perto do topo deste ficheiro) — os SVGs deixaram de trazer a
          sua própria cópia da fonte.
    WHY   Cada SVG tinha nomes de classe genéricos ("cls-1", "cls-2"...) que colidiam entre si assim que
-         os 3 ficaram inline no mesmo documento — por isso cada um recebeu um prefixo (sp/02/03) antes
+         ficaram inline no mesmo documento — por isso cada um recebeu um prefixo (sp/02) antes
          de sair do SVG. Não editar estas classes sem editar o `class="..."` correspondente no HTML. */
 
 /* -- litet-specimen.svg (inline) -- */
@@ -1347,9 +1767,13 @@ ul {
   letter-spacing: .02em;
 }
 
-/* -- litet-03.svg (inline) -- */
-.cls-03-1 {
-  fill: #64ff00;
-  font-family: LitetSnitt-Regular, 'Litet Snitt ';
-  font-size: 800px;
+/* -- Aa&Tudo-04.svg (inline) — a abertura da litet_snitt.html --
+   A classe chamava-se `cls-1` dentro do ficheiro original; foi prefixada para
+   `cls-aa-1` porque este SVG passou a viver no mesmo documento que os outros
+   (cls-sp-/cls-02-, e o `cls-03-` que existiu até 14-09-2026) e um `cls-1`
+   solto colidiria com eles. */
+.cls-aa-1 {
+  fill: #64ff00;                                  /* verde da própria Litet Snitt — o mesmo dos outros specimens, não o laranja do site */
+  font-family: LitetSnitt-Regular, 'Litet Snitt '; /* a webfont self-hosted declarada no topo deste ficheiro */
+  font-size: 800px;                               /* tamanho em unidades do viewBox do SVG (1388×850), não em pixéis de ecrã */
 }

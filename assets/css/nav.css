@@ -90,6 +90,30 @@
   border-color: var(--c-border, #E5E0DA);
 }
 
+/* WHAT  Na litet_snitt.html (13-09-2026), a pílula encolhida centra-se sobre a
+         COLUNA DE CONTEÚDO, não sobre o ecrã inteiro — o `right` aqui usa o mesmo
+         cálculo do `.case-scroll` em style.css, para as duas caixas terminarem no
+         mesmo sítio; o `margin-inline: auto` do `.site-header` já existente faz o
+         resto sozinho, centrando a pílula dentro desta caixa mais estreita.
+   TERM  Só a barra JÁ ENCOLHIDA (`[data-scrolled="true"]`) muda — em repouso a
+         barra transparente continua de bordo a bordo, como já estava certo.
+   WHY   Pedido do Francisco: a pílula ficava a centrar-se no ecrã inteiro, mas a
+         rail come espaço à direita — visualmente parecia descentrada em relação
+         ao conteúdo que se está mesmo a ler. */
+body[data-split] .site-header[data-scrolled="true"] {
+  right: calc(var(--rail-w) + var(--pad) + 8px); /* mesmo bordo direito da .case-scroll — 8px, não var(--gap), para bater certo com o valor actual (ver style.css) */
+}
+
+/* No telemóvel a rail já não come espaço à direita (vira uma tira horizontal, ver
+   style.css) — a pílula volta a centrar-se no ecrã inteiro, como as outras páginas.
+   810px é o ponto de corte de CONTEÚDO do site (rail/grid), diferente dos 820px do
+   `@media` abaixo, que é só do CTA/hambúrguer desta componente — não misturar os dois. */
+@media (max-width: 810px) {
+  body[data-split] .site-header[data-scrolled="true"] {
+    right: var(--pad);
+  }
+}
+
 .nav {
   display: flex;
   align-items: center;

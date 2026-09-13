@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <script src="assets/js/lang-flag.js?v=1789250389"></script>
+  <script src="assets/js/lang-flag.js?v=1789342187"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Filipa — Francisco Martins</title>
   <meta name="description" content="Filipa — portrait series by Francisco Martins. Seaside and studio sessions.">
@@ -19,12 +19,10 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789250389">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789250389">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789342187">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789342187">
 </head>
-<body data-page="filipa">
-
-<div id="nav-scroll-sentinel" aria-hidden="true"></div>
+<body data-page="filipa" data-split>
 
 <!-- Nav Island -->
 <header class="site-header" data-open="false" data-scrolled="false">
@@ -57,15 +55,13 @@
 
 <div class="progress-line" aria-hidden="true"></div>
 
-<main>
+<main data-rail>
 
-  <section class="case-hero grid">
-    <div class="case-no reveal">05</div>
-    <h1 class="case-title reveal d-1">Filipa</h1>
-    <p class="case-tagline reveal d-2" data-i18n="filipa.tagline">Portrait series — a seaside session at golden hour.</p>
-  </section>
+  <div class="case-scroll">
+    <div class="case-scroll__inner">
+      <div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
-  <section class="case-images grid">
+  <section class="case-images case-lead grid">
     <div class="img-pair">
       <div class="case-img a reveal"><img src="assets/images/filipa-01.jpg" alt="Filipa by the sea, standing" width="1280" height="1920"></div>
       <div class="case-img b reveal d-1"><img src="assets/images/filipa-02.jpg" alt="Filipa on the rocks at sunset" width="1280" height="1920" loading="lazy"></div>
@@ -77,11 +73,6 @@
     </div>
   </section>
 
-  <nav class="case-nav grid">
-    <a class="prev reveal" href="clube_de_xadrez_do_barreiro.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span data-i18n="filipa.navPrev">&larr; Clube de Xadrez do Barreiro</span></a>
-    <a class="next reveal" href="beah.html"><span class="label" data-i18n="caseLabel.next">Next</span><span data-i18n="filipa.navNext">Beah &rarr;</span></a>
-  </nav>
-
   <div class="grid case-footer">
     <footer class="site-footer">
       <span>&copy; 2026 Francisco Martins</span>
@@ -89,12 +80,75 @@
       <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
     </footer>
   </div>
+    </div>
+  </div>
+  <!-- Coluna de projectos (13-09-2026, comentário reescrito no mesmo dia depois de
+       o Anterior/Seguinte ter sido removido de todas as páginas). Fica presa à
+       direita da janela no desktop e vira uma tira horizontal no telemóvel (ver
+       `.project-rail` em style.css). No desktop o `position: fixed` tira-a do fluxo,
+       por isso a posição no HTML não conta aí. No telemóvel ela é `static` e cai
+       exactamente onde está escrita: a seguir ao rodapé, por ser o último elemento
+       de `.case-scroll__inner` — ambos vivem lá dentro para ficarem alcançáveis
+       dentro da coluna que faz scroll no desktop.
+       Referência dada pelo Francisco: portorocha.com (lá a lista está à esquerda).
+       O cartão da página actual é marcado à mão com `is-current` em cada ficheiro —
+       não há JS nenhum a calcular isto, porque a página activa nunca muda.
+       `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
+       do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
+  <aside class="project-rail" data-lenis-prevent aria-label="Other projects">
+    <a class="rail-card" href="litet_snitt.html">
+      <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
+      <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
+           e repeti-lo faria um leitor de ecrã anunciar o mesmo cartão duas vezes. -->
+      <span class="rail-text">
+        <span class="rail-title">Litet Snitt</span>
+        <span class="rail-disc" data-i18n="works.litetDisc">Typeface Design</span>
+      </span>
+    </a>
+    <a class="rail-card" href="poliempreende.html">
+      <!-- `poli-symbol-mark.svg` (14-09-2026) — mesmo padrão do `poli-symbol-wide.svg` da home: cópia do ficheiro só com o viewBox mais apertado à volta da marca, para ela encher mais o quadrado de 48px em vez de sobrar amarelo vazio à volta; o `poli-symbol.svg` original (viewBox inteiro) continua intacto para o `.case-lead` da própria página. -->
+      <img class="rail-mark" src="assets/images/poli-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Poliempreende</span>
+        <span class="rail-disc" data-i18n="works.poliDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="clube_de_xadrez_do_barreiro.html">
+      <!-- `xadrez-symbol-mark.svg` (14-09-2026) — mesma ideia: viewBox recortado à volta do símbolo (que no original vive isolado no centro de uma tela bem mais larga, pensada para o banner do `.case-lead`), para deixar de ficar pequeno e "à boia" dentro do quadrado branco aqui. -->
+      <img class="rail-mark rail-mark--contain" src="assets/images/xadrez-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Clube de Xadrez do Barreiro</span>
+        <span class="rail-disc" data-i18n="works.xadrezDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="1543.html">
+      <img class="rail-mark" src="assets/images/1543-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">1543</span>
+        <span class="rail-disc" data-i18n="works.n1543Disc">Packaging &mdash; Special Edition</span>
+      </span>
+    </a>
+    <span class="rail-card is-current" aria-current="page">
+      <img class="rail-mark" src="assets/images/filipa-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Filipa</span>
+        <span class="rail-disc" data-i18n="photo.filipaDisc">Seaside &amp; studio sessions</span>
+      </span>
+    </span>
+    <a class="rail-card" href="beah.html">
+      <img class="rail-mark" src="assets/images/beah-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Beah</span>
+        <span class="rail-disc" data-i18n="photo.beahDisc">Studio sessions</span>
+      </span>
+    </a>
+  </aside>
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1789250389"></script>
-<script src="assets/js/nav.js?v=1789250389"></script>
-<script src="assets/js/lang.js?v=1789250389"></script>
-<script src="assets/js/main.js?v=1789250389"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1789342187"></script>
+<script src="assets/js/nav.js?v=1789342187"></script>
+<script src="assets/js/lang.js?v=1789342187"></script>
+<script src="assets/js/main.js?v=1789342187"></script>
 </body>
 </html>

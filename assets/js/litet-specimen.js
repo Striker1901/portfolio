@@ -40,6 +40,39 @@
 
   const FRAME_MS = 100; // 3 frames a 30fps — igual ao vídeo/preview.html originais
 
+  /* ── CORRECÇÃO DE DESCENDENTES — a letra "salta" ao trocar (13-09-2026) ────
+     WHAT  `align-items:center` no `.litet-specimen` centra a CAIXA da linha
+           (altura fixa = font-size × line-height, igual para qualquer letra),
+           não a TINTA de cada glifo. Uma letra com descendente (g/j/p/q/y)
+           desenha tinta ATÉ ABAIXO da linha de base, numa zona que as outras
+           letras deixam vazia — por isso parece "cair" ao trocar, mesmo a
+           caixa nunca se mexendo (confirmado por medição: a caixa do `<span>`
+           fica sempre no mesmo sítio, para qualquer uma das 216 letras).
+     TERM  Os valores abaixo (`-0.1em`/`-0.08em`) vêm de medir a tinta real de
+           cada letra com `CanvasRenderingContext2D.measureText().
+           actualBoundingBoxDescent` a `1000px` (ver sessão de 13-09-2026) —
+           `g/j/p/q/y` e as suas variantes descem 200/1000 = 0.2em abaixo da
+           linha de base, `ç/Ç` descem só 160/1000 = 0.16em (a cauda da
+           cedilha é mais curta que um descendente inteiro). A correcção sobe
+           cada letra METADE do seu próprio descendente — não o descendente
+           inteiro, para não parecer "flutuada" acima da linha das outras.
+           Valores fixos (não medidos ao vivo) de propósito: medir com canvas
+           precisa da webfont já carregada, e este specimen passou a ser a
+           primeira coisa da página (13-09-2026) — arrisca a correr antes da
+           fonte chegar e medir com a serif de recurso, dando números errados.
+     WHY   Só as LETRAS entram nesta lista — não pontuação como `(`/`[`/`_`,
+           que TAMBÉM mede descendente mas está DESENHADA de propósito para
+           ultrapassar a linha de base (um parêntesis existe para abraçar uma
+           letra alta E uma baixa ao mesmo tempo); corrigi-las do mesmo jeito
+           ficaria errado. A lista cobre "g/j/p/q/y" (o pedido do Francisco) e
+           as suas variantes com cedilha/acento que também têm descendente
+           real neste tipo de letra (ç/Ç, ý/ÿ/ŷ/ỳ/þ, e as ligaduras ĳ/ȷ). */
+  const CORRECCOES = new Map([
+    ['g', -0.1], ['j', -0.1], ['p', -0.1], ['q', -0.1], ['y', -0.1],
+    ['ý', -0.1], ['ÿ', -0.1], ['ŷ', -0.1], ['ỳ', -0.1], ['þ', -0.1], ['ĳ', -0.1], ['ȷ', -0.1],
+    ['ç', -0.08], ['Ç', -0.08],
+  ]);
+
   /* Quem pede menos movimento não vê 216 caracteres a trocar 10×/segundo —
      fica com um único glifo fixo. Lido uma vez: se a preferência mudar a meio
      da visita, só se reflecte num reload (comportamento aceitável aqui). */
@@ -56,7 +89,9 @@
     if (timer) return;     // já está a correr — não duplica o intervalo
     timer = setInterval(() => {
       i = (i + 1) % GLYPHS.length; // avança um glifo, volta ao início no fim (loop)
-      glyph.textContent = GLYPHS[i];
+      const c = GLYPHS[i];
+      glyph.textContent = c;
+      glyph.style.transform = `translateY(${CORRECCOES.get(c) || 0}em)`; // sobe as letras com descendente real; as outras voltam a 0
     }, FRAME_MS);
   }
   function stop() {

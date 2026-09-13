@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789250389"></script>
+  <script src="assets/js/lang-flag.js?v=1789342187"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Litet Snitt — Francisco Martins</title>
   <meta name="description" content="Litet Snitt — a geometric, futuristic typeface inspired by Scandinavian typography. Designed at ESAD.CR.">
@@ -20,12 +20,14 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789250389">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789250389">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789342187">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789342187">
 </head>
-<body data-page="litet">
-
-<div id="nav-scroll-sentinel" aria-hidden="true"></div>
+<body data-page="litet" data-split>
+<!-- `data-split` (13-09-2026): esta página passou a ter scroll de duas colunas
+     independentes (ver `.case-scroll` em style.css) — só esta página, não as
+     outras 5 de case study. O atributo é o que o CSS/JS usam para saber que
+     estão numa página assim, em vez de mexerem no comportamento das outras 7. -->
 
 <!-- Nav Island -->
 <header class="site-header" data-open="false" data-scrolled="false">
@@ -58,32 +60,59 @@
 
 <div class="progress-line" aria-hidden="true"></div>
 
-<main>
+<main data-rail>
 
-  <section class="case-hero grid">
-    <div class="case-no reveal">02</div>
-    <h1 class="case-title reveal d-1">Litet Snitt</h1>
-    <p class="case-tagline reveal d-2" data-i18n="litet.tagline">A geometric, futuristic typeface inspired by Scandinavian typography.</p>
+  <!-- `.case-scroll` (13-09-2026): a ÚNICA coisa que faz scroll nesta página — a nav e a
+       coluna de projectos ficam fixas fora daqui (ver `body[data-split]` em style.css).
+       `.case-scroll__inner` é o alvo de medição do Lenis (a opção `content`); o
+       `#nav-scroll-sentinel` MUDOU-SE para aqui de cima do `<body>` de propósito: ele
+       dispara a pílula da nav quando SAI DO ECRÃ, e sem a página inteira a fazer scroll,
+       um sentinela lá fora nunca sairia do ecrã — a nav nunca encolheria. Aqui dentro,
+       ao fazer scroll desta coluna, sai do ecrã tal e qual como acontecia antes com a
+       página toda, sem tocar em nav.js.
+       Título, número e ficha Disciplina/Para/Âmbito foram removidos por completo desta
+       página (13-09-2026) — a pedido do Francisco, a página abre directamente no "Aa". -->
+  <div class="case-scroll">
+    <div class="case-scroll__inner">
+      <div id="nav-scroll-sentinel" aria-hidden="true"></div>
+
+  <!-- Abertura da página (13-09-2026, corrigida no mesmo dia — a 1ª tentativa tinha
+       trocado a animação de CONSTRUÇÃO para aqui por engano; o pedido era a
+       "sequência de todos os caracteres", ou seja o specimen animado que percorre os
+       216 glifos, não a animação das quatro letras). O specimen passa a ser a
+       primeira coisa que se vê, antes de qualquer texto — o "Aa" estático que aqui
+       estava mudou-se para dentro do bloco de imagens a seguir aos cartões (ver mais
+       abaixo), a pedido do Francisco. A animação de construção NÃO mexeu: continua
+       no mesmo sítio de sempre, primeiro item do bloco de imagens depois dos cartões.
+       Reutiliza as classes `case-images`/`case-img full` só para herdar a grelha, o
+       raio de 12px e o `overflow:hidden` que já existem — a classe `case-lead` serve
+       apenas para apertar o espaço acima (ver style.css), e não sabe nem quer saber
+       QUAL imagem/animação lá está dentro.
+       Specimen (08-09-2026, trocado de <video> para texto ao vivo no mesmo dia — o
+       vídeo do After Effects perdia nitidez nas arestas por chroma subsampling do
+       H.264). Webfont self-hosted (ver @font-face "LitetSnitt-Regular" em style.css)
+       + assets/js/litet-specimen.js?v=1789342187 troca os 216 glifos visíveis da
+       fonte a cada 100ms, fundo preto, cor #64FF00. -->
+  <section class="case-images case-lead grid">
+    <div class="case-img full reveal litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
+      <span class="litet-specimen__glyph" aria-hidden="true">A</span>
+    </div>
   </section>
 
-  <section class="case-meta grid reveal">
-    <div><span class="label" data-i18n="caseLabel.discipline">Discipline</span><span data-i18n="litet.discipline">Typeface Design — Editorial</span></div>
-    <div><span class="label" data-i18n="caseLabel.for">For</span><span data-i18n="litet.for">Typography course, ESAD.CR</span></div>
-    <div><span class="label" data-i18n="caseLabel.scope">Scope</span><span data-i18n="litet.scope">Typeface, specimen, editorial composition</span></div>
-  </section>
-
+  <!-- Objectivo e Proposta Final lado a lado (13-09-2026), em vez das três linhas
+       empilhadas que aqui estavam. O bloco "Context" foi retirado desta página a
+       pedido do Francisco — a frase continua no lang.js (`litet.context`), por isso
+       volta a entrar sem se reescrever nada se algum dia fizer falta. -->
   <section class="case-text grid">
-    <div class="text-block reveal">
-      <span class="label" data-i18n="caseLabel.context">Context</span>
-      <p data-i18n="litet.context">Developed in the Typography course at ESAD.CR, this project explores typography as the main element of visual communication, through a contemporary editorial composition.</p>
-    </div>
-    <div class="text-block reveal">
-      <span class="label" data-i18n="caseLabel.objective">Objective</span>
-      <p data-i18n="litet.objective">To build a structured typographic composition, applying principles of hierarchy, alignment, rhythm and modular organisation to bring out the typeface's legibility and expression.</p>
-    </div>
-    <div class="text-block reveal">
-      <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
-      <p data-i18n="litet.finalProposal">The final proposal takes a minimalist approach built on a modular grid, combining visual hierarchy, contrast of scale and negative space to create a clean, balanced and functional composition.</p>
+    <div class="text-pair">
+      <div class="text-block a reveal">
+        <span class="label" data-i18n="caseLabel.objective">Objective</span>
+        <p data-i18n="litet.objective">To build a structured typographic composition, applying principles of hierarchy, alignment, rhythm and modular organisation to bring out the typeface's legibility and expression.</p>
+      </div>
+      <div class="text-block b reveal d-1">
+        <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
+        <p data-i18n="litet.finalProposal">The final proposal takes a minimalist approach built on a modular grid, combining visual hierarchy, contrast of scale and negative space to create a clean, balanced and functional composition.</p>
+      </div>
     </div>
   </section>
 
@@ -96,25 +125,31 @@
          e o Francisco cortou-as: só a letra.
          Referência dada pelo Francisco: portorocha.com/robinhood (contorno de 1px sem preenchimento,
          quadrados brancos grandes nos pontos, preto puro, cortes de ~1s entre enquadramentos fechados).
-         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789250389 é gerado a partir do próprio
+         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789342187 é gerado a partir do próprio
          LitetSnitt-Regular.otf (ver Motion/Litet-Snitt-Specimen/build-outlines.py), por isso os pontos
          que aparecem são os pontos reais da tipografia.
-         Vem antes do specimen animado de propósito: primeiro como a letra foi afinada, só depois o
-         alfabeto completo já pronto. -->
+         Continua aqui, no mesmo sítio de sempre — só o "Aa" estático e o specimen
+         animado trocaram de posição entre si (13-09-2026), esta animação não mexeu. -->
     <div class="case-img full reveal litet-construct" aria-label="Litet Snitt — close-up details of four letterforms, each with a Bézier handle being adjusted into its final position">
       <canvas aria-hidden="true"></canvas>
     </div>
-    <!-- Specimen animado (08-09-2026, trocado de <video> para texto ao vivo no
-         mesmo dia — o vídeo do After Effects perdia nitidez nas arestas por
-         chroma subsampling do H.264). Webfont self-hosted (ver @font-face
-         "LitetSnitt-Regular" em style.css) + assets/js/litet-specimen.js?v=1789250389 troca
-         os 216 glifos visíveis da fonte a cada 100ms, fundo preto, cor #64FF00.
-         Vem primeiro no bloco porque mostra a fonte em uso antes das imagens
-         estáticas do specimen. -->
-    <div class="case-img full reveal litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
-      <span class="litet-specimen__glyph" aria-hidden="true">A</span>
+    <!-- O "Aa" estático mudou-se para aqui (13-09-2026) — trocou de sítio com o specimen
+         animado, que passou a abrir a página (ver comentário lá em cima).
+         SVG INLINE, não `<img>`: o "Aa" é texto vivo (`<text>/<tspan>`) na LitetSnitt-Regular,
+         e um `<img src="....svg">` renderiza o ficheiro em "modo imagem", que bloqueia
+         sempre o @font-face — a letra cairia numa serif genérica. Um `<object>` resolveria,
+         mas o CSP do site tem `object-src 'none'` de propósito. É o mesmo bug já apanhado
+         e corrigido a 10-09 nos dois posters aqui em baixo, e a mesma correcção.
+         A classe original do ficheiro (`cls-1`) foi prefixada para `cls-aa-1` porque já
+         vivem neste documento as famílias cls-sp-/cls-02- dos outros SVGs (uma 3ª família,
+         cls-03-, existiu até 14-09-2026 — o SVG que a usava foi removido, ver mais abaixo). -->
+    <div class="case-img full reveal">
+<svg id="litet-aa-svg" role="img" aria-label="Litet Snitt — the letters A and a, lowercase and uppercase, set in the typeface" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388.18 850.5">
+  <rect x="0" width="1388.18" height="850.5"/>
+  <text class="cls-aa-1" transform="translate(168.9 703.72)"><tspan x="0" y="0">Aa</tspan></text>
+</svg>
     </div>
-    <!-- SVG inline em vez de <img>/<object> (10-09-2026) — bug real encontrado: estas 3 imagens têm texto vivo
+    <!-- SVG inline em vez de <img>/<object> (10-09-2026) — bug real encontrado: estas imagens têm texto vivo
          (<text>/<tspan>) num tipo de letra próprio (LitetSnitt-Regular) em vez de vetores de contorno. Um
          <img src="....svg"> renderiza o SVG em "modo imagem", que bloqueia sempre o @font-face lá dentro
          (mesmo com o ficheiro da fonte embutido em base64) — a fonte nunca carregava, o browser caía para uma
@@ -123,7 +158,7 @@
          mas o CSP do site tem `object-src 'none'` de propósito (bloqueia vetores de plugin) — por isso a
          correção certa é SVG inline: faz parte do próprio HTML, herda o @font-face que style.css já carrega
          (a mesma fonte usada no specimen animado acima), sem depender de nenhum @font-face embutido no SVG.
-         Cada SVG teve as suas classes "cls-N" prefixadas (cls-sp-/cls-02-/cls-03-) para não colidirem entre si
+         Cada SVG teve as suas classes "cls-N" prefixadas (cls-sp-/cls-02-) para não colidirem entre si
          ao viverem agora no mesmo documento. -->
     <div class="case-img mid reveal">
 <svg id="litet-specimen-poster-svg" role="img" aria-label="Litet Snitt type specimen poster" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1190.8 1684.03">
@@ -443,12 +478,6 @@
   <text class="cls-02-1" transform="translate(146.81 192.72)"><tspan x="0" y="0">ABCDEFGHIJ</tspan><tspan class="cls-02-3" x="380.64" y="0">K</tspan><tspan x="423.42" y="0">LMNOPQR</tspan><tspan class="cls-02-4" x="739.79" y="0">ST</tspan><tspan x="815.81" y="0">U</tspan><tspan class="cls-02-6" x="862.43" y="0">VW</tspan><tspan x="975.83" y="0">XYZ</tspan><tspan x="120.93" y="72">abcdefghijklmn</tspan><tspan class="cls-02-3" x="562.28" y="72">o</tspan><tspan x="597.98" y="72">pq</tspan><tspan class="cls-02-5" x="671.06" y="72">r</tspan><tspan x="696.86" y="72">stuvwxyz</tspan><tspan x="134.13" y="144">0123456789%$€£¥#+-=÷±&lt;&gt;</tspan><tspan x="192.48" y="216">:;.,…“”‘’!¡?¿&amp;¶ªº*©®@(){}[]</tspan><tspan x="130.98" y="288">«»-_–—/|\ÁÀÂÃÄÅÇÈÉÊËÌÍÎÏ</tspan><tspan x="263.52" y="360">ÒÓÔÕÖØÑÙÚÛÜÝ</tspan><tspan x="5.85" y="432">ÐÞáàâãäåaçèéêëìíîïòóôõöøñöšßùúûü</tspan><tspan x="315.63" y="504">Ææ Œœ fi fl ð þ</tspan></text>
 </svg>
     </div>
-    <div class="case-img wide reveal">
-<svg id="litet-aa-svg" role="img" aria-label="Litet Snitt — Aa characters" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388.18 850.5">
-  <rect x="0" width="1388.18" height="850.5"/>
-  <text class="cls-03-1" transform="translate(168.9 703.72)"><tspan x="0" y="0">Aa</tspan></text>
-</svg>
-    </div>
   </section>
 
   <!-- WHAT  Os 31 diapositivos da apresentação (08-09-2026: eram 32, a página 31
@@ -498,11 +527,6 @@
     </div>
   </section>
 
-  <nav class="case-nav grid">
-    <a class="prev reveal" href="poliempreende.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span data-i18n="litet.navPrev">&larr; Poliempreende</span></a>
-    <a class="next reveal" href="1543.html"><span class="label" data-i18n="caseLabel.next">Next</span><span data-i18n="litet.navNext">1543 &rarr;</span></a>
-  </nav>
-
   <div class="grid case-footer">
     <footer class="site-footer">
       <span>&copy; 2026 Francisco Martins</span>
@@ -511,21 +535,88 @@
     </footer>
   </div>
 
+    </div>
+  </div>
+  <!-- fim de .case-scroll__inner / .case-scroll — a coluna de projectos abaixo já não está
+       lá dentro: fica fixa fora da coluna que faz scroll (ver `.project-rail` em style.css) -->
+
+  <!-- Coluna de projectos (13-09-2026, comentário reescrito no mesmo dia depois de
+       o Anterior/Seguinte ter sido removido de todas as páginas). Fica presa à
+       direita da janela no desktop e vira uma tira horizontal no telemóvel (ver
+       `.project-rail` em style.css). No desktop o `position: fixed` tira-a do fluxo,
+       por isso a posição no HTML não conta aí. No telemóvel ela é `static` e cai
+       exactamente onde está escrita: a seguir ao rodapé, por ser o último elemento
+       de `.case-scroll__inner` — ambos vivem lá dentro para ficarem alcançáveis
+       dentro da coluna que faz scroll no desktop.
+       Referência dada pelo Francisco: portorocha.com (lá a lista está à esquerda).
+       O cartão da página actual é marcado à mão com `is-current` em cada ficheiro —
+       não há JS nenhum a calcular isto, porque a página activa nunca muda.
+       `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
+       do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
+  <aside class="project-rail" data-lenis-prevent aria-label="Other projects">
+    <span class="rail-card is-current" aria-current="page">
+      <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
+      <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
+           e repeti-lo faria um leitor de ecrã anunciar o mesmo cartão duas vezes. -->
+      <span class="rail-text">
+        <span class="rail-title">Litet Snitt</span>
+        <span class="rail-disc" data-i18n="works.litetDisc">Typeface Design</span>
+      </span>
+    </span>
+    <a class="rail-card" href="poliempreende.html">
+      <!-- `poli-symbol-mark.svg` (14-09-2026) — mesmo padrão do `poli-symbol-wide.svg` da home: cópia do ficheiro só com o viewBox mais apertado à volta da marca, para ela encher mais o quadrado de 48px em vez de sobrar amarelo vazio à volta; o `poli-symbol.svg` original (viewBox inteiro) continua intacto para o `.case-lead` da própria página. -->
+      <img class="rail-mark" src="assets/images/poli-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Poliempreende</span>
+        <span class="rail-disc" data-i18n="works.poliDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="clube_de_xadrez_do_barreiro.html">
+      <!-- `xadrez-symbol-mark.svg` (14-09-2026) — mesma ideia: viewBox recortado à volta do símbolo (que no original vive isolado no centro de uma tela bem mais larga, pensada para o banner do `.case-lead`), para deixar de ficar pequeno e "à boia" dentro do quadrado branco aqui. -->
+      <img class="rail-mark rail-mark--contain" src="assets/images/xadrez-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Clube de Xadrez do Barreiro</span>
+        <span class="rail-disc" data-i18n="works.xadrezDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="1543.html">
+      <img class="rail-mark" src="assets/images/1543-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">1543</span>
+        <span class="rail-disc" data-i18n="works.n1543Disc">Packaging &mdash; Special Edition</span>
+      </span>
+    </a>
+    <a class="rail-card" href="filipa.html">
+      <img class="rail-mark" src="assets/images/filipa-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Filipa</span>
+        <span class="rail-disc" data-i18n="photo.filipaDisc">Seaside &amp; studio sessions</span>
+      </span>
+    </a>
+    <a class="rail-card" href="beah.html">
+      <img class="rail-mark" src="assets/images/beah-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Beah</span>
+        <span class="rail-disc" data-i18n="photo.beahDisc">Studio sessions</span>
+      </span>
+    </a>
+  </aside>
+
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1789250389"></script>
-<script src="assets/js/nav.js?v=1789250389"></script>
-<script src="assets/js/lang.js?v=1789250389"></script>
-<script src="assets/js/main.js?v=1789250389"></script>
+<script src="assets/js/vendor/lenis.min.js?v=1789342187"></script>
+<script src="assets/js/nav.js?v=1789342187"></script>
+<script src="assets/js/lang.js?v=1789342187"></script>
+<script src="assets/js/main.js?v=1789342187"></script>
 <!-- Os 3 ficheiros abaixo só são usados NESTA página, mas passaram a estar em bump-assets.sh na mesma
      (11-09-2026): o sed desse script corre sobre todos os .html e simplesmente não encontra nada nas
      outras 7, por isso incluí-los não custa nada — e o "?v=" à mão que aqui estava antes já tinha
      ficado para trás (1788869000, contra 1789079325 no resto da página), que é exactamente a cache
      desactualizada em telemóvel que o bump-assets.sh existe para evitar. -->
-<script src="assets/js/litet-specimen.js?v=1789250389"></script>
+<script src="assets/js/litet-specimen.js?v=1789342187"></script>
 <!-- litet-outlines.js tem de vir ANTES de litet-construct.js: define o window.LITET_OUTLINES que o
      segundo lê logo à partida. Trocar a ordem faz a animação sair em silêncio, sem erro nenhum. -->
-<script src="assets/js/litet-outlines.js?v=1789250389"></script>
-<script src="assets/js/litet-construct.js?v=1789250389"></script>
+<script src="assets/js/litet-outlines.js?v=1789342187"></script>
+<script src="assets/js/litet-construct.js?v=1789342187"></script>
 </body>
 </html>
