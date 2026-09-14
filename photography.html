@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789380196"></script>
+  <script src="assets/js/lang-flag.js?v=1789418340"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Photography — Francisco Martins</title>
   <meta name="description" content="Photography by Francisco Martins — portrait series.">
@@ -20,12 +20,10 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789380196">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789380196">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789418340">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789418340">
 </head>
 <body data-page="photo">
-
-<div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
 <!-- Nav Island -->
 <header class="site-header" data-open="false" data-scrolled="false">
@@ -58,7 +56,12 @@
 
 <div class="progress-line" aria-hidden="true"></div>
 
-<main>
+<!-- Par wrapper/content do GSAP ScrollSmoother — ver o comentário completo em
+     index.html (mesmo mecanismo, mesma razão). -->
+<div id="smooth-wrapper">
+<main id="smooth-content">
+
+  <div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
   <section class="case-hero grid">
     <h1 class="case-title reveal" data-i18n="photo.title">Photography</h1>
@@ -97,10 +100,13 @@
   </div>
 
 </main>
+</div><!-- /#smooth-wrapper -->
 
-<script src="assets/js/vendor/lenis.min.js?v=1789380196"></script>
-<script src="assets/js/nav.js?v=1789380196"></script>
-<script src="assets/js/lang.js?v=1789380196"></script>
-<script src="assets/js/main.js?v=1789380196"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1789418340"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js?v=1789418340"></script>
+<script src="assets/js/vendor/ScrollSmoother.min.js?v=1789418340"></script>
+<script src="assets/js/nav.js?v=1789418340"></script>
+<script src="assets/js/lang.js?v=1789418340"></script>
+<script src="assets/js/main.js?v=1789418340"></script>
 </body>
 </html>

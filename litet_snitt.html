@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789380196"></script>
+  <script src="assets/js/lang-flag.js?v=1789418340"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Litet Snitt — Francisco Martins</title>
   <meta name="description" content="Litet Snitt — a geometric, futuristic typeface inspired by Scandinavian typography. Designed at ESAD.CR.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789380196">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789380196">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789418340">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789418340">
 </head>
 <body data-page="litet" data-split>
 <!-- `data-split` (13-09-2026): esta página passou a ter scroll de duas colunas
@@ -64,7 +64,10 @@
 
   <!-- `.case-scroll` (13-09-2026): a ÚNICA coisa que faz scroll nesta página — a nav e a
        coluna de projectos ficam fixas fora daqui (ver `body[data-split]` em style.css).
-       `.case-scroll__inner` é o alvo de medição do Lenis (a opção `content`); o
+       `overflow-y:auto` é NATIVO (inalterado) — o scroll suave (14-09-2026, ver o
+       comentário no topo de main.js) anima o `scrollTop` real desta caixa com um tween
+       do GSAP a cada roda do rato, não finge scroll nenhum; `.case-scroll__inner` é só
+       um contentor normal, sem JS nenhum a apontar para ele. O
        `#nav-scroll-sentinel` MUDOU-SE para aqui de cima do `<body>` de propósito: ele
        dispara a pílula da nav quando SAI DO ECRÃ, e sem a página inteira a fazer scroll,
        um sentinela lá fora nunca sairia do ecrã — a nav nunca encolheria. Aqui dentro,
@@ -91,10 +94,10 @@
        Specimen (08-09-2026, trocado de <video> para texto ao vivo no mesmo dia — o
        vídeo do After Effects perdia nitidez nas arestas por chroma subsampling do
        H.264). Webfont self-hosted (ver @font-face "LitetSnitt-Regular" em style.css)
-       + assets/js/litet-specimen.js?v=1789380196 troca os 216 glifos visíveis da
+       + assets/js/litet-specimen.js?v=1789418340 troca os 216 glifos visíveis da
        fonte a cada 100ms, fundo preto, cor #64FF00. -->
   <section class="case-images case-lead grid">
-    <div class="case-img full reveal litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
+    <div class="case-img full litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
       <span class="litet-specimen__glyph" aria-hidden="true">A</span>
     </div>
   </section>
@@ -105,11 +108,11 @@
        volta a entrar sem se reescrever nada se algum dia fizer falta. -->
   <section class="case-text grid">
     <div class="text-pair">
-      <div class="text-block a reveal">
+      <div class="text-block a">
         <span class="label" data-i18n="caseLabel.objective">Objective</span>
         <p data-i18n="litet.objective">To build a structured typographic composition, applying principles of hierarchy, alignment, rhythm and modular organisation to bring out the typeface's legibility and expression.</p>
       </div>
-      <div class="text-block b reveal d-1">
+      <div class="text-block b">
         <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
         <p data-i18n="litet.finalProposal">The final proposal takes a minimalist approach built on a modular grid, combining visual hierarchy, contrast of scale and negative space to create a clean, balanced and functional composition.</p>
       </div>
@@ -125,12 +128,12 @@
          e o Francisco cortou-as: só a letra.
          Referência dada pelo Francisco: portorocha.com/robinhood (contorno de 1px sem preenchimento,
          quadrados brancos grandes nos pontos, preto puro, cortes de ~1s entre enquadramentos fechados).
-         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789380196 é gerado a partir do próprio
+         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789418340 é gerado a partir do próprio
          LitetSnitt-Regular.otf (ver Motion/Litet-Snitt-Specimen/build-outlines.py), por isso os pontos
          que aparecem são os pontos reais da tipografia.
          Continua aqui, no mesmo sítio de sempre — só o "Aa" estático e o specimen
          animado trocaram de posição entre si (13-09-2026), esta animação não mexeu. -->
-    <div class="case-img full reveal litet-construct" aria-label="Litet Snitt — close-up details of four letterforms, each with a Bézier handle being adjusted into its final position">
+    <div class="case-img full litet-construct" aria-label="Litet Snitt — close-up details of four letterforms, each with a Bézier handle being adjusted into its final position">
       <canvas aria-hidden="true"></canvas>
     </div>
     <!-- O "Aa" estático mudou-se para aqui (13-09-2026) — trocou de sítio com o specimen
@@ -143,7 +146,7 @@
          A classe original do ficheiro (`cls-1`) foi prefixada para `cls-aa-1` porque já
          vivem neste documento as famílias cls-sp-/cls-02- dos outros SVGs (uma 3ª família,
          cls-03-, existiu até 14-09-2026 — o SVG que a usava foi removido, ver mais abaixo). -->
-    <div class="case-img full reveal">
+    <div class="case-img full">
 <svg id="litet-aa-svg" role="img" aria-label="Litet Snitt — the letters A and a, lowercase and uppercase, set in the typeface" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388.18 850.5">
   <rect x="0" width="1388.18" height="850.5"/>
   <text class="cls-aa-1" transform="translate(168.9 703.72)"><tspan x="0" y="0">Aa</tspan></text>
@@ -160,7 +163,7 @@
          (a mesma fonte usada no specimen animado acima), sem depender de nenhum @font-face embutido no SVG.
          Cada SVG teve as suas classes "cls-N" prefixadas (cls-sp-/cls-02-) para não colidirem entre si
          ao viverem agora no mesmo documento. -->
-    <div class="case-img mid reveal">
+    <div class="case-img mid">
 <svg id="litet-specimen-poster-svg" role="img" aria-label="Litet Snitt type specimen poster" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1190.8 1684.03">
   <rect x=".12" y=".12" width="1190.55" height="1683.78"/>
   <g>
@@ -471,7 +474,7 @@
   </g>
 </svg>
     </div>
-    <div class="case-img full reveal">
+    <div class="case-img full">
 <svg id="litet-full-glyph-set-svg" role="img" aria-label="Litet Snitt full glyph set" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388.18 850.5">
   <rect x="0" width="1388.18" height="850.5"/>
   <text class="cls-02-2" transform="translate(-1279.2868 703.7164)"><tspan x="0" y="0">Aa</tspan></text>
@@ -492,7 +495,7 @@
        comentário aqui explica os 31, não 31 comentários iguais. `loading="lazy"`
        em todas (secção sempre fora do ecrã inicial). -->
   <section class="case-slides grid">
-    <div class="case-slides__grid reveal">
+    <div class="case-slides__grid">
       <img src="assets/images/litet-slide-01.webp" alt="Litet Snitt presentation — slide 01" width="420" height="236" loading="lazy">
       <img src="assets/images/litet-slide-02.webp" alt="Litet Snitt presentation — slide 02" width="420" height="236" loading="lazy">
       <img src="assets/images/litet-slide-03.webp" alt="Litet Snitt presentation — slide 03" width="420" height="236" loading="lazy">
@@ -553,7 +556,12 @@
        não há JS nenhum a calcular isto, porque a página activa nunca muda.
        `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
        do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
-  <aside class="project-rail" data-lenis-prevent aria-label="Other projects">
+  <!-- `data-lenis-prevent` removido de vez 14-09-2026: o scroll suave desta página já
+       não é o Lenis (nem o ScrollSmoother, que partiu aqui — ver main.js) — é um tween
+       do GSAP directamente sobre o `scrollTop` de `.case-scroll`, que nunca toca nesta
+       rail (é irmã de `.case-scroll` no DOM, nunca esteve lá dentro), por isso não há
+       nada a "prevenir". -->
+  <aside class="project-rail" aria-label="Other projects">
     <span class="rail-card is-current" aria-current="page">
       <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
       <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
@@ -604,19 +612,19 @@
 
 </main>
 
-<script src="assets/js/vendor/lenis.min.js?v=1789380196"></script>
-<script src="assets/js/nav.js?v=1789380196"></script>
-<script src="assets/js/lang.js?v=1789380196"></script>
-<script src="assets/js/main.js?v=1789380196"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1789418340"></script>
+<script src="assets/js/nav.js?v=1789418340"></script>
+<script src="assets/js/lang.js?v=1789418340"></script>
+<script src="assets/js/main.js?v=1789418340"></script>
 <!-- Os 3 ficheiros abaixo só são usados NESTA página, mas passaram a estar em bump-assets.sh na mesma
      (11-09-2026): o sed desse script corre sobre todos os .html e simplesmente não encontra nada nas
      outras 7, por isso incluí-los não custa nada — e o "?v=" à mão que aqui estava antes já tinha
      ficado para trás (1788869000, contra 1789079325 no resto da página), que é exactamente a cache
      desactualizada em telemóvel que o bump-assets.sh existe para evitar. -->
-<script src="assets/js/litet-specimen.js?v=1789380196"></script>
+<script src="assets/js/litet-specimen.js?v=1789418340"></script>
 <!-- litet-outlines.js tem de vir ANTES de litet-construct.js: define o window.LITET_OUTLINES que o
      segundo lê logo à partida. Trocar a ordem faz a animação sair em silêncio, sem erro nenhum. -->
-<script src="assets/js/litet-outlines.js?v=1789380196"></script>
-<script src="assets/js/litet-construct.js?v=1789380196"></script>
+<script src="assets/js/litet-outlines.js?v=1789418340"></script>
+<script src="assets/js/litet-construct.js?v=1789418340"></script>
 </body>
 </html>

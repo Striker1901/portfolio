@@ -66,7 +66,7 @@
   --gap: 1rem;
   --pad: 1.6rem; /* margem lateral do site — era 2rem/--sp-8 da SOLITSU, apertada -20% a pedido do Francisco (14-09-2026) */
   --rail-w: clamp(260px, 24vw, 320px); /* largura da coluna de projectos (case studies): 320px num ecrã grande, encolhe até 260px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte (aumentado ligeiramente de 240/22vw/300, 14-09-2026) */
-  --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do Lenis — se a nav mudar de altura, muda aqui também */
+  --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do scroll suave — se a nav mudar de altura, muda aqui também */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
 }
 
@@ -80,10 +80,13 @@
 }
 
 html {
-  /* No native `scroll-behavior: smooth` here — main.js now drives ALL scrolling
-     via Lenis (inertia-based, same library as the SOLITSU site), and running
-     both at once makes them fight each other over the same scroll position. */
-  scroll-padding-top: 118px; /* clears the fixed nav (measured bottom edge: 102px) + a little breathing room, for anchor jumps when Lenis/JS isn't running (no-JS, prefers-reduced-motion) */
+  /* No native `scroll-behavior: smooth` here — main.js now drives ALL scrolling,
+     via Lenis on the case-study pages and GSAP ScrollSmoother on home/photography
+     (14-09-2026: tried ScrollSmoother everywhere to match portorocha.com, but it
+     doesn't support .case-scroll's partial/fixed wrapper — reverted those pages
+     to Lenis the same day, see main.js), and running native smooth scroll at the
+     same time as either one makes them fight each other over the same position. */
+  scroll-padding-top: 118px; /* clears the fixed nav (measured bottom edge: 102px) + a little breathing room, for anchor jumps when Lenis/ScrollSmoother/JS isn't running (no-JS, prefers-reduced-motion) */
 }
 
 body {
@@ -182,9 +185,10 @@ ul {
     transition: none;
   }
   /* No `scroll-behavior: auto` override needed here anymore — the base `html`
-     rule no longer sets `smooth` at all (see the comment there); Lenis is what
-     used to need this override, and it already refuses to start under
-     reduced-motion (see main.js), so native scroll is already instant. */
+     rule no longer sets `smooth` at all (see the comment there); Lenis/
+     ScrollSmoother are what used to need this override, and both already refuse
+     to start under reduced-motion (see main.js), so native scroll is already
+     instant. */
 }
 
 /* ============================================================
@@ -500,7 +504,7 @@ ul {
 /* TERM  `-webkit-line-clamp` corta o texto num número exacto de linhas e põe "…"
          no fim; precisa do trio display/-webkit-box-orient/overflow para funcionar. */
 .rail-disc {
-  font-size: var(--text-xs);          /* descrição mais pequena que o nome, para a hierarquia se ler de relance */
+  font-size: var(--text-s);           /* era var(--text-xs) 11px — subiu para 13px a pedido do Francisco 14-09-2026; .rail-title continua var(--text-m), a hierarquia mantém-se */
   color: var(--muted);                /* cinzento: secundário face ao nome */
   line-height: 1.35;                  /* entrelinha um pouco mais aberta, por ser texto corrido curto */
   display: -webkit-box;               /* modo de caixa antigo do WebKit — é o único em que o line-clamp pega */
@@ -570,7 +574,7 @@ body[data-split] {
   bottom: var(--pad);               /* mesmo fundo da .project-rail */
   left: var(--pad);                 /* margem esquerda igual à do resto do site */
   right: calc(var(--rail-w) + var(--pad) + 8px); /* pára exactamente 8px antes da rail (que começa a `--pad` do bordo) — mesmo valor do gap entre cartões da rail (13-09-2026, era var(--gap)=16px), a pedido do Francisco para os dois ficarem iguais */
-  overflow-y: auto;                 /* é isto que faz esta coluna deslizar — a ÚNICA que desliza na página */
+  overflow-y: auto;                 /* é isto que faz esta coluna deslizar — a ÚNICA que desliza na página; o GSAP anima este mesmo scrollTop nativo, não o substitui — ver main.js */
   overscroll-behavior: contain;     /* ao chegar ao fim não "passa" o scroll para trás para nenhum lado (nem há para onde passar) */
   scrollbar-width: none;            /* esconde a barra de scroll nativa (Firefox) — pedido do Francisco, o scroll continua a funcionar, só a barra visível desaparece */
 }
@@ -1006,6 +1010,19 @@ body[data-split] .case-scroll .grid {
          mais especificidade, por isso ganha sempre, não importa a ordem no ficheiro. */
 .case-images.case-lead {
   padding-top: 0;                     /* flush com o topo da .project-rail — ver WHAT acima */
+}
+
+/* WHAT  A 1ª imagem da Poliempreende (poli-symbol.svg) é quase quadrada — as outras
+         3 páginas de case study abrem em landscape (1.48–1.78:1); sem isto renderizava
+         ~50% mais alta que as outras à mesma largura, lendo como "tamanho diferente".
+   TERM  `object-fit: cover` corta topo/fundo do SVG para caber na proporção nova, sem
+         esticar — verificado que o traço do símbolo tem margem de sobra à volta (não
+         corta o desenho, só o fundo amarelo à volta dele).
+   WHY   Pedido do Francisco 14-09-2026: bater certo com o tamanho de abertura das
+         outras páginas. `3/2` fica no meio do intervalo das outras três (1.48–1.78:1). */
+body[data-page="poli"] .case-lead .case-img.mid img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
 /* WHAT  Aperta o respiro por cima e por baixo dos cartões Objectivo/Proposta Final —

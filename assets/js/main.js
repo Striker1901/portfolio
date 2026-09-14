@@ -1,5 +1,7 @@
 // Francisco Martins — portfolio interactions
-// Smooth scroll (Lenis), scroll reveals, active work-list tracking, scroll progress line.
+// Smooth scroll (GSAP em ambas as formas: scrollTop tweened à mão nas páginas de
+// case study, ScrollSmoother na home/photography), scroll reveals, active work-list
+// tracking, scroll progress line.
 // All features guard on element existence so this file is shared by every page.
 
 /* WHAT  Uma só verdade sobre se a pessoa pediu menos movimento ao sistema operativo —
@@ -8,7 +10,8 @@
          operativo, não do site; existe por causa de perturbações vestibulares reais
          (tonturas, náuseas) que animações grandes podem provocar.
    WHY   Sem isto, quem pediu menos movimento ficava com o scroll a "flutuar" na mesma —
-         o Lenis não pode arrancar para essas pessoas, tem de haver uma verdade só, cedo. */
+         nem o tween de scroll nem o ScrollSmoother podem arrancar para essas pessoas,
+         tem de haver uma verdade só, cedo. */
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* WHAT  Se esta página tem `.case-scroll` (só a litet_snitt.html, 13-09-2026), é ela
@@ -25,72 +28,63 @@ const SPLIT_BREAKPOINT = 810;
 const splitQuery = matchMedia(`(max-width: ${SPLIT_BREAKPOINT}px)`);
 const isSplitActive = () => !!(caseScroll && !splitQuery.matches);
 
-/* ── SCROLL SUAVE (Lenis) ──────────────────────────────────────
-   WHAT  Toda a página passa a deslizar com inércia — tanto ao rodar a roda do rato/trackpad
-         como ao clicar num link âncora — em vez de saltar em blocos abruptos. Trazido do
-         site da SOLITSU (mesma biblioteca, mesmo mecanismo), 03-09-2026.
-   TERM  `Lenis` — biblioteca externa, auto-alojada em `assets/js/vendor/lenis.min.js`;
-         intercepta o scroll e anima a posição real da página a cada frame
-         (`requestAnimationFrame`), em vez de a mover de repente. `anchors: false` (o
-         valor por omissão) porque o clique num link âncora é tratado à parte, mais
-         abaixo — o auto-tratamento embutido do Lenis não chama `preventDefault()`, o
-         que deixaria o salto instantâneo nativo do browser a competir com a animação
-         do Lenis ao mesmo tempo.
-   WHY   Não arranca de todo se `reduced` for verdadeiro — nesse caso o scroll fica
-         nativo e instantâneo, o comportamento correcto para quem pediu menos
-         movimento, não uma regressão.
+/* ── SCROLL SUAVE — GSAP nas duas formas, cada uma no seu caso de uso ──
+   WHAT  Tentei o ScrollSmoother real em todas as páginas (14-09-2026) — partiu nas
+         de case study (`.case-scroll` é uma caixa PARCIAL de ecrã, dentro de um
+         `body[data-split]{overflow:hidden}` sem scroll nativo nenhum; o
+         ScrollSmoother precisa do viewport inteiro + scroll real do documento).
+         Tentei outra vez num piloto (`litet_snitt.html`, mesmo dia, com a causa
+         real corrigida) e o Francisco pediu para reverter — fica assente que as
+         6 páginas de case study usam o tween à mão abaixo, ponto final.
+   TERM  As páginas de case study animam directamente o `scrollTop` NATIVO de
+         `.case-scroll` (que continua com `overflow-y:auto` de sempre, zero
+         alterações de layout) a cada evento de roda do rato — teclado, barra de
+         scroll e toque continuam a escrever no mesmo `scrollTop` sem conflito,
+         só a roda é interceptada. Home/photography.html usam o ScrollSmoother
+         real (sem `.case-scroll`, usam o par `#smooth-wrapper`/`#smooth-content`).
+   WHY   Nenhum dos dois arranca se `reduced` for verdadeiro — nesse caso o scroll
+         fica nativo em ambos os tipos de página, o comportamento correcto para
+         quem pediu menos movimento, não uma regressão. */
+let smoother = null;
 
-   `createLenis()` (13-09-2026) — antes disto só corria uma vez, sempre em modo
-   "janela". Agora corre outra vez sempre que se cruza o `SPLIT_BREAKPOINT` a meio
-   de uma sessão (redimensionar a janela, rodar o telemóvel): `wrapper`/`content`
-   dizem ao Lenis para fazer scroll virtual dentro de `.case-scroll`, em vez da
-   janela inteira — a mesma opção já usada pela versão instalada em
-   `assets/js/vendor/lenis.min.js` (confirmado antes de escrever isto). O `raf`
-   abaixo lê sempre a variável `lenis` mais recente, por isso não precisa de saber
-   que a instância mudou por baixo dele. */
-let lenis = null;
+if (caseScroll && !reduced) {
+  const inner = caseScroll.querySelector('.case-scroll__inner');
+  let target = null; // null até à 1ª roda — a partir daí segue o alvo, não o scrollTop ao vivo (que o próprio tween está a animar)
+  let tween = null;
 
-function createLenis() {
-  if (lenis) lenis.destroy(); // fecha os listeners da instância antiga antes de a substituir — sem isto, as duas ficavam a competir pelo mesmo scroll
-  lenis = null;
-  if (reduced) return; // nunca arranca para quem pediu menos movimento — nem em modo janela, nem em modo coluna
-  if (isSplitActive()) {
-    // lerp/wheelMultiplier (14-09-2026, pedido do Francisco: "scroll mais controlável,
-    // reage mais depressa" dentro da coluna de projecto) — só aqui, não no modo janela:
-    // `lerp` mais baixo = cada frame percorre mais da distância que falta até ao alvo
-    // (default do Lenis ~0.1, aqui 0.15 — chega mais depressa, continua suavizado, não
-    // instantâneo); `wheelMultiplier` amplia o quanto cada "tick" da roda do rato conta.
-    lenis = new Lenis({ wrapper: caseScroll, content: caseScroll.querySelector('.case-scroll__inner'), lerp: 0.15, wheelMultiplier: 1.3 });
-  } else {
-    lenis = new Lenis();
-  }
-}
-createLenis();
+  caseScroll.addEventListener('wheel', (e) => {
+    if (!isSplitActive()) return; // abaixo dos 810px `.case-scroll` volta a overflow:visible (style.css) — a página inteira faz scroll nativo normal, não vale a pena suavizar aí à força
+    e.preventDefault();
+    const max = inner.scrollHeight - caseScroll.clientHeight;
+    const base = target === null ? caseScroll.scrollTop : target;
+    target = Math.max(0, Math.min(base + e.deltaY * 1.3, max)); // 1.3 — mesmo multiplicador que o Lenis já usava aqui (wheelMultiplier), a reactividade não regride
+    if (tween) tween.kill(); // mata o tween anterior antes de recriar — sem isto, os dois ficavam a competir pelo mesmo scrollTop
+    tween = gsap.to(caseScroll, { scrollTop: target, duration: 0.6, ease: 'power2.out', overwrite: true });
+  }, { passive: false });
 
-if (!reduced) {
-  const raf = (time) => {
-    if (lenis) lenis.raf(time);
-    requestAnimationFrame(raf);
-  };
-  requestAnimationFrame(raf);
-}
-
-if (caseScroll) {
-  splitQuery.addEventListener('change', createLenis); // recria a instância certa ao cruzar os 810px em direto
+  splitQuery.addEventListener('change', () => { target = null; }); // ao cruzar o breakpoint, esquece o alvo antigo — a próxima roda parte do scrollTop real
+} else if (!reduced) {
+  // Home e photography.html: sem `.case-scroll`, o ScrollSmoother usa o par
+  // `#smooth-wrapper`/`#smooth-content` já no HTML (ver comentário lá). `effects: false`
+  // — nunca liga o sistema de parallax por elemento (`data-speed`): fora do âmbito
+  // desta troca, o pedido era só a sensação de suavidade, não parallax novo.
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+  smoother = ScrollSmoother.create({ wrapper: '#smooth-wrapper', content: '#smooth-content', smooth: 0.6, speed: 1.2, effects: false });
 }
 
 /* WHAT  Clicar num link âncora (nav, hero, sidebar de trabalhos) desliza suavemente até
          à secção, com folga por cima para a nav fixa não tapar o título de chegada.
-   TERM  `lenis.scrollTo(alvo, { offset })` — pede ao Lenis para animar até esse elemento;
-         `offset: -118` desloca o destino 118px página abaixo do que seria o alvo exacto —
-         a nav (`.site-header`) mede sempre 102px do topo real do ecrã até ao seu fundo
+   TERM  `- 118` desloca o alvo 118px página abaixo do que seria a posição exacta — a
+         nav (`.site-header`) mede sempre 102px do topo real do ecrã até ao seu fundo
          (repouso e encolhida, medido ao vivo), mais uma pequena folga. O mesmo valor
          está no `scroll-padding-top` de `style.css`, para o salto nativo (sem JS) bater
          certo também — os dois têm de mudar juntos se a altura da nav mudar.
-   WHY   Sem isto, o `href="#secao"` de cada link ainda funcionaria (é HTML nativo), mas
-         saltaria instantâneo em vez de animado — o resto da página desliza suave, só os
-         links âncora ficariam abruptos, uma inconsistência visível. */
-if (lenis) {
+   WHY   Só existe `smoother` na home/photography.html — as páginas de case study não
+         têm nenhum link `href="#..."` (confirmado por grep: o único link da nav lá é
+         `href="index.html#works"`, que não começa por "#"), por isso este bloco fica
+         inerte nelas mesmo sem guarda extra. Sem isto, o `href="#secao"` de cada link
+         ainda funcionaria (é HTML nativo), mas saltaria instantâneo em vez de animado. */
+if (smoother) {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const id = link.getAttribute('href');
@@ -98,7 +92,7 @@ if (lenis) {
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: -118 });
+      smoother.scrollTo(smoother.offset(target, 'top top') - 118, true);
     });
   });
 }
@@ -272,50 +266,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Scroll progress line ----------
      WHAT  A barra fininha à direita do ecrã que enche à medida que se avança na
-           página. Lê a posição de scroll de `window` normalmente — mas na
-           litet_snitt.html (13-09-2026), quando `.case-scroll` é quem faz scroll
-           de verdade, passa a ler a posição DESSA coluna em vez da janela.
-     TERM  `currentSource` guarda QUEM está a ser escutado agora (a janela ou a
-           `.case-scroll`) para `attach()` conseguir desligar o escutador antigo
-           antes de ligar o novo — sem isto, ao cruzar o `SPLIT_BREAKPOINT` ficavam
-           os dois ligados ao mesmo tempo, a escrever valores errados por cima um
-           do outro. */
+           página. Na home/photography.html lê `smoother.progress` (0–1, já
+           normalizado pelo GSAP); nas páginas de case study e sob
+           `prefers-reduced-motion` cai para a leitura manual de `window`/
+           `.case-scroll` — funciona correctamente nas páginas de case study
+           porque o scroll suave à mão (ver bloco acima) anima o `scrollTop`
+           NATIVO de `.case-scroll`, não uma posição virtual — um `scroll`
+           listener normal já lê o valor certo em tempo real.
+     WHY   Nenhuma página tem as duas coisas ao mesmo tempo (`smoother` só existe
+           na home/photography.html) — por isso basta verificar `smoother`, não
+           precisa de saber se está sob reduced-motion ou numa página de case
+           study, os dois casos caem no mesmo `else`. */
   const progress = document.querySelector('.progress-line');
 
   if (progress) {
-    let ticking = false;
-    let currentSource = null;
+    if (smoother) {
+      const updateProgress = () => {
+        progress.style.transform = 'scaleY(' + smoother.progress + ')';
+        requestAnimationFrame(updateProgress);
+      };
+      requestAnimationFrame(updateProgress);
+    } else {
+      // fallback: páginas de case study (scrollTop nativo, lido directamente) e
+      // prefers-reduced-motion na home/photography.html (sem ScrollSmoother a
+      // correr) — mesma lógica de sempre: lê window ou .case-scroll à mão.
+      let ticking = false;
+      let currentSource = null;
 
-    const update = () => {
-      let max, pos;
-      if (currentSource === window) {
-        max = document.documentElement.scrollHeight - window.innerHeight;
-        pos = window.scrollY;
-      } else {
-        max = currentSource.scrollHeight - currentSource.clientHeight;
-        pos = currentSource.scrollTop;
-      }
-      const ratio = max > 0 ? Math.min(pos / max, 1) : 0;
-      progress.style.transform = 'scaleY(' + ratio + ')';
-      ticking = false;
-    };
+      const update = () => {
+        let max, pos;
+        if (currentSource === window) {
+          max = document.documentElement.scrollHeight - window.innerHeight;
+          pos = window.scrollY;
+        } else {
+          max = currentSource.scrollHeight - currentSource.clientHeight;
+          pos = currentSource.scrollTop;
+        }
+        const ratio = max > 0 ? Math.min(pos / max, 1) : 0;
+        progress.style.transform = 'scaleY(' + ratio + ')';
+        ticking = false;
+      };
 
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
+      const onScroll = () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      };
 
-    const attach = () => {
-      if (currentSource) currentSource.removeEventListener('scroll', onScroll); // larga a fonte antiga, se havia uma
-      currentSource = isSplitActive() ? caseScroll : window; // escolhe a fonte certa para o estado actual
-      currentSource.addEventListener('scroll', onScroll, { passive: true });
-      update(); // recalcula já, sem esperar pelo próximo scroll — evita a barra "congelada" no valor antigo até a pessoa mexer
-    };
+      const attach = () => {
+        if (currentSource) currentSource.removeEventListener('scroll', onScroll); // larga a fonte antiga, se havia uma
+        currentSource = isSplitActive() ? caseScroll : window; // escolhe a fonte certa para o estado actual
+        currentSource.addEventListener('scroll', onScroll, { passive: true });
+        update(); // recalcula já, sem esperar pelo próximo scroll — evita a barra "congelada" no valor antigo até a pessoa mexer
+      };
 
-    attach();
-    if (caseScroll) splitQuery.addEventListener('change', attach); // troca de fonte ao cruzar os 810px em direto
+      attach();
+      if (caseScroll) splitQuery.addEventListener('change', attach); // troca de fonte ao cruzar os 810px em direto
+    }
   }
 
 });

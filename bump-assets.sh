@@ -20,6 +20,9 @@ for f in *.html; do
     -e "s|assets/css/style\.css(\?v=[0-9]+)?|assets/css/style.css?v=$V|g" \
     -e "s|assets/css/nav\.css(\?v=[0-9]+)?|assets/css/nav.css?v=$V|g" \
     -e "s|assets/js/vendor/lenis\.min\.js(\?v=[0-9]+)?|assets/js/vendor/lenis.min.js?v=$V|g" \
+    -e "s|assets/js/vendor/gsap\.min\.js(\?v=[0-9]+)?|assets/js/vendor/gsap.min.js?v=$V|g" \
+    -e "s|assets/js/vendor/ScrollTrigger\.min\.js(\?v=[0-9]+)?|assets/js/vendor/ScrollTrigger.min.js?v=$V|g" \
+    -e "s|assets/js/vendor/ScrollSmoother\.min\.js(\?v=[0-9]+)?|assets/js/vendor/ScrollSmoother.min.js?v=$V|g" \
     -e "s|assets/js/nav\.js(\?v=[0-9]+)?|assets/js/nav.js?v=$V|g" \
     -e "s|assets/js/lang-flag\.js(\?v=[0-9]+)?|assets/js/lang-flag.js?v=$V|g" \
     -e "s|assets/js/lang\.js(\?v=[0-9]+)?|assets/js/lang.js?v=$V|g" \

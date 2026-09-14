@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789380196"></script>
+  <script src="assets/js/lang-flag.js?v=1789418340"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Francisco Martins — Brand &amp; Web Designer</title>
   <meta name="description" content="Brand and website for early-stage products — designed and built by the same person. Visual identity, typography and web. Francisco Martins, Lisbon, Portugal.">
@@ -20,12 +20,10 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789380196">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789380196">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789418340">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789418340">
 </head>
 <body data-page="home">
-
-<div id="nav-scroll-sentinel" aria-hidden="true"></div>
 
 <!-- Nav Island -->
 <header class="site-header" data-open="false" data-scrolled="false">
@@ -68,7 +66,21 @@
   <a href="#work-5" data-target="work-5" data-i18n="works.photoTitle">Photography</a>
 </nav>
 
-<main>
+<!-- WHAT  Par wrapper/content que o GSAP ScrollSmoother pede (ver main.js) — o
+     scroll suave desliza `#smooth-content` dentro de `#smooth-wrapper`, que o
+     próprio GSAP fixa à janela em runtime. `.site-header`/`.progress-line`/
+     `.work-list` ficam FORA de propósito (são todos position:fixed — lá dentro
+     ficariam presos ao `#smooth-wrapper` como se fosse a janela, não à janela
+     real). O sentinela da nav mudou-se para dentro (ver WHY abaixo). -->
+<div id="smooth-wrapper">
+<main id="smooth-content">
+
+  <div id="nav-scroll-sentinel" aria-hidden="true"></div>
+  <!-- WHY  Movido de fora do <main> para aqui dentro, 14-09-2026: um sentinela
+       fora do conteúdo que faz scroll nunca sai do ecrã (o resto da página é
+       que se move, não ele) — a pílula da nav nunca encolheria. Mesmo bug e
+       mesma correcção já feita para a litet_snitt.html quando ganhou o
+       `.case-scroll`. -->
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
@@ -490,11 +502,14 @@
   </footer>
 
 </main>
+</div><!-- /#smooth-wrapper -->
 
-<script src="assets/js/vendor/lenis.min.js?v=1789380196"></script>
-<script src="assets/js/nav.js?v=1789380196"></script>
-<script src="assets/js/lang.js?v=1789380196"></script>
-<script src="assets/js/hero-pixels.js?v=1789380196"></script>
-<script src="assets/js/main.js?v=1789380196"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1789418340"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js?v=1789418340"></script>
+<script src="assets/js/vendor/ScrollSmoother.min.js?v=1789418340"></script>
+<script src="assets/js/nav.js?v=1789418340"></script>
+<script src="assets/js/lang.js?v=1789418340"></script>
+<script src="assets/js/hero-pixels.js?v=1789418340"></script>
+<script src="assets/js/main.js?v=1789418340"></script>
 </body>
 </html>
