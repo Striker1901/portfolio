@@ -65,7 +65,7 @@
 
   --gap: 1rem;
   --pad: 2rem; /* margem lateral do site — igual ao --sp-8 (desktop) da SOLITSU */
-  --rail-w: clamp(240px, 22vw, 300px); /* largura da coluna de projectos (case studies): 300px num ecrã grande, encolhe até 240px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte */
+  --rail-w: clamp(260px, 24vw, 320px); /* largura da coluna de projectos (case studies): 320px num ecrã grande, encolhe até 260px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte (aumentado ligeiramente de 240/22vw/300, 14-09-2026) */
   --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do Lenis — se a nav mudar de altura, muda aqui também */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
 }
@@ -423,7 +423,8 @@ ul {
   grid-template-columns: 48px 1fr;    /* 48px para a marca, o resto para o texto; muda o 48px e a marca acompanha (ver .rail-mark) */
   align-items: center;                /* centra a marca e o texto um em relação ao outro na vertical */
   gap: 0.75rem;                       /* distância entre a marca e o texto */
-  padding: 0.6rem;                    /* respiro interno do cartão */
+  padding-block: 0.85rem;             /* respiro interno de cima/baixo — sobe a altura do cartão (14-09-2026, era 0.6rem no shorthand); muda só este valor para ajustar a altura */
+  padding-inline: 0.6rem;             /* respiro interno dos lados — separado do de cima/baixo para poder ajustar a altura sem alargar o cartão */
   border: 1px solid var(--line);      /* contorno ténue — é o que separa o cartão do fundo quase preto da página */
   border-radius: 10px;                /* cantos arredondados, um pouco menores que os 12px das imagens grandes */
   background: #141414;                /* mesmo cinzento da pastilha da nav — o cartão lê-se como "chapa" sobre o fundo #0d0d0d */

@@ -127,11 +127,43 @@
            `.hero` directamente com `rootMargin`, dando repouso enquanto
            qualquer parte da hero estivesse visível — revertido: o Francisco
            confirmou que quer o comportamento literal da SOLITSU, não este. */
+  /* WHAT  Nas 6 páginas de case study (`data-split`), a pílula deixa de encolher
+           ao fazer scroll no DESKTOP — fica sempre no estado largo/transparente.
+     TERM  `data-split` já existe no `<body>` destas 6 páginas (é o mesmo atributo
+           que liga o layout de coluna fixa em style.css) — é ele, não `data-page`,
+           que distingue estas páginas da home E da photography.html (que nunca
+           teve o layout de coluna fixa, continua a ter scroll normal da página
+           inteira, por isso deve comportar-se como a home). `staticNavQuery` usa o
+           mesmo corte de 810px do resto do site (`main.js` → `SPLIT_BREAKPOINT`),
+           só invertido (811px = "já é desktop").
+     WHY   Pedido do Francisco, 14-09-2026: nestas páginas, no desktop, a nav, a rail
+           e a coluna de conteúdo já estão todas `position: fixed` — a pílula encolher
+           não sinaliza nada de novo, é só mais uma coisa que pode desalinhar (era o
+           mesmo mecanismo da correcção anterior ao "right"). No telemóvel estas
+           páginas voltam a ter scroll real da página inteira, por isso aí a nav
+           continua a encolher como em qualquer outra página. Correcção no mesmo dia:
+           a 1ª versão excluía só "home" por `data-page`, o que apanhava também a
+           photography.html por engano — trocado para `data-split`, que já é a marca
+           certa (photography.html nunca teve este atributo). */
+  const isProjectPage = document.body.hasAttribute('data-split'); // verdadeiro só nas 6 páginas de case study — já exclui a home E a photography.html
+  const staticNavQuery = matchMedia('(min-width: 811px)');      // já é desktop — o mesmo corte de 810px, invertido
+
   const sentinel = document.getElementById('nav-scroll-sentinel');
   if (sentinel) {
     new IntersectionObserver((entries) => {
-      entries.forEach((entry) => { header.dataset.scrolled = String(!entry.isIntersecting); });
+      entries.forEach((entry) => {
+        if (isProjectPage && staticNavQuery.matches) return; // página de projecto + desktop: não toca no atributo, a nav fica no estado largo do HTML
+        header.dataset.scrolled = String(!entry.isIntersecting);
+      });
     }).observe(sentinel);
+  }
+
+  // Ao entrar no desktop numa página de projecto, desfaz uma pílula que tivesse ficado
+  // encolhida de uma posição de scroll herdada do modo telemóvel.
+  if (isProjectPage) {
+    staticNavQuery.addEventListener('change', (e) => {
+      if (e.matches) header.dataset.scrolled = 'false'; // cruzou para desktop: volta ao estado largo e fica lá
+    });
   }
 
   /* ── MENU MÓVEL — abre/fecha, Escape, clique fora ──────────────

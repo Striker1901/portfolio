@@ -73,7 +73,8 @@
               border-radius var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
               padding var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
               background-color var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
-              border-color var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1));
+              border-color var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)),
+              right var(--dur-nav, 900ms) var(--ease-out, cubic-bezier(.16,1,.3,1)); /* nas páginas de case study o "right" muda de valor ao encolher (ver body[data-split] abaixo) — sem estar aqui, saltava instantâneo em vez de animar junto com o max-width (2026-09-14) */
 }
 
 /* Em repouso (barra transparente, sem contorno visível), o conteúdo deve ir

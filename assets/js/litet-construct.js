@@ -52,11 +52,11 @@
     { ch: 'a', contorno: 0, seg: 12, pega: 'c2', desvio: -24, estica: 1.20, enquadra: 0.68, camara:  0.02,  foco: [0.38, 0.66] },  // junção da pança com a haste; o mais aberto dos quatro, para o último fotograma ainda se ler como letra
   ];
   const FASES = {                                                     // duração de cada fase EM MILISSEGUNDOS, dentro de um plano
-    entrada: 280,                                                     // o detalhe fica parado no estado errado — dá tempo ao olho para ler o enquadramento depois do corte
-    ajuste:  760,                                                     // a pega roda até ao eixo; curta de propósito, é um gesto seco
-    fixa:    700,                                                     // a forma verdadeira fica parada antes do corte seguinte
+    entrada: 196,                                                     // o detalhe fica parado no estado errado — dá tempo ao olho para ler o enquadramento depois do corte (-30%, 2026-09-14)
+    ajuste:  532,                                                     // a pega roda até ao eixo; curta de propósito, é um gesto seco (-30%, 2026-09-14)
+    fixa:    490,                                                     // a forma verdadeira fica parada antes do corte seguinte (-30%, 2026-09-14)
   };
-  const FIXA_FINAL = 1200;                                            // o ÚLTIMO plano segura mais tempo antes de a sequência recomeçar — é o fotograma que fica na cabeça
+  const FIXA_FINAL = 840;                                             // o ÚLTIMO plano segura mais tempo antes de a sequência recomeçar — é o fotograma que fica na cabeça (-30%, 2026-09-14)
   const ENQ_MIN = 4 / 3;                                              // proporção mais estreita que o bloco chega a ter (o CSS põe 4/3 abaixo de 810px) — é ela que manda no enquadramento
   const COR = '255,255,255';                                          // cor base em RGB sem parênteses — o código junta-lhe a opacidade de cada camada
   const TRACO = 1.25;                                                 // espessura do contorno em píxeis de CSS — fino de propósito, é o contraste com os quadrados que dá o ar de editor
@@ -261,13 +261,13 @@
 
         pares.forEach(([nome, ancora, controlo]) => {
           const heroi = ci === p.contorno && i === p.seg && nome === p.pega;  // é esta a pega que roda neste plano?
-          ctx.strokeStyle = rgba(heroi ? 1 : ALPHA_PEGAS);            // a pega em acção a branco cheio, as restantes esbatidas
-          ctx.fillStyle = ctx.strokeStyle;                            // o quadrado da ponta acompanha a opacidade da sua linha
+          ctx.strokeStyle = rgba(heroi ? 1 : ALPHA_PEGAS);            // a LINHA da pega em acção fica a branco cheio, as restantes esbatidas — só a linha, não o quadrado (2026-09-14)
           ctx.lineWidth = 1;                                          // as pegas são sempre finas, mesmo que o contorno engrosse
           ctx.beginPath();                                            // traçado próprio por pega
           ctx.moveTo(proj.X(ancora[0]), proj.Y(ancora[1]));           // começa no ponto de ancoragem
           ctx.lineTo(proj.X(controlo[0]), proj.Y(controlo[1]));       // vai até à ponta
           ctx.stroke();                                               // pinta a linha da pega
+          ctx.fillStyle = rgba(1);                                    // o quadrado da ponta é SEMPRE branco cheio, igual às âncoras — deixou de herdar a opacidade esbatida da linha (2026-09-14)
           quadrado(proj.X(controlo[0]), proj.Y(controlo[1]), LADO_CONTROLO);  // quadradinho na ponta, menor que o das âncoras
         });
       });
