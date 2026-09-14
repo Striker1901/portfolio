@@ -64,7 +64,7 @@
   --case-title: clamp(32px, 5.4vw, 80px); /* case page titles */
 
   --gap: 1rem;
-  --pad: 2rem; /* margem lateral do site — igual ao --sp-8 (desktop) da SOLITSU */
+  --pad: 1.6rem; /* margem lateral do site — era 2rem/--sp-8 da SOLITSU, apertada -20% a pedido do Francisco (14-09-2026) */
   --rail-w: clamp(260px, 24vw, 320px); /* largura da coluna de projectos (case studies): 320px num ecrã grande, encolhe até 260px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte (aumentado ligeiramente de 240/22vw/300, 14-09-2026) */
   --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do Lenis — se a nav mudar de altura, muda aqui também */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
@@ -1364,7 +1364,7 @@ body[data-split] .case-text + .case-images {
 @media (max-width: 810px) {
   :root {
     --num: 40px;
-    --pad: 1rem; /* margem lateral em ecrãs pequenos — igual ao --sp-4 (tablet) da SOLITSU */
+    --pad: 0.8rem; /* margem lateral em ecrãs pequenos — era 1rem/--sp-4 da SOLITSU, apertada -20% junto com o valor de desktop (14-09-2026) */
   }
 
   .work-list {
