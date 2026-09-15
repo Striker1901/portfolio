@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789418340"></script>
+  <script src="assets/js/lang-flag.js?v=1789484568"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Photography — Francisco Martins</title>
   <meta name="description" content="Photography by Francisco Martins — portrait series.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789418340">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789418340">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789484568">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789484568">
 </head>
 <body data-page="photo">
 
@@ -87,8 +87,22 @@
     </a>
   </section>
 
+  <!-- Anterior/Seguinte (15-09-2026) — Photography entra na mesma cadeia dos
+       outros 6 case studies, como 7º elo, na mesma ordem 01-05 da home: 1543
+       → Photography → Filipa. O link antigo "Back ← Index" saiu porque o
+       menu da nav (`nav__drawer` no cabeçalho) já tem o seu próprio "← Index"
+       independente — não se perde nenhuma forma de voltar à home. Sem
+       `main[data-rail]` nesta página (não tem rail/coluna fixa como as
+       outras 6), por isso o esconder-no-desktop/mostrar-no-telemóvel está
+       preso a `body[data-page="photo"]` em vez de `main[data-rail]` (ver
+       style.css) — UPDATE 15-09-2026 (2ª sessão): pedido do Francisco para
+       ficar igual às outras 6, só visível em telemóvel; o desktop desta
+       página em concreto fica sem substituto nesse sítio (não tem rail). Só
+       o rótulo ("Previous"/"Next") é traduzido via `data-i18n` — o nome do
+       projecto é um nome próprio, fica igual nas duas línguas. -->
   <nav class="case-nav grid">
-    <a class="prev reveal" href="index.html#photography"><span class="label" data-i18n="caseLabel.back">Back</span><span data-i18n="photo.navBack">&larr; Index</span></a>
+    <a class="prev" href="1543.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span>&larr; 1543</span></a>
+    <a class="next" href="filipa.html"><span class="label" data-i18n="caseLabel.next">Next</span><span>Filipa &rarr;</span></a>
   </nav>
 
   <div class="grid case-footer">
@@ -102,11 +116,11 @@
 </main>
 </div><!-- /#smooth-wrapper -->
 
-<script src="assets/js/vendor/gsap.min.js?v=1789418340"></script>
-<script src="assets/js/vendor/ScrollTrigger.min.js?v=1789418340"></script>
-<script src="assets/js/vendor/ScrollSmoother.min.js?v=1789418340"></script>
-<script src="assets/js/nav.js?v=1789418340"></script>
-<script src="assets/js/lang.js?v=1789418340"></script>
-<script src="assets/js/main.js?v=1789418340"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1789484568"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js?v=1789484568"></script>
+<script src="assets/js/vendor/ScrollSmoother.min.js?v=1789484568"></script>
+<script src="assets/js/nav.js?v=1789484568"></script>
+<script src="assets/js/lang.js?v=1789484568"></script>
+<script src="assets/js/main.js?v=1789484568"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789418340"></script>
+  <script src="assets/js/lang-flag.js?v=1789484568"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Litet Snitt — Francisco Martins</title>
   <meta name="description" content="Litet Snitt — a geometric, futuristic typeface inspired by Scandinavian typography. Designed at ESAD.CR.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789418340">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789418340">
+  <link rel="stylesheet" href="assets/css/style.css?v=1789484568">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1789484568">
 </head>
 <body data-page="litet" data-split>
 <!-- `data-split` (13-09-2026): esta página passou a ter scroll de duas colunas
@@ -94,7 +94,7 @@
        Specimen (08-09-2026, trocado de <video> para texto ao vivo no mesmo dia — o
        vídeo do After Effects perdia nitidez nas arestas por chroma subsampling do
        H.264). Webfont self-hosted (ver @font-face "LitetSnitt-Regular" em style.css)
-       + assets/js/litet-specimen.js?v=1789418340 troca os 216 glifos visíveis da
+       + assets/js/litet-specimen.js?v=1789484568 troca os 216 glifos visíveis da
        fonte a cada 100ms, fundo preto, cor #64FF00. -->
   <section class="case-images case-lead grid">
     <div class="case-img full litet-specimen" aria-label="Litet Snitt animated specimen — every character of the typeface, one after another">
@@ -128,7 +128,7 @@
          e o Francisco cortou-as: só a letra.
          Referência dada pelo Francisco: portorocha.com/robinhood (contorno de 1px sem preenchimento,
          quadrados brancos grandes nos pontos, preto puro, cortes de ~1s entre enquadramentos fechados).
-         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789418340 é gerado a partir do próprio
+         Os contornos NÃO são desenhados à mão: assets/js/litet-outlines.js?v=1789484568 é gerado a partir do próprio
          LitetSnitt-Regular.otf (ver Motion/Litet-Snitt-Specimen/build-outlines.py), por isso os pontos
          que aparecem são os pontos reais da tipografia.
          Continua aqui, no mesmo sítio de sempre — só o "Aa" estático e o specimen
@@ -530,6 +530,21 @@
     </div>
   </section>
 
+  <!-- Anterior/Seguinte (15-09-2026, movido para aqui na sessão seguinte) —
+       só aparece em telemóvel (ver `main[data-rail] .case-nav` em style.css);
+       no desktop quem faz este papel é a rail (mais abaixo no HTML, fora
+       desta coluna). MOVIDO de junto da rail para aqui, mesmo antes do
+       rodapé — Francisco pediu para ficar na mesma posição que já tinha em
+       photography.html (conteúdo → Anterior/Seguinte → rodapé), não depois
+       do rodapé como estava. A ordem dá a volta nas duas pontas: esta é a 1ª
+       página da lista, por isso "Anterior" salta para a última (Beah). Só o
+       rótulo ("Previous"/"Next") é traduzido via `data-i18n` — o nome do
+       projecto é um nome próprio, fica igual nas duas línguas. -->
+  <nav class="case-nav grid">
+    <a class="prev" href="beah.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span>&larr; Beah</span></a>
+    <a class="next" href="poliempreende.html"><span class="label" data-i18n="caseLabel.next">Next</span><span>Poliempreende &rarr;</span></a>
+  </nav>
+
   <div class="grid case-footer">
     <footer class="site-footer">
       <span>&copy; 2026 Francisco Martins</span>
@@ -612,19 +627,19 @@
 
 </main>
 
-<script src="assets/js/vendor/gsap.min.js?v=1789418340"></script>
-<script src="assets/js/nav.js?v=1789418340"></script>
-<script src="assets/js/lang.js?v=1789418340"></script>
-<script src="assets/js/main.js?v=1789418340"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1789484568"></script>
+<script src="assets/js/nav.js?v=1789484568"></script>
+<script src="assets/js/lang.js?v=1789484568"></script>
+<script src="assets/js/main.js?v=1789484568"></script>
 <!-- Os 3 ficheiros abaixo só são usados NESTA página, mas passaram a estar em bump-assets.sh na mesma
      (11-09-2026): o sed desse script corre sobre todos os .html e simplesmente não encontra nada nas
      outras 7, por isso incluí-los não custa nada — e o "?v=" à mão que aqui estava antes já tinha
      ficado para trás (1788869000, contra 1789079325 no resto da página), que é exactamente a cache
      desactualizada em telemóvel que o bump-assets.sh existe para evitar. -->
-<script src="assets/js/litet-specimen.js?v=1789418340"></script>
+<script src="assets/js/litet-specimen.js?v=1789484568"></script>
 <!-- litet-outlines.js tem de vir ANTES de litet-construct.js: define o window.LITET_OUTLINES que o
      segundo lê logo à partida. Trocar a ordem faz a animação sair em silêncio, sem erro nenhum. -->
-<script src="assets/js/litet-outlines.js?v=1789418340"></script>
-<script src="assets/js/litet-construct.js?v=1789418340"></script>
+<script src="assets/js/litet-outlines.js?v=1789484568"></script>
+<script src="assets/js/litet-construct.js?v=1789484568"></script>
 </body>
 </html>

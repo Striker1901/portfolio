@@ -106,12 +106,24 @@ body[data-split] .site-header[data-scrolled="true"] {
 }
 
 /* No telemóvel a rail já não come espaço à direita (vira uma tira horizontal, ver
-   style.css) — a pílula volta a centrar-se no ecrã inteiro, como as outras páginas.
+   style.css) — a barra volta a ir de bordo a bordo, como as outras páginas.
    810px é o ponto de corte de CONTEÚDO do site (rail/grid), diferente dos 820px do
-   `@media` abaixo, que é só do CTA/hambúrguer desta componente — não misturar os dois. */
+   `@media` abaixo, que é só do CTA/hambúrguer desta componente — não misturar os dois.
+   UPDATE 15-09-2026: `right` mudado de `var(--pad)` para `0` — bug real, apanhado
+   num telemóvel real: esta regra é anterior à barra edge-to-edge (14-09-2026, ver
+   `.site-header, .site-header[data-scrolled]` mais abaixo neste ficheiro), escrita
+   quando a nav móvel ainda era uma pílula a encolher e precisava de se recentrar
+   sobre a coluna de conteúdo. As duas regras têm a MESMA especificidade
+   (0,3,1) e batem as duas em `body[data-split] .site-header[data-scrolled="true"]`
+   ≤810px — como esta ficava depois no ficheiro, `right:var(--pad)` ganhava e a barra
+   ficava com um respiro de ~13px à direita só quando `data-scrolled="true"`, só
+   nas páginas de case study (à espera, aparecia só a meio do scroll). Com `right:0`
+   os dois estados (parada/a meio do scroll) ficam idênticos — a regra em si já não
+   muda nada, mas fica escrita para documentar que este caso foi mesmo verificado,
+   não esquecido. */
 @media (max-width: 810px) {
   body[data-split] .site-header[data-scrolled="true"] {
-    right: var(--pad);
+    right: 0;
   }
 }
 
@@ -297,6 +309,41 @@ body[data-split] .site-header[data-scrolled="true"] {
    NAV_BREAKPOINT — os dois têm de mudar juntos)
    ============================================================================ */
 @media (max-width: 820px) {
+  /* ── ESPAÇAMENTO MÓVEL — gap do .nav mais apertado ──
+     WHAT  Aperta o gap entre os filhos que sobram na barra móvel.
+     TERM  `.nav` (linha 118) usa um `gap` só pensado para a barra desktop, com
+           4 filhos espaçados (logo, gaveta, CTA, alternador, hambúrguer); aqui
+           a gaveta já saiu do fluxo flex (regra abaixo) e o CTA está escondido
+           (linha ~325), mas o gap continuava o mesmo.
+     WHY   Pedido do Francisco 15-09-2026: em ecrãs estreitos (375px) a nav não
+           cabia — logo + 2×32px de gap + alternador + hambúrguer passava da
+           largura disponível. */
+  .nav { gap: var(--sp-4, 16px); } /* era var(--sp-8,32px) da regra base (linha 122) — menos espaço livre entre os elementos que sobram em móvel */
+
+  /* ── REORGANIZAÇÃO MÓVEL — hambúrguer à esquerda, alternador PT/EN à direita, sem logótipo ──
+     WHAT  Esconde "FRANCISCO MARTINS" só em móvel, o hambúrguer passa a ser o
+           1º elemento (fica à esquerda) e o alternador PT/EN é empurrado para
+           a extremidade direita.
+     TERM  `order:-1` muda só a ORDEM VISUAL dentro do `.nav` (que é
+           `display:flex`, linha 118) — o HTML não muda, por isso nenhum script
+           que dependa da ordem do DOM (não há nenhum, confirmado) é afectado.
+           `margin-left:auto` num filho flex come TODO o espaço livre à
+           esquerda desse filho — como a gaveta (linha 323) já saiu do fluxo
+           flex (`position:absolute`) e o CTA está escondido, o alternador é o
+           ÚNICO filho a seguir ao hambúrguer, por isso este `auto` chega
+           sozinho até à margem direita.
+     WHY   Pedido do Francisco 15-09-2026: trocar o layout móvel — e resolve de
+           forma a margem esquerda/direita parecerem desiguais: antes, nada
+           empurrava conteúdo para a direita em móvel (a gaveta, o único
+           `margin-left:auto` do ficheiro, saía do fluxo), por isso o
+           hambúrguer só ficava perto do bordo direito por coincidência de
+           largura; agora os dois elementos das pontas (hambúrguer e
+           alternador) ficam ambos encostados ao mesmo `padding-inline` do
+           `.site-header` (linha ~370), nos dois lados por igual. */
+  .nav__logo { display: none; }
+  .nav__toggle { order: -1; }
+  .lang-toggle { margin-left: auto; }
+
   /* WHAT  A gaveta de links, sem o `border-bottom` que estava sempre presente.
      TERM  `grid-template-rows: 0fr` (fechada) só colapsa a ALTURA DO CONTEÚDO —
            a borda do próprio elemento não depende disso e continuava a
@@ -320,7 +367,18 @@ body[data-split] .site-header[data-scrolled="true"] {
     border-bottom: 1px solid var(--c-border, #E5E0DA); /* só entra com a gaveta aberta — ver WHY acima */
   }
   .nav__links { min-height: 0; overflow: hidden; flex-direction: column; gap: 0; }
-  .nav__links a { display: block; padding: var(--sp-4, 16px) var(--sp-6, 24px); border-top: 1px solid var(--c-border, #E5E0DA); }
+  /* WHAT  Obriga cada link da gaveta a ocupar a largura toda, para o
+           `border-top` (a linha divisória entre links) chegar de um lado ao
+           outro.
+     TERM  O `<li>` (linha 168, `display:flex`) já estica à largura toda da
+           gaveta — mas dentro dele o `<a>` é um FILHO flex sem `flex-grow`
+           nem `width`, por isso encolhe ao tamanho do próprio texto+padding
+           em vez de esticar; a borda desenha-se só até aí, não até à margem.
+     WHY   Pedido do Francisco 15-09-2026: "quero as linhas de um lado ao
+           outro" — `width:100%` obriga o `<a>` a preencher o `<li>` (seguro
+           com `box-sizing:border-box`, definido globalmente em style.css, por
+           isso o padding não faz transbordar). */
+  .nav__links a { display: block; width: 100%; padding: var(--sp-4, 16px) var(--sp-6, 24px); border-top: 1px solid var(--c-border, #E5E0DA); }
   .nav__toggle { display: flex; align-items: center; justify-content: center; }
   .nav .nav__cta { display: none; } /* o CTA já existe no hero ("Contact me") — remove esta linha se quiseres o CTA visível também em móvel */
 
@@ -334,7 +392,7 @@ body[data-split] .site-header[data-scrolled="true"] {
            outro" — a pílula flutuante (mesmo já sem animação de encolher)
            continuava com o aspecto de ilha inset; isto troca para uma barra
            rectangular a toda a largura. */
-  .site-header, .site-header[data-scrolled="true"] {
+  .site-header, .site-header[data-scrolled] { /* era [data-scrolled="true"] — ver bug de especificidade explicado abaixo */
     top: 0;                      /* era var(--sp-3,12px) da regra base — cola ao topo real */
     left: 0;                     /* era var(--pad) — bordo a bordo */
     right: 0;                    /* idem */
@@ -343,6 +401,28 @@ body[data-split] .site-header[data-scrolled="true"] {
     padding-inline: var(--pad);  /* era var(--sp-3,12px) — alinha logo/hambúrguer com a margem que o resto do site já usa */
     background: color-mix(in srgb, var(--c-bg-cream, #FCFCFC) 90%, black);
     transition: none;
+  }
+  /* WHAT  Zera o padding próprio de `.nav.container` também quando a nav está
+           "encolhida" em móvel — igual ao que a regra base (linha 85) já faz
+           para o estado em repouso.
+     TERM  Bug real de ESPECIFICIDADE CSS: `.site-header:not([data-scrolled="true"])`
+           (linha 84/85) tem especificidade (0,2,0) — mais alta do que a regra
+           acima `.site-header` sozinha (0,1,0) dentro desta media query. Uma
+           media query não soma especificidade nenhuma, só decide SE a regra
+           entra em jogo — por isso, em repouso, a regra da linha 85 continua a
+           ganhar e zera o padding; assim que `data-scrolled` passa a "true",
+           essa regra `:not()` deixa de bater certo, e sem nada a substitui-la
+           o padding de `.nav.container` (linha 125, incondicional) volta a
+           somar-se ao padding de `.site-header` acima — a barra "salta" ao
+           fazer scroll.
+     WHY   Pedido do Francisco 15-09-2026: quer a nav sempre na MESMA posição e
+           estado, estática ou a meio de scroll. `[data-scrolled]` (só a
+           presença do atributo, sem exigir o valor "true") bate sempre certo —
+           o atributo está sempre escrito em todas as páginas — por isso este
+           par de regras cobre os dois estados com o MESMO resultado, em vez de
+           um deles cair de volta na regra antiga. */
+  .site-header[data-scrolled] .nav.container {
+    padding-inline: 0;
   }
 }
 

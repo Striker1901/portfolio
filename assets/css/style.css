@@ -67,6 +67,7 @@
   --pad: 1.6rem; /* margem lateral do site — era 2rem/--sp-8 da SOLITSU, apertada -20% a pedido do Francisco (14-09-2026) */
   --rail-w: clamp(260px, 24vw, 320px); /* largura da coluna de projectos (case studies): 320px num ecrã grande, encolhe até 260px num portátil pequeno para não roubar largura ao conteúdo — mesmo truque do clamp() usado nos tamanhos de letra aqui em cima, em vez de inventar um segundo ponto de corte (aumentado ligeiramente de 240/22vw/300, 14-09-2026) */
   --rail-top: 118px; /* distância ao topo: a mesma folga da nav fixa que o main.js já usa no offset do scroll suave — se a nav mudar de altura, muda aqui também */
+  --nav-h-mobile: 90px; /* altura real da barra fixa em telemóvel — usado para a 1ª imagem dos case studies tocar mesmo no limite da nav, sem respiro nenhum a mais. CORRIGIDO 15-09-2026 (2ª sessão): era 78px (32px de padding-block + 44px do conteúdo mais alto + 2px de border) — mas o conteúdo mais alto real não é o botão/track (44px), é a `.lang-toggle` inteira à volta dele, que soma o seu próprio `padding:6px` nos dois lados (44+6+6=56px); medido ao vivo (getBoundingClientRect) para confirmar: 32+56+2=90px, não 78px. O gap de 15px pedido pelo Francisco só media 3px reais antes desta correcção — por isso este token, não o valor de cada regra, tinha de ser corrigido. */
   --ease: cubic-bezier(0.41, 0.67, 0, 1);
 }
 
@@ -605,7 +606,21 @@ body[data-split] .case-scroll .grid {
     padding-right: var(--pad);        /* devolve o espaço reservado: no telemóvel já não há coluna à direita */
   }
 
+  /* WHAT  Esconde a tira horizontal da rail em telemóvel — dá lugar ao
+           `.case-nav` Anterior/Seguinte, escondido no desktop pela regra
+           `main[data-rail] .case-nav{display:none}` mais abaixo no ficheiro
+           (linha ~1349) — essa regra volta a ser desligada no bloco MOBILE
+           final (linha ~1417), não aqui: mesma especificidade nos dois
+           sítios, por isso quem ganha é sempre a regra mais TARDIA no
+           ficheiro, media query nenhuma pesa nisso — pôr o "liga outra vez"
+           aqui, ANTES da regra base que o "desliga", não fazia nada.
+     WHY   Pedido do Francisco 15-09-2026: "tal como tínhamos antes" — quer o
+           mecanismo antigo de Anterior/Seguinte de volta em telemóvel, em vez
+           da tira de cartões. As restantes regras desta secção (`.project-rail`/
+           `.rail-card`) ficam por usar aqui, mas inofensivas — só entram em
+           jogo se este `display:none` alguma vez for removido. */
   .project-rail {
+    display: none;
     position: static;                 /* volta ao fluxo normal da página, na posição em que está no HTML */
     inset: auto;                      /* anula de uma vez o top/right/bottom do desktop (`inset` é o atalho para os quatro) */
     width: auto;                      /* passa a ocupar a largura disponível em vez dos 300px fixos */
@@ -808,6 +823,13 @@ body[data-split] .case-scroll .grid {
 .about .about-photo {
   grid-column: 11 / 16;
   align-self: start;
+}
+
+/* Cabeçalho "06 / About / Designer" (15-09-2026) — só existe em telemóvel,
+   ver a media query móvel para o `display` real e os valores visuais; aqui
+   fica só escondido por omissão, para nunca aparecer no desktop. */
+.about-no, .about-head {
+  display: none;
 }
 
 /* ---------- Contact ---------- */
@@ -1314,6 +1336,33 @@ body[data-split] .case-text + .case-images {
   margin-bottom: 0.4em;
 }
 
+/* WHAT  Nas 6 páginas com rail (`main[data-rail]`), o `.case-nav` Anterior/
+         Seguinte adicionado 15-09-2026 fica escondido no desktop — lá quem
+         faz esse papel é a `.project-rail` (coluna fixa de projectos). Volta
+         a aparecer só dentro da media query móvel, mais abaixo, onde a rail
+         se esconde (ver `.project-rail{display:none}`).
+   TERM  `main[data-rail]` é o mesmo atributo já usado em `main[data-rail] .grid`
+         (mais acima) para distinguir estas 6 páginas — não inventa selector novo.
+   WHY   `photography.html` também usa `.case-nav` (já com Anterior/Seguinte a
+         sério desde 15-09-2026, não só "Back") — mas essa página não tem
+         `data-rail` no `<main>` (não tem coluna fixa), por isso precisa da
+         MESMA regra escrita outra vez, presa a `body[data-page="photo"]` em
+         vez de `main[data-rail]`, logo a seguir. */
+main[data-rail] .case-nav {
+  display: none;
+}
+
+/* UPDATE 15-09-2026 (2ª sessão): `photography.html` passou a esconder o seu
+   `.case-nav` no desktop também, por consistência com as outras 6 páginas —
+   antes ficava sempre visível porque não tem rail nenhuma para o substituir
+   lá, e esse continua a ser o resultado real (desktop fica sem nada nesse
+   sítio nesta página específica), mas foi um pedido explícito do Francisco,
+   não um esquecimento. `body[data-page="photo"]` é o atributo único desta
+   página (já usado noutras regras `.photography` neste ficheiro). */
+body[data-page="photo"] .case-nav {
+  display: none;
+}
+
 .case-footer {
   padding-bottom: 2rem;
 }
@@ -1388,9 +1437,66 @@ body[data-split] .case-text + .case-images {
     display: none;
   }
 
+  /* WHAT  Reacende o `.case-nav` Anterior/Seguinte destas 6 páginas — a regra
+           `main[data-rail] .case-nav{display:none}` (linha ~1349, acima deste
+           bloco no ficheiro) esconde-o por omissão porque no desktop é a
+           `.project-rail` que faz esse papel; aqui, dentro do bloco MOBILE
+           final (o que fica mais abaixo no ficheiro, por isso é o que ganha
+           empates de especificidade), volta a mostrar-se.
+     TERM  `display:grid`, não `block` — `.case-nav` também tem a classe
+           `.grid` (16 colunas, ver `.grid` no topo do ficheiro).
+     WHY   `margin-top` reduzido de 14vh (pensado para vir depois de uma
+           galeria inteira, como em `photography.html`) para o mesmo 6vh que a
+           `.project-rail` tinha aqui — este bloco passa a ocupar exactamente
+           o sítio dela. */
+  main[data-rail] .case-nav {
+    display: grid;
+    margin-top: 6vh;
+  }
+
+  /* Mesma reactivação, só que para `photography.html` (ver o par de regras
+     desktop, linha ~1345) — essa página não tem `data-rail`, por isso precisa
+     do seu próprio selector aqui, com o mesmo `display:grid`+`margin-top:6vh`. */
+  body[data-page="photo"] .case-nav {
+    display: grid;
+    margin-top: 6vh;
+  }
+
+  /* WHAT  Esconde a hero por completo em telemóvel — a secção seguinte
+           (`.works`, o índice de projectos) passa a ser a primeira coisa
+           visível ao abrir o site.
+     TERM  `display:none` tira o elemento do layout inteiramente (diferente de
+           `visibility:hidden`, que só o torna invisível mas continua a ocupar
+           espaço) — por isso `.works` sobe automaticamente para o topo, sem
+           precisar de mais nenhuma regra.
+     WHY   Pedido do Francisco 15-09-2026: "já mostrar os case studies" no
+           telemóvel, sem a hero pelo meio. O canvas `.hero-pixels` (animação
+           de fundo, hero-pixels.js) já pausa sozinho via IntersectionObserver
+           quando a hero não está visível — não precisa de nenhuma alteração
+           aqui, um elemento `display:none` nunca conta como "visível". */
   .hero {
-    padding-top: 26vh;
-    padding-bottom: 12vh;
+    display: none;
+  }
+
+  /* WHAT  Dá à `.works` o respiro de topo que precisa AGORA que é a 1ª coisa
+           visível na página — reaproveita `--nav-h-mobile` (:root, criado
+           para o `.case-lead` dos case studies) para saber a altura real da
+           barra fixa, em vez de adivinhar outro número.
+     TERM  Regra base (linha ~658): `padding-top:25px` — pensado só como
+           respiro visual "logo a seguir à hero", nunca precisou de vencer a
+           barra fixa porque a hero (secção inteira) já a tinha deixado para
+           trás muito antes de `.works` aparecer no ecrã.
+     WHY   Bug real, apanhado num telemóvel real 15-09-2026: com a hero
+           escondida (regra acima), `.works` passou a ser o 1º elemento da
+           página — os 25px sozinhos não chegam para vencer a barra fixa
+           (~78px), por isso o título "01 Litet Snitt" (a 1ª entrada do
+           índice) nascia mesmo POR BAIXO da barra opaca, escondido — só a
+           partir da 2ª entrada é que o índice já ia longe o suficiente para
+           aparecer. Confirmado por medição directa (não só visual): o título
+           tinha `is-visible`/`opacity:1`, não era um bug do sistema de
+           reveal — era mesmo a posição, tapada pela barra por cima. */
+  .works {
+    padding-top: calc(var(--nav-h-mobile) + 15px); /* era +25px — Francisco pediu um respiro mais pequeno (15px) entre a nav e o "01 Litet Snitt" */
   }
 
   .hero-meta {
@@ -1455,9 +1561,65 @@ body[data-split] .case-text + .case-images {
   }
 
   /* portrait fills the content width (equal --pad gutters both sides) */
+  /* WHAT  Só em telemóvel, a foto passa a aparecer ANTES do texto na pilha.
+     TERM  `order:-1` muda só a ORDEM VISUAL dentro do `.about` (que é
+           `display:grid` — ver `.grid` no topo do ficheiro), sem tocar no
+           HTML: `.about-text` continua antes de `.about-photo` no DOM
+           (importante para leitores de ecrã/SEO), o `order` é só de pintura.
+           Em desktop, `.about-text`/`.about-photo` são posicionados por
+           `grid-column` fixo (não por ordem), por isso este `order` não tem
+           qualquer efeito lá — fica só dentro desta media query.
+     WHY   Pedido do Francisco 15-09-2026: imagem primeiro, depois o texto, em
+           telemóvel. */
   .about .about-photo {
     grid-column: 1 / 17;
     margin-top: 2rem;
+    order: -1;
+  }
+
+  /* WHAT  Mostra o cabeçalho "06 / About / Designer" só aqui, em telemóvel —
+           reaproveita os valores visuais de `.work-no`/`.work-title`/
+           `.work-disc` (número grande, título 18px, subtítulo maiúsculo
+           esbatido) sem reutilizar essas classes: elas só têm estilo dentro
+           de `.work-entry` (ver `.work-entry .work-no` etc.), e `.about` não
+           é um `.work-entry` — copiar os VALORES para classes novas evita
+           ter de restruturar a grelha do `.about` só para herdar estilo.
+     TERM  `order:-2` (mais negativo que o `-1` da foto, logo acima) põe este
+           cabeçalho ANTES da foto na pilha — a ordem final fica
+           número/título/subtítulo → foto → texto, tal como uma entrada do
+           índice mostra número/título/subtítulo e só depois as imagens.
+     WHY   Pedido do Francisco 15-09-2026: "um número e título e subtítulo...
+           just like every other one" — mesma leitura visual do índice de
+           trabalhos, aplicada ao Bio. */
+  .about-no {
+    display: block;
+    grid-column: 1 / 4;  /* era 1/3 (o valor de DESKTOP de .work-entry .work-no) — estreito de mais em telemóvel, o "06" a 40px (var(--num) nesta media query) transbordava para a coluna do título. .work-entry .work-no usa 1/4 aqui (linha ~1515), não 1/3 */
+    order: -2;
+    font-size: var(--num);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .about-head {
+    display: block;
+    grid-column: 4 / 17; /* era 3/8 (também o valor de desktop) — mesma correcção, e sobrepunha-se à coluna do número. .work-entry .work-head usa 4/17 aqui (linha ~1519) */
+    align-self: end;     /* copiado de .work-entry .work-head (linha ~677) — sem isto o título ficava colado ao TOPO do número em vez de à base, como nas outras entradas */
+    padding-bottom: 0.4em; /* mesma origem — o pequeno ajuste óptico que acompanha align-self:end */
+    order: -2;
+  }
+
+  .about-title {
+    font-size: var(--text-l);
+    font-weight: 400;
+  }
+
+  .about-disc {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-top: 0.2em;
   }
 
   .contact-links {
@@ -1482,8 +1644,33 @@ body[data-split] .case-text + .case-images {
     padding-top: 20vh;
   }
 
-  .case-lead {
-    padding-top: 20vh;                 /* mesmo valor do `.case-hero` no telemóvel — ver WHAT na regra desktop */
+  /* WHAT  Mesmo bug de ESPECIFICIDADE já documentado na regra desktop (linha
+           ~1004 acima), só que ao contrário: aqui é a regra de DESKTOP
+           (`.case-images.case-lead`, duas classes = mais específica) que
+           continua a ganhar mesmo dentro desta media query — `.case-lead`
+           sozinho (uma classe) nunca conseguia bater-lhe, mesmo estando
+           "mais perto" no ficheiro (uma media query não soma especificidade
+           nenhuma). Resultado: em telemóvel, `padding-top` ficava sempre em
+           `0` (o valor de desktop), e como a `.case-scroll` também perde o
+           `position:fixed`/`top` que lhe dava respiro em desktop (vira
+           `static` em telemóvel — ver regra `.case-scroll` nesta mesma media
+           query), a imagem de abertura ficava mesmo debaixo da nav fixa.
+     TERM  Selector corrigido para `.case-images.case-lead` (as DUAS classes
+           juntas, tal como no HTML) — a mesma especificidade da regra
+           desktop, por isso ESTA regra (mais abaixo no ficheiro) é que ganha
+           dentro desta media query.
+     WHY   Pedido do Francisco 15-09-2026: a nav tapa a 1ª imagem em todas as
+           páginas de case study, em telemóvel — corrigir para respirar por
+           baixo da nav em todas as 6.
+     UPDATE 15-09-2026 (2ª sessão): trocado o `20vh` (uma estimativa a olho)
+           pela altura REAL da barra móvel — `--nav-h-mobile` (:root, linha
+           ~70), calculada a partir do próprio nav.css (32px de padding-block
+           + 44px do conteúdo mais alto + 2px de border). Pedido do Francisco:
+           a imagem deve TOCAR no limite da nav, sem respiro nenhum a mais —
+           `20vh` deixava uma folga grande de mais. Se a altura da nav mudar
+           um dia, muda só o valor de `--nav-h-mobile`, aqui não se mexe. */
+  .case-images.case-lead {
+    padding-top: var(--nav-h-mobile);  /* era 20vh — agora a altura exacta da nav, para a imagem tocar mesmo no limite dela */
   }
 
   .case-meta div {

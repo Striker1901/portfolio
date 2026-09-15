@@ -147,6 +147,7 @@
   function step(now) {
     rafId = requestAnimationFrame(step);              // agenda o próximo passo já, antes de qualquer verificação — nunca deixa o ciclo morrer sozinho
     if (!visible) return;                             // hero fora do ecrã ou aba escondida — poupa trabalho, mas mantém o ciclo pedido
+    if (!alpha) return;                                // `build()` ainda não mediu um hero com tamanho real (0×0 — ex.: `display:none` no telemóvel desde 15-09-2026, ou fontes por carregar) — sem isto, este 1º passo corria ANTES do IntersectionObserver avisar `visible=false` (o aviso chega sempre num frame a seguir, nunca no mesmo), e `alpha.length` rebentava por `alpha` ainda ser `null`
     if (now - lastStep < nextDelay) return;            // ainda não passou o tempo sorteado para este passo — sai sem fazer nada
     lastStep = now;                                    // marca este instante como o último passo real
     nextDelay = STEP_MS_MIN + Math.random() * (STEP_MS_MAX - STEP_MS_MIN);  // sorteia já o intervalo do PRÓXIMO passo — nunca igual ao anterior
