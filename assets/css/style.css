@@ -603,7 +603,26 @@ body[data-split] .case-scroll .grid {
          não inventes um segundo. */
 @media (max-width: 810px) {
   main[data-rail] .grid {
-    padding-right: var(--pad);        /* devolve o espaço reservado: no telemóvel já não há coluna à direita */
+    padding-right: var(--pad-mobile-content); /* devolve o espaço reservado: no telemóvel já não há coluna à direita — era var(--pad), trocado 15-09-2026 para bater certo com a margem de 5px do resto do site. NOTA: esta regra sozinha é letra morta — ver WHY na regra `body[data-split] .case-scroll .grid` mais abaixo, que tem mais especificidade e ganha sempre; deixada aqui por clareza histórica, a regra que ganha de verdade está junto dessa. */
+  }
+
+  /* WHAT  Bug real apanhado ao vivo 15-09-2026: `body[data-split] .case-scroll
+           .grid{padding-inline:0}` (linha ~592, SEM media query) tem mais
+           especificidade (0,3,2) do que a regra `.grid` móvel deste ficheiro
+           (0,1,0) — por isso o conteúdo das 6 páginas de case study ficava
+           sempre a 0px dos bordos em telemóvel, mesmo depois da margem de 5px
+           ser adicionada à `.grid` normal: aquela regra mais antiga (escrita
+           para evitar padding a dobrar quando `.case-scroll` tinha o seu
+           próprio `left`/`right` no desktop) continuava a zerar tudo, no
+           mobile incluído, onde `.case-scroll` já nem tem essa posição.
+     TERM  Mesmo selector, mesma especificidade (0,3,2) — mas escrito aqui
+           dentro da media query móvel, que fica DEPOIS da linha 592 no
+           ficheiro. Com especificidade empatada, quem vem depois ganha.
+     WHY   Pedido do Francisco 15-09-2026: "5px de margem... do site
+           inteiro" — sem esta regra, as páginas de case study ficavam de
+           fora dessa margem. */
+  body[data-split] .case-scroll .grid {
+    padding-inline: var(--pad-mobile-content);
   }
 
   /* WHAT  Esconde a tira horizontal da rail em telemóvel — dá lugar ao
@@ -627,11 +646,11 @@ body[data-split] .case-scroll .grid {
     flex-direction: row;              /* cartões lado a lado em vez de empilhados */
     gap: 8px;                         /* mesma distância entre cartões da versão desktop (ver WHAT acima) — já vinha herdada da regra de base, repetida aqui só para ficar explícita ao lado do resto desta secção */
     margin-top: 6vh;                  /* afasta a tira do bloco de imagens que vem antes */
-    padding-inline: var(--pad);       /* margens laterais POR DENTRO do contentor de scroll — ver WHY do scroll-padding abaixo */
+    padding-inline: var(--pad-mobile-content); /* margens laterais POR DENTRO do contentor de scroll — ver WHY do scroll-padding abaixo. Era var(--pad), trocado 15-09-2026; esta regra está inofensiva agora (a rail está `display:none` aqui, ver WHY acima), só fica pronta caso volte a ficar visível */
     overflow-x: auto;                 /* é isto que faz a tira deslizar na horizontal */
     overflow-y: hidden;               /* obrigatório: pôr overflow-x a `auto` activa também o eixo vertical, e sem isto aparece uma barra parasita */
     scroll-snap-type: x proximity;    /* os cartões encostam-se suavemente ao parar de deslizar (`proximity` só sugere; `mandatory` obriga) */
-    scroll-padding-inline: var(--pad); /* impede o contentor de cortar o 1º e o último cartão contra os bordos ao fazer snap */
+    scroll-padding-inline: var(--pad-mobile-content); /* impede o contentor de cortar o 1º e o último cartão contra os bordos ao fazer snap — mesma troca */
   }
 
   .rail-card {
@@ -1431,10 +1450,27 @@ body[data-page="photo"] .case-nav {
   :root {
     --num: 40px;
     --pad: 0.8rem; /* margem lateral em ecrãs pequenos — era 1rem/--sp-4 da SOLITSU, apertada -20% junto com o valor de desktop (14-09-2026) */
+    --pad-mobile-content: 10px; /* margem lateral do CONTEÚDO em telemóvel (15-09-2026, pedido do Francisco) — era 5px, +5px a pedido dele na mesma sessão. Token à parte de `--pad`, de propósito: `--pad` também é lido em nav.css para o padding interno da nav (logo/hambúrguer), e o Francisco confirmou que a nav fica tal como está, não encolhe também. Só as regras de conteúdo abaixo (`.grid`, a rail, o banner de cookies) passam a usar este token novo. */
   }
 
   .work-list {
     display: none;
+  }
+
+  /* WHAT  Margem lateral do site inteiro em telemóvel, reduzida para 5px.
+     TERM  `.grid` (regra base, linha ~131) é a classe que dá o padding
+           lateral a quase todas as secções do site (hero, índice de
+           trabalhos, about, case studies, rodapé) — não tinha nenhuma
+           regra própria aqui, herdava sempre o `--pad` partilhado. Esta é a
+           primeira vez que `.grid` ganha um override móvel: usa
+           `--pad-mobile-content` (novo token, :root acima) em vez de
+           `--pad`, para não mexer também no padding interno da nav.
+     WHY   Pedido do Francisco 15-09-2026: "5px de margem, esquerda e
+           direita, do site inteiro" — mobile apenas; a barra fixa fica
+           tal como estava (ver nav.css, não tocado nesta alteração). */
+  .grid {
+    padding-left: var(--pad-mobile-content);
+    padding-right: var(--pad-mobile-content);
   }
 
   /* WHAT  Reacende o `.case-nav` Anterior/Seguinte destas 6 páginas — a regra
@@ -1497,6 +1533,7 @@ body[data-page="photo"] .case-nav {
            reveal — era mesmo a posição, tapada pela barra por cima. */
   .works {
     padding-top: calc(var(--nav-h-mobile) + 15px); /* era +25px — Francisco pediu um respiro mais pequeno (15px) entre a nav e o "01 Litet Snitt" */
+    padding-bottom: 0; /* WHAT/WHY: bug real 15-09-2026 — esta folga (6vh na regra base) só fazia sentido depois da ÚLTIMA entrada (05 Photography), mas ali quem já dá espaço a sério é o `margin-bottom:10vh` do próprio `.work-entry` — o MESMO valor usado entre TODAS as entradas. Somar as duas fazia o intervalo até ao About ficar bem maior do que qualquer intervalo entre projectos (194.9px medido, contra 81.2px normal). Zerada aqui, sobra só o margin-bottom da última entrada — igual a todos os outros intervalos. */
   }
 
   .hero-meta {
@@ -1551,8 +1588,19 @@ body[data-page="photo"] .case-nav {
   }
 
   /* tighten the gap between the "Bio" label and the text on mobile */
+  /* WHAT  O respiro entre o cabeçalho "06/About/Designer" e a foto, e entre a
+           foto e o texto, passa a usar os MESMOS valores que uma entrada do
+           índice de trabalhos (.work-entry) já usa para o seu próprio
+           cabeçalho→imagem — não valores inventados à parte.
+     WHY   Bug real, apanhado ao vivo 15-09-2026: `row-gap:2rem` (32px) aqui
+           + `margin-top:2rem` (32px) no `.about-photo` logo abaixo somavam
+           64px — quase o dobro dos 43.2px que uma entrada normal usa entre
+           o seu número/título e a sua imagem (`.work-entry{row-gap:1.2rem}`
+           + `.we-N .img-a{margin-top:1.5rem}`). Trocado para os mesmos
+           1.2rem aqui. */
   .about {
-    row-gap: 2rem;
+    row-gap: 1.2rem; /* era 2rem */
+    padding-top: 0; /* era 8vh (regra base) — bug real 15-09-2026: esse respiro só fazia sentido no desktop, onde nada mais separa o About da secção anterior; em telemóvel o último `.work-entry` (05 Photography) já traz o seu próprio margin-bottom:10vh, o MESMO valor usado entre todas as entradas — somar +8vh aqui tornava só este intervalo maior que todos os outros. Ver também `.works{padding-bottom:0}` (mesma correcção, o outro lado do mesmo intervalo). */
   }
 
   .about .about-text {
@@ -1573,7 +1621,7 @@ body[data-page="photo"] .case-nav {
            telemóvel. */
   .about .about-photo {
     grid-column: 1 / 17;
-    margin-top: 2rem;
+    margin-top: 1.5rem; /* era 2rem — mesmo valor que `.we-N .img-a` usa (linha ~1552), completa o mecanismo de cima: row-gap(1.2rem)+margin-top(1.5rem)=43.2px, igual ao de uma entrada normal */
     order: -1;
   }
 
@@ -1670,7 +1718,7 @@ body[data-page="photo"] .case-nav {
            `20vh` deixava uma folga grande de mais. Se a altura da nav mudar
            um dia, muda só o valor de `--nav-h-mobile`, aqui não se mexe. */
   .case-images.case-lead {
-    padding-top: var(--nav-h-mobile);  /* era 20vh — agora a altura exacta da nav, para a imagem tocar mesmo no limite dela */
+    padding-top: calc(var(--nav-h-mobile) + 10px); /* era var(--nav-h-mobile) sozinho (a imagem tocava mesmo a nav) — +10px a pedido do Francisco 15-09-2026, respiro pequeno em vez de toque directo */
   }
 
   .case-meta div {
@@ -1751,8 +1799,8 @@ body[data-page="photo"] .case-nav {
   }
 
   .cookie-banner {
-    left: var(--pad);
-    right: var(--pad);
+    left: var(--pad-mobile-content);  /* era var(--pad), trocado 15-09-2026 para bater certo com a margem de 5px do resto do site */
+    right: var(--pad-mobile-content);
     max-width: none;
   }
 }
