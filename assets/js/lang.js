@@ -42,7 +42,6 @@ const I18N = {
       p2: "That technical background is a real asset today. Understanding technology from the inside gives me the confidence to navigate this new era where design and AI increasingly overlap. I use AI tools as execution assistants: they speed up the process, but they never replace creative direction.",
       p3: "I'm determined and focused on whatever I set out to do, and that same technical rigour is what I bring to every project.",
       p4: 'Outside work I split my time between piano, photography, drawing and 3D printing, more out of curiosity than as hobbies in the usual sense. I genuinely love learning new things, and that curiosity runs through everything I do, on and off the screen.',
-      p5: "I'm certainly not the best designer out there, but I always give the best of myself in what I set out to do, even when I don't enjoy it.",
     },
     footer: {
       location: 'Lisbon, Portugal',
@@ -98,9 +97,7 @@ const I18N = {
       navNext: 'Filipa &rarr;',
     },
     photo: {
-      title: 'Photography',
-      tagline: 'Portrait series — natural light, studio, and film.',
-      filipaDisc: 'Seaside &amp; studio sessions',
+      filipaDisc: 'Seaside sessions',
       beahDisc: 'Studio sessions',
       navBack: '&larr; Index',
     },
@@ -150,7 +147,6 @@ const I18N = {
       p2: 'Esse background técnico é hoje uma vantagem concreta. Perceber tecnologia por dentro dá-me confiança para navegar esta nova era em que design e IA se cruzam cada vez mais. Uso ferramentas de IA como assistentes de execução: aceleram o processo, mas nunca substituem a direção criativa.',
       p3: 'Sou determinado e focado no que me proponho a fazer, e é esse mesmo rigor técnico que levo para cada projeto.',
       p4: 'Fora do trabalho, divido o meu tempo entre piano, fotografia, desenho e impressão 3D, mais por curiosidade do que por hobby propriamente dito. Gosto genuinamente de aprender coisas novas, e essa curiosidade atravessa tudo o que faço, dentro e fora do ecrã.',
-      p5: 'Não sou certamente o melhor designer que existe, mas dou sempre o meu melhor naquilo a que me proponho, mesmo quando não gosto de o fazer.',
     },
     footer: {
       location: 'Lisboa, Portugal',
@@ -206,9 +202,7 @@ const I18N = {
       navNext: 'Filipa &rarr;',
     },
     photo: {
-      title: 'Fotografia',
-      tagline: 'Série de retratos — luz natural, estúdio e filme.',
-      filipaDisc: 'Sessões à beira-mar &amp; estúdio',
+      filipaDisc: 'Sessões à beira-mar',
       beahDisc: 'Sessões de estúdio',
       navBack: '&larr; Índice',
     },
