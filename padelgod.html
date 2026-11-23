@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="assets/js/lang-flag.js?v=1795445271"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PadelGOD — Francisco Martins</title>
+  <meta name="description" content="PadelGOD — identity, website and merch system for a padel league, built around the movement of the ball. A pro-bono project by Orbikun.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://striker1901.github.io/portfolio/padelgod.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Francisco Martins">
+  <meta property="og:title" content="PadelGOD — Francisco Martins">
+  <meta property="og:description" content="PadelGOD — identity, website and merch system for a padel league, built around the movement of the ball. A pro-bono project by Orbikun.">
+  <meta property="og:url" content="https://striker1901.github.io/portfolio/padelgod.html">
+  <meta property="og:image" content="https://striker1901.github.io/portfolio/assets/images/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="assets/css/style.css?v=1795445271">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1795445271">
+</head>
+<body data-page="padel" data-split>
+
+<!-- Nav Island -->
+<header class="site-header" data-open="false" data-scrolled="false">
+  <nav class="nav container">
+    <a class="nav__logo" href="index.html" aria-label="Francisco Martins — home">Francisco Martins</a>
+
+    <div class="nav__drawer" id="nav-links">
+      <ul class="nav__links">
+        <li><a href="index.html#works" data-i18n="nav.backIndex">&larr; Index</a></li>
+      </ul>
+    </div>
+
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner" data-i18n="nav.ctaContact">Get in touch</span></a>
+
+    <div class="lang-toggle" role="group" aria-label="Site language / Idioma do site">
+      <div class="lang-toggle__track">
+        <span class="lang-toggle__indicator" aria-hidden="true"></span>
+        <button type="button" class="lang-toggle__option" data-lang-option="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-toggle__option" data-lang-option="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
+
+    <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div class="progress-line" aria-hidden="true"></div>
+
+<main data-rail>
+
+  <div class="case-scroll">
+    <div class="case-scroll__inner">
+      <div id="nav-scroll-sentinel" aria-hidden="true"></div>
+
+  <!-- 1ª imagem sozinha em .case-lead (mesmo padrão das outras páginas): o filme
+       da marca (o logótipo passou para o topo da galeria; a foto do vidro do court está depois das munhequeiras). -->
+  <section class="case-images case-lead grid">
+    <!-- FILME DA MARCA (23-11-2026) — PadelGOD brand film v13, 24s, 1920×1080, 60fps, re-encodado
+         para a web (assets/videos/padelgod-film.mp4, ~8MB). Reaproveita as classes `smooth-film` e o
+         script smooth-page.js da página da Smooth (mesmo vídeo com botão de som) — por isso o nome
+         "smooth" aqui. autoplay+muted = arranca sozinho; loop = recomeça; playsinline = no iPhone toca
+         dentro da página; poster = a frame final (o logótipo). -->
+    <div class="case-img full smooth-film">
+      <video src="assets/videos/padelgod-film.mp4" poster="assets/images/padelgod-poster.jpg" width="1920" height="1080" autoplay muted loop playsinline preload="metadata" aria-label="PadelGOD brand film: the symbol is drawn and builds into the logo"></video>
+      <button class="smooth-film__sound" type="button" aria-pressed="false" data-state="off"><span class="is-off" data-i18n="smooth.soundOn">Sound on</span><span class="is-on" data-i18n="smooth.soundOff">Sound off</span></button>
+    </div>
+  </section>
+
+  <!-- Objectivo + Proposta Final lado a lado, e por baixo a linha de créditos (Orbikun).
+       Os textos vivem no lang.js (chaves padel.*) — o texto aqui é o inglês por omissão. -->
+  <section class="case-text grid">
+    <div class="text-pair">
+      <div class="text-block a">
+        <span class="label" data-i18n="caseLabel.objective">Objective</span>
+        <p data-i18n="padel.objective">PadelGOD runs a weekly padel league and a YouTube channel that follows it. The brief: a new identity and symbol, a redesigned website, and a system that stretches from the court to merch and events &mdash; caps, wristbands, towels, team kit, trophies and sponsor boards.</p>
+      </div>
+      <div class="text-block b">
+        <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
+        <p data-i18n="padel.finalProposal">Movement is the core of the concept: capturing the intervals of the ball. The symbol is a padel ball cut into slices, so it already draws motion by itself. Court blue and a sharp lime carry the whole system, set in Anybody ExtraBold &mdash; the world can move and blur around it, the mark always stays sharp.</p>
+      </div>
+      <!-- Créditos (23-11-2026) — 3º cartão DENTRO do mesmo .text-pair, classe `c` = largura toda
+           (colunas 1–16, ver style.css). Antes estava num 2º .text-pair, só na metade esquerda e colado ao de cima. -->
+      <div class="text-block c">
+        <span class="label" data-i18n="caseLabel.credits">Credits</span>
+        <p data-i18n="padel.credit">A pro-bono project by Orbikun. Identity, applications and web design by me; website development by Afonso Godinho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resto da galeria. Componentes que já existem: .case-img full (largura toda),
+       .img-pair (2 lado a lado), .img-trio (3 lado a lado). Para reordenar, muda a
+       ordem dos blocos; para trocar uma imagem, muda src + width/height reais. -->
+  <section class="case-images grid">
+    <div class="case-img full"><img src="assets/images/padel-logo.svg" alt="PadelGOD logotype in lime on court blue" width="1920" height="1080" loading="lazy"></div>
+    <div class="img-pair">
+      <div class="case-img a"><img src="assets/images/padel-web-laptop.jpg" alt="PadelGOD website on a laptop and a phone, standing on a blue court" width="1280" height="1600" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/padel-web-monitor.jpg" alt="PadelGOD website home page on a desktop monitor" width="1280" height="1600" loading="lazy"></div>
+    </div>
+    <div class="img-trio">
+      <div class="case-img a"><img src="assets/images/padel-cap-lime.jpg" alt="Lime PadelGOD cap with the logo in blue" width="1288" height="1600" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/padel-handshake.jpg" alt="Players shaking hands over the net, wearing a PadelGOD wristband and cap" width="1288" height="1600" loading="lazy"></div>
+      <div class="case-img c"><img src="assets/images/padel-cap-navy.jpg" alt="Navy PadelGOD cap with the logo in lime" width="1288" height="1600" loading="lazy"></div>
+    </div>
+    <div class="img-pair">
+      <div class="case-img a"><img src="assets/images/padel-towel-navy.jpg" alt="Navy towel with the PadelGOD logo in lime" width="1073" height="1600" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/padel-towel-white.jpg" alt="White towel with the PadelGOD logo in blue" width="1073" height="1600" loading="lazy"></div>
+    </div>
+    <div class="img-trio">
+      <div class="case-img a"><img src="assets/images/padel-wristband-white.jpg" alt="Pair of white PadelGOD wristbands" width="1288" height="1600" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/padel-wristbands-box.jpg" alt="Box full of white PadelGOD wristbands" width="1288" height="1600" loading="lazy"></div>
+      <div class="case-img c"><img src="assets/images/padel-wristband-navy.jpg" alt="Pair of navy PadelGOD wristbands" width="1288" height="1600" loading="lazy"></div>
+    </div>
+    <!-- Foto do court à noite (23-11-2026, pedido do Francisco: vai depois das munhequeiras). Antes abria a página. -->
+    <div class="case-img full"><img src="assets/images/padel-glass.jpg" alt="PadelGOD logo in lime vinyl on the glass wall of a padel court at night, a player running behind it" width="1600" height="1073" loading="lazy"></div>
+    <div class="img-pair">
+      <div class="case-img a"><img src="assets/images/padel-web-phone.jpg" alt="PadelGOD website on a phone lying on artificial grass next to a racket" width="1194" height="1600" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/padel-wristbands-arm.jpg" alt="Handshake from above, one player in a white PadelGOD wristband, the other in navy" width="904" height="1600" loading="lazy"></div>
+    </div>
+    <div class="case-img full"><img src="assets/images/padel-youtube.jpg" alt="PadelGOD YouTube channel with the new banner and video thumbnails" width="1600" height="900" loading="lazy"></div>
+  </section>
+
+  <!-- Anterior/Seguinte — só no telemóvel (no desktop é a rail que faz este papel). Para mudar o destino: href + nome. -->
+  <nav class="case-nav grid">
+    <a class="prev" href="beah.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span>&larr; Beah</span></a>
+    <a class="next" href="smooth.html"><span class="label" data-i18n="caseLabel.next">Next</span><span>Smooth &rarr;</span></a>
+  </nav>
+
+  <div class="grid case-footer">
+    <footer class="site-footer">
+      <span>&copy; 2026 Francisco Martins</span>
+      <span data-i18n="footer.location">Lisbon, Portugal</span>
+      <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
+      <span><a href="https://orbikun.com" target="_blank" rel="noopener">orbikun.com</a></span>
+    </footer>
+  </div>
+    </div>
+  </div>
+  <!-- Coluna de projectos (13-09-2026, comentário reescrito no mesmo dia depois de
+       o Anterior/Seguinte ter sido removido de todas as páginas). Fica presa à
+       direita da janela no desktop e vira uma tira horizontal no telemóvel (ver
+       `.project-rail` em style.css). No desktop o `position: fixed` tira-a do fluxo,
+       por isso a posição no HTML não conta aí. No telemóvel ela é `static` e cai
+       exactamente onde está escrita: a seguir ao rodapé, por ser o último elemento
+       de `.case-scroll__inner` — ambos vivem lá dentro para ficarem alcançáveis
+       dentro da coluna que faz scroll no desktop.
+       Referência dada pelo Francisco: portorocha.com (lá a lista está à esquerda).
+       O cartão da página actual é marcado à mão com `is-current` em cada ficheiro —
+       não há JS nenhum a calcular isto, porque a página activa nunca muda.
+       `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
+       do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
+  <aside class="project-rail" aria-label="Other projects">
+    <!-- PadelGOD + Smooth (23-11-2026) — entraram no topo da rail, mesma ordem da home (01, 02). -->
+    <span class="rail-card is-current" aria-current="page">
+      <img class="rail-mark" src="assets/images/padel-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">PadelGOD</span>
+        <span class="rail-disc" data-i18n="works.padelDisc">Identity &mdash; Orbikun</span>
+      </span>
+    </span>
+    <a class="rail-card" href="smooth.html">
+      <span class="rail-mark rail-mark--glyph rail-mark--smooth" aria-hidden="true">Aa</span>
+      <span class="rail-text">
+        <span class="rail-title">Smooth</span>
+        <span class="rail-disc" data-i18n="works.smoothDisc">Typeface Design &mdash; Motion</span>
+      </span>
+    </a>
+    <a class="rail-card" href="litet_snitt.html">
+      <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
+      <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
+           e repeti-lo faria um leitor de ecrã anunciar o mesmo cartão duas vezes. -->
+      <span class="rail-text">
+        <span class="rail-title">Litet Snitt</span>
+        <span class="rail-disc" data-i18n="works.litetDisc">Typeface Design</span>
+      </span>
+    </a>
+    <a class="rail-card" href="poliempreende.html">
+      <!-- `poli-symbol-mark.svg` (14-09-2026) — mesmo padrão do `poli-symbol-wide.svg` da home: cópia do ficheiro só com o viewBox mais apertado à volta da marca, para ela encher mais o quadrado de 48px em vez de sobrar amarelo vazio à volta; o `poli-symbol.svg` original (viewBox inteiro) continua intacto para o `.case-lead` da própria página. -->
+      <img class="rail-mark" src="assets/images/poli-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Poliempreende</span>
+        <span class="rail-disc" data-i18n="works.poliDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="clube_de_xadrez_do_barreiro.html">
+      <!-- `xadrez-symbol-mark.svg` (14-09-2026) — mesma ideia: viewBox recortado à volta do símbolo (que no original vive isolado no centro de uma tela bem mais larga, pensada para o banner do `.case-lead`), para deixar de ficar pequeno e "à boia" dentro do quadrado branco aqui. -->
+      <img class="rail-mark rail-mark--contain" src="assets/images/xadrez-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Clube de Xadrez do Barreiro</span>
+        <span class="rail-disc" data-i18n="works.xadrezDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="1543.html">
+      <img class="rail-mark" src="assets/images/1543-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">1543</span>
+        <span class="rail-disc" data-i18n="works.n1543Disc">Packaging &mdash; Special Edition</span>
+      </span>
+    </a>
+    <a class="rail-card" href="filipa.html">
+      <img class="rail-mark" src="assets/images/filipa-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Filipa</span>
+        <span class="rail-disc" data-i18n="photo.filipaDisc">Seaside sessions</span>
+      </span>
+    </a>
+    <a class="rail-card" href="beah.html">
+      <img class="rail-mark" src="assets/images/beah-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Beah</span>
+        <span class="rail-disc" data-i18n="photo.beahDisc">Studio sessions</span>
+      </span>
+    </a>
+  </aside>
+
+</main>
+
+<script src="assets/js/vendor/gsap.min.js?v=1795445271"></script>
+<script src="assets/js/nav.js?v=1795445271"></script>
+<script src="assets/js/lang.js?v=1795445271"></script>
+<script src="assets/js/smooth-page.js?v=1795445271"></script>
+<script src="assets/js/main.js?v=1795445271"></script>
+</body>
+</html>

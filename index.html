@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789569541"></script>
+  <script src="assets/js/lang-flag.js?v=1795445271"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Francisco Martins — Brand &amp; Web Designer</title>
   <meta name="description" content="Brand and website for early-stage products — designed and built by the same person. Visual identity, typography and web. Francisco Martins, Lisbon, Portugal.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789569541">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789569541">
+  <link rel="stylesheet" href="assets/css/style.css?v=1795445271">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1795445271">
 </head>
 <body data-page="home">
 
@@ -59,11 +59,13 @@
 
 <!-- Fixed work list (desktop) -->
 <nav class="work-list" aria-label="Work index">
-  <a href="#work-1" data-target="work-1">Litet Snitt</a>
-  <a href="#work-2" data-target="work-2">Poliempreende</a>
-  <a href="#work-3" data-target="work-3">Clube de Xadrez</a>
-  <a href="#work-4" data-target="work-4">1543</a>
-  <a href="#work-5" data-target="work-5" data-i18n="works.photoTitle">Photography</a>
+  <a href="#work-1" data-target="work-1">PadelGOD</a>
+  <a href="#work-2" data-target="work-2">Smooth</a>
+  <a href="#work-3" data-target="work-3">Litet Snitt</a>
+  <a href="#work-4" data-target="work-4">Poliempreende</a>
+  <a href="#work-5" data-target="work-5">Clube de Xadrez</a>
+  <a href="#work-6" data-target="work-6">1543</a>
+  <a href="#work-7" data-target="work-7" data-i18n="works.photoTitle">Photography</a>
 </nav>
 
 <!-- WHAT  Par wrapper/content que o GSAP ScrollSmoother pede (ver main.js) — o
@@ -95,9 +97,32 @@
 
   <!-- ============ WORK INDEX ============ -->
   <section class="works" id="works">
-    <!-- 01 Litet Snitt -->
-    <a class="work-entry we-1 grid" id="work-1" href="litet_snitt.html">
+    <!-- 01 PadelGOD (23-11-2026) — identidade pro-bono da Orbikun. img-a = o filme da marca em loop, sem som (padelgod-home.mp4, versão leve de 1280×720; o filme completo está em padelgod.html). Mesma estrutura
+         das outras entradas: número, título + disciplina, imagem larga (img-a) e
+         imagem vertical (img-b). Para trocar uma imagem: muda o `src` e põe o
+         width/height reais do ficheiro novo (reservam o espaço antes de carregar). -->
+    <a class="work-entry we-1 grid" id="work-1" href="padelgod.html">
       <div class="work-no reveal">01</div>
+      <div class="work-head reveal d-1">
+        <div class="work-title">PadelGOD</div>
+        <div class="work-disc label" data-i18n="works.padelDisc">Identity — Orbikun</div>
+      </div>
+      <div class="work-img img-a reveal"><video src="assets/videos/padelgod-home.mp4" poster="assets/images/padelgod-poster.jpg" width="1280" height="720" autoplay muted loop playsinline preload="metadata" aria-label="PadelGOD brand film: the symbol is drawn and builds into the logo"></video></div>
+      <div class="work-img img-b reveal d-1"><img src="assets/images/padel-thumb.jpg" alt="Navy PadelGOD cap on a blue court" width="724" height="900" loading="lazy"></div>
+    </a>
+    <!-- 02 Smooth (23-11-2026) — a typeface da Orbikun. img-a = o filme em loop sem som (smooth-home.mp4, versão leve 1280×720; o `poster` é a capa smooth-cover.jpg: "Smooth" a preto sobre laranja, feita a 23-11-2026 a partir da capa do Francisco), img-b = frame do corte vertical (o "e" com as pegas de Bézier). -->
+    <a class="work-entry we-2 grid" id="work-2" href="smooth.html">
+      <div class="work-no reveal">02</div>
+      <div class="work-head reveal d-1">
+        <div class="work-title">Smooth</div>
+        <div class="work-disc label" data-i18n="works.smoothDisc">Typeface Design — Motion</div>
+      </div>
+      <div class="work-img img-a reveal"><video src="assets/videos/smooth-home.mp4" poster="assets/images/smooth-cover.jpg" width="1280" height="720" autoplay muted loop playsinline preload="metadata" aria-label="Smooth typeface film: letters drawn, weighted and set into words"></video></div>
+      <div class="work-img img-b reveal d-1"><img src="assets/images/smooth-thumb.jpg" alt="Lowercase e in Smooth with its Bézier handles showing" width="675" height="900" loading="lazy"></div>
+    </a>
+    <!-- 03 Litet Snitt -->
+    <a class="work-entry we-3 grid" id="work-3" href="litet_snitt.html">
+      <div class="work-no reveal">03</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Litet Snitt</div>
         <div class="work-disc label" data-i18n="works.litetDisc">Typeface Design</div>
@@ -426,9 +451,9 @@
 </svg>
       </div>
     </a>
-    <!-- 02 Poliempreende -->
-    <a class="work-entry we-2 grid" id="work-2" href="poliempreende.html">
-      <div class="work-no reveal">02</div>
+    <!-- 04 Poliempreende -->
+    <a class="work-entry we-4 grid" id="work-4" href="poliempreende.html">
+      <div class="work-no reveal">04</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Poliempreende</div>
         <div class="work-disc label" data-i18n="works.poliDisc">Rebranding — Identity</div>
@@ -441,9 +466,9 @@
       <div class="work-img img-a reveal"><img src="assets/images/poli-symbol-wide.svg" alt="Poliempreende symbol" width="1701" height="1101" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/poli-thumb.jpg" alt="Poliempreende tote bag" width="642" height="900" loading="lazy"></div>
     </a>
-    <!-- 03 Clube de Xadrez do Barreiro -->
-    <a class="work-entry we-3 grid" id="work-3" href="clube_de_xadrez_do_barreiro.html">
-      <div class="work-no reveal">03</div>
+    <!-- 05 Clube de Xadrez do Barreiro -->
+    <a class="work-entry we-5 grid" id="work-5" href="clube_de_xadrez_do_barreiro.html">
+      <div class="work-no reveal">05</div>
       <div class="work-head reveal d-1">
         <div class="work-title">Clube de Xadrez do Barreiro</div>
         <div class="work-disc label" data-i18n="works.xadrezDisc">Rebranding — Identity</div>
@@ -452,9 +477,9 @@
       <div class="work-img img-a reveal"><img src="assets/images/xadrez-symbol.svg" alt="Clube de Xadrez do Barreiro symbol" width="241" height="156" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/xadrez-thumb-2.jpg" alt="Poster series announcing the 28th chess circuit" width="675" height="900" loading="lazy"></div>
     </a>
-    <!-- 04 1543 -->
-    <a class="work-entry we-4 grid" id="work-4" href="1543.html">
-      <div class="work-no reveal">04</div>
+    <!-- 06 1543 -->
+    <a class="work-entry we-6 grid" id="work-6" href="1543.html">
+      <div class="work-no reveal">06</div>
       <div class="work-head reveal d-1">
         <div class="work-title">1543</div>
         <div class="work-disc label" data-i18n="works.n1543Disc">Packaging — Special Edition</div>
@@ -462,9 +487,9 @@
       <div class="work-img img-a reveal"><img src="assets/images/1543-03.jpg" alt="1543 packaging box, open" width="1920" height="1440" loading="lazy"></div>
       <div class="work-img img-b reveal d-1"><img src="assets/images/1543-photo-thumb.jpg" alt="1543 olive oil bottle" width="675" height="900" loading="lazy"></div>
     </a>
-    <!-- 05 Photography -->
-    <a class="work-entry we-5 grid" id="work-5" href="photography.html">
-      <div class="work-no reveal">05</div>
+    <!-- 07 Photography -->
+    <a class="work-entry we-7 grid" id="work-7" href="photography.html">
+      <div class="work-no reveal">07</div>
       <div class="work-head reveal d-1">
         <div class="work-title" data-i18n="works.photoTitle">Photography</div>
         <div class="work-disc label" data-i18n="works.photoDisc">Portrait &amp; Film</div>
@@ -484,7 +509,7 @@
          — essas só têm estilo quando estão dentro de `.work-entry` (ver
          style.css), o que `.about` não é. Escondido por omissão, só aparece
          dentro do breakpoint móvel — ver style.css. -->
-    <div class="about-no">06</div>
+    <div class="about-no">08</div>
     <div class="about-head">
       <div class="about-title">About</div>
       <div class="about-disc">Designer</div>
@@ -504,6 +529,7 @@
       <div class="pf-links">
         <a href="https://www.linkedin.com/in/francisco-martins-973597196/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://www.instagram.com/fran_ciscotbh?igsh=eDQyNnRwM2U1MTV4&utm_source=qr" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://orbikun.com" target="_blank" rel="noopener">Orbikun</a>
       </div>
       <div class="pf-meta">
         <span>&copy; 2026 Francisco Martins</span>
@@ -516,12 +542,12 @@
 </main>
 </div><!-- /#smooth-wrapper -->
 
-<script src="assets/js/vendor/gsap.min.js?v=1789569541"></script>
-<script src="assets/js/vendor/ScrollTrigger.min.js?v=1789569541"></script>
-<script src="assets/js/vendor/ScrollSmoother.min.js?v=1789569541"></script>
-<script src="assets/js/nav.js?v=1789569541"></script>
-<script src="assets/js/lang.js?v=1789569541"></script>
-<script src="assets/js/hero-pixels.js?v=1789569541"></script>
-<script src="assets/js/main.js?v=1789569541"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1795445271"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js?v=1795445271"></script>
+<script src="assets/js/vendor/ScrollSmoother.min.js?v=1795445271"></script>
+<script src="assets/js/nav.js?v=1795445271"></script>
+<script src="assets/js/lang.js?v=1795445271"></script>
+<script src="assets/js/hero-pixels.js?v=1795445271"></script>
+<script src="assets/js/main.js?v=1795445271"></script>
 </body>
 </html>

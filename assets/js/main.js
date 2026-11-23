@@ -14,6 +14,16 @@
          tem de haver uma verdade só, cedo. */
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* Filme PadelGOD no índice da home (23-11-2026): quem pede menos movimento fica com a
+   imagem parada (o `poster`) em vez de um vídeo a repetir-se sozinho. `removeAttribute`
+   tira o autoplay; `pause()` garante que não arranca. Sai em silêncio se não houver vídeo. */
+if (reduced) {
+  document.querySelectorAll('.work-entry .work-img video').forEach((v) => { // todos os vídeos do índice
+    v.removeAttribute('autoplay'); // não arranca sozinho
+    v.pause();                     // fica no poster
+  });
+}
+
 /* WHAT  Se esta página tem `.case-scroll` (só a litet_snitt.html, 13-09-2026), é ela
          que faz scroll — não a página inteira — sempre que o ecrã for largo o
          suficiente para caber a coluna de projectos ao lado.

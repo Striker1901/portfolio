@@ -31,6 +31,8 @@ const I18N = {
     },
     works: {
       poliDisc: 'Rebranding — Identity',
+      padelDisc: 'Identity — Orbikun',             // 01 PadelGOD (23-11-2026)
+      smoothDisc: 'Typeface Design — Motion',      // 02 Smooth (23-11-2026)
       litetDisc: 'Typeface Design',
       n1543Disc: 'Packaging — Special Edition',
       xadrezDisc: 'Rebranding — Identity',
@@ -51,6 +53,7 @@ const I18N = {
       discipline: 'Discipline', for: 'For', scope: 'Scope',
       context: 'Context', objective: 'Objective', finalProposal: 'Final Proposal',
       previous: 'Previous', next: 'Next', back: 'Back',
+      credits: 'Credits',                          // rótulo da linha de créditos (PadelGOD, 23-11-2026)
     },
     poli: {
       tagline: 'The largest entrepreneurship network in Portuguese polytechnic higher education.',
@@ -93,6 +96,7 @@ const I18N = {
       context: 'A rebranding project developed for Clube de Xadrez do Barreiro, a non-profit association with more than 25 years of activity promoting chess and the local community.',
       objective: "To modernise the club's visual identity, making it more contemporary, recognisable and adaptable across different communication media, without losing the connection to the association's tradition.",
       finalProposal: 'The final proposal presents a minimal, strategic visual identity built on simple shapes, typographic contrast and a clean graphic language — able to represent, at once, the logic, concentration and competitiveness associated with chess.',
+      credit: 'A project developed together with Simão Gusmão.', // cartão Créditos (23-11-2026)
       navPrev: '&larr; 1543',
       navNext: 'Filipa &rarr;',
     },
@@ -100,6 +104,17 @@ const I18N = {
       filipaDisc: 'Seaside sessions',
       beahDisc: 'Studio sessions',
       navBack: '&larr; Index',
+    },
+    padel: { // PadelGOD (23-11-2026) — textos de padelgod.html; muda aqui para mudar no site
+      objective: 'PadelGOD runs a weekly padel league and a YouTube channel that follows it. The brief: a new identity and symbol, a redesigned website, and a system that stretches from the court to merch and events — caps, wristbands, towels, team kit, trophies and sponsor boards.',
+      finalProposal: 'Movement is the core of the concept: capturing the intervals of the ball. The symbol is a padel ball cut into slices, so it already draws motion by itself. Court blue and a sharp lime carry the whole system, set in Anybody ExtraBold — the world can move and blur around it, the mark always stays sharp.',
+      credit: 'A pro-bono project by Orbikun. Identity, applications and web design by me; website development by Afonso Godinho.',
+    },
+    smooth: { // Smooth (23-11-2026) — textos de smooth.html
+      objective: "To design Orbikun's own typeface — a sans that carries the studio's voice across the website, social media and identity, and replaces licensed fonts with something the studio owns.",
+      finalProposal: 'Smooth is a geometric-leaning sans with soft, continuous curves and open counters, built in Glyphs as a single Regular with 286 glyphs. The launch film shows the letters being drawn — anchors, Bézier handles, weight — before they settle into words, cut to the beat at 60 fps.',
+      soundOn: 'Sound on',   // botão do filme, som desligado
+      soundOff: 'Sound off', // botão do filme, som ligado
     },
     filipa: {
       tagline: 'Portrait series — a seaside session at golden hour.',
@@ -135,6 +150,8 @@ const I18N = {
       lookDown: 'Desce',
     },
     works: {
+      padelDisc: 'Identidade — Orbikun',
+      smoothDisc: 'Design de Tipografia — Motion',
       poliDisc: 'Rebranding — Identidade',
       litetDisc: 'Design de Tipografia',
       n1543Disc: 'Packaging — Edição Especial',
@@ -156,6 +173,7 @@ const I18N = {
       discipline: 'Disciplina', for: 'Para', scope: 'Âmbito',
       context: 'Contexto', objective: 'Objetivo', finalProposal: 'Proposta Final',
       previous: 'Anterior', next: 'Seguinte', back: 'Voltar',
+      credits: 'Créditos',
     },
     poli: {
       tagline: 'A maior rede de empreendedorismo do ensino superior politécnico português.',
@@ -198,6 +216,7 @@ const I18N = {
       context: 'Um projeto de rebranding desenvolvido para o Clube de Xadrez do Barreiro, uma associação sem fins lucrativos com mais de 25 anos de atividade a promover o xadrez e a comunidade local.',
       objective: 'Modernizar a identidade visual do clube, tornando-a mais contemporânea, reconhecível e adaptável a diferentes suportes de comunicação, sem perder a ligação à tradição da associação.',
       finalProposal: 'A proposta final apresenta uma identidade visual minimal e estratégica, construída sobre formas simples, contraste tipográfico e uma linguagem gráfica limpa — capaz de representar, ao mesmo tempo, a lógica, a concentração e a competitividade associadas ao xadrez.',
+      credit: 'Um projeto desenvolvido em conjunto com Simão Gusmão.',
       navPrev: '&larr; 1543',
       navNext: 'Filipa &rarr;',
     },
@@ -205,6 +224,17 @@ const I18N = {
       filipaDisc: 'Sessões à beira-mar',
       beahDisc: 'Sessões de estúdio',
       navBack: '&larr; Índice',
+    },
+    padel: {
+      objective: 'A PadelGOD organiza uma liga semanal de padel e um canal de YouTube que a acompanha. O pedido: uma identidade e símbolo novos, um site redesenhado e um sistema que vai do court ao merch e aos eventos — bonés, munhequeiras, toalhas, equipamento, troféus e painéis de patrocinadores.',
+      finalProposal: 'O movimento é o elemento central do conceito: captar os intervalos da bola. O símbolo é uma bola de padel cortada em fatias, por isso já desenha o movimento sozinho. O azul de court e um lima intenso carregam o sistema todo, em Anybody ExtraBold — o mundo pode mexer-se e desfocar à volta, a marca fica sempre nítida.',
+      credit: 'Um projeto pro-bono da Orbikun. Identidade, aplicações e web design por mim; desenvolvimento do site por Afonso Godinho.',
+    },
+    smooth: {
+      objective: 'Desenhar a typeface própria da Orbikun — uma sans que leva a voz do estúdio ao site, às redes e à identidade, e substitui fontes licenciadas por algo que o estúdio é dono.',
+      finalProposal: 'A Smooth é uma sans de base geométrica, com curvas suaves e contínuas e contraformas abertas, construída no Glyphs como um único Regular com 286 glifos. O filme de lançamento mostra as letras a ser desenhadas — âncoras, pegas de Bézier, peso — antes de assentarem em palavras, montado ao ritmo a 60 fps.',
+      soundOn: 'Ligar som',
+      soundOff: 'Desligar som',
     },
     filipa: {
       tagline: 'Série de retratos — uma sessão à beira-mar na hora dourada.',

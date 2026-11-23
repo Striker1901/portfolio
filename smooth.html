@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="assets/js/lang-flag.js?v=1795445271"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smooth — Francisco Martins</title>
+  <meta name="description" content="Smooth — Orbikun's own typeface, a soft geometric sans, with its launch film.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://striker1901.github.io/portfolio/smooth.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Francisco Martins">
+  <meta property="og:title" content="Smooth — Francisco Martins">
+  <meta property="og:description" content="Smooth — Orbikun's own typeface, a soft geometric sans, with its launch film.">
+  <meta property="og:url" content="https://striker1901.github.io/portfolio/smooth.html">
+  <meta property="og:image" content="https://striker1901.github.io/portfolio/assets/images/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="assets/css/style.css?v=1795445271">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1795445271">
+</head>
+<body data-page="smooth" data-split>
+
+<!-- Nav Island -->
+<header class="site-header" data-open="false" data-scrolled="false">
+  <nav class="nav container">
+    <a class="nav__logo" href="index.html" aria-label="Francisco Martins — home">Francisco Martins</a>
+
+    <div class="nav__drawer" id="nav-links">
+      <ul class="nav__links">
+        <li><a href="index.html#works" data-i18n="nav.backIndex">&larr; Index</a></li>
+      </ul>
+    </div>
+
+    <a class="nav__cta" href="mailto:francisco1901martins@gmail.com"><span class="nav__cta-inner" data-i18n="nav.ctaContact">Get in touch</span></a>
+
+    <div class="lang-toggle" role="group" aria-label="Site language / Idioma do site">
+      <div class="lang-toggle__track">
+        <span class="lang-toggle__indicator" aria-hidden="true"></span>
+        <button type="button" class="lang-toggle__option" data-lang-option="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-toggle__option" data-lang-option="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
+
+    <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu" data-label-open="Open menu" data-label-close="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div class="progress-line" aria-hidden="true"></div>
+
+<main data-rail>
+
+  <div class="case-scroll">
+    <div class="case-scroll__inner">
+      <div id="nav-scroll-sentinel" aria-hidden="true"></div>
+
+  <!-- O FILME (23-11-2026) — Smooth v6, 21s, 1920×1080, 60fps, re-encodado para a web
+       (assets/videos/smooth-film.mp4, ~6.5MB). Atributos do <video>:
+       autoplay+muted = arranca sozinho (os browsers só deixam se estiver sem som);
+       loop = recomeça no fim; playsinline = no iPhone toca dentro da página, não em
+       ecrã inteiro; preload="metadata" = só descarrega o vídeo quando for preciso;
+       poster = imagem mostrada antes do 1º frame. O botão liga/desliga o som (smooth-page.js). -->
+  <section class="case-images case-lead grid">
+    <div class="case-img full smooth-film">
+      <video src="assets/videos/smooth-film.mp4" poster="assets/images/smooth-poster.jpg" width="1920" height="1080" autoplay muted loop playsinline preload="metadata" aria-label="Smooth typeface film: letters drawn, weighted and set into words"></video>
+      <button class="smooth-film__sound" type="button" aria-pressed="false" data-state="off"><span class="is-off" data-i18n="smooth.soundOn">Sound on</span><span class="is-on" data-i18n="smooth.soundOff">Sound off</span></button>
+    </div>
+  </section>
+
+  <!-- Objectivo + Proposta Final (textos no lang.js, chaves smooth.*). -->
+  <section class="case-text grid">
+    <div class="text-pair">
+      <div class="text-block a">
+        <span class="label" data-i18n="caseLabel.objective">Objective</span>
+        <p data-i18n="smooth.objective">To design Orbikun's own typeface &mdash; a sans that carries the studio's voice across the website, social media and identity, and replaces licensed fonts with something the studio owns.</p>
+      </div>
+      <div class="text-block b">
+        <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
+        <p data-i18n="smooth.finalProposal">Smooth is a geometric-leaning sans with soft, continuous curves and open counters, built in Glyphs as a single Regular with 286 glyphs. The launch film shows the letters being drawn &mdash; anchors, Bézier handles, weight &mdash; before they settle into words, cut to the beat at 60 fps.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specimen animado — texto real na webfont Smooth (assets/fonts/Smooth-Regular.woff2);
+       smooth-page.js troca a letra a cada 100ms por todos os 286 glifos. -->
+  <section class="case-images grid">
+    <div class="case-img full smooth-specimen" aria-label="Smooth animated specimen — every character of the typeface, one after another">
+      <span class="smooth-specimen__glyph" aria-hidden="true">S</span>
+    </div>
+  </section>
+
+  <!-- Anterior/Seguinte — só no telemóvel (no desktop é a rail que faz este papel). Para mudar o destino: href + nome. -->
+  <nav class="case-nav grid">
+    <a class="prev" href="padelgod.html"><span class="label" data-i18n="caseLabel.previous">Previous</span><span>&larr; PadelGOD</span></a>
+    <a class="next" href="litet_snitt.html"><span class="label" data-i18n="caseLabel.next">Next</span><span>Litet Snitt &rarr;</span></a>
+  </nav>
+
+  <div class="grid case-footer">
+    <footer class="site-footer">
+      <span>&copy; 2026 Francisco Martins</span>
+      <span data-i18n="footer.location">Lisbon, Portugal</span>
+      <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
+      <span><a href="https://orbikun.com" target="_blank" rel="noopener">orbikun.com</a></span>
+    </footer>
+  </div>
+    </div>
+  </div>
+  <!-- Coluna de projectos (13-09-2026, comentário reescrito no mesmo dia depois de
+       o Anterior/Seguinte ter sido removido de todas as páginas). Fica presa à
+       direita da janela no desktop e vira uma tira horizontal no telemóvel (ver
+       `.project-rail` em style.css). No desktop o `position: fixed` tira-a do fluxo,
+       por isso a posição no HTML não conta aí. No telemóvel ela é `static` e cai
+       exactamente onde está escrita: a seguir ao rodapé, por ser o último elemento
+       de `.case-scroll__inner` — ambos vivem lá dentro para ficarem alcançáveis
+       dentro da coluna que faz scroll no desktop.
+       Referência dada pelo Francisco: portorocha.com (lá a lista está à esquerda).
+       O cartão da página actual é marcado à mão com `is-current` em cada ficheiro —
+       não há JS nenhum a calcular isto, porque a página activa nunca muda.
+       `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
+       do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
+  <aside class="project-rail" aria-label="Other projects">
+    <!-- PadelGOD + Smooth (23-11-2026) — entraram no topo da rail, mesma ordem da home (01, 02). -->
+    <a class="rail-card" href="padelgod.html">
+      <img class="rail-mark" src="assets/images/padel-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">PadelGOD</span>
+        <span class="rail-disc" data-i18n="works.padelDisc">Identity &mdash; Orbikun</span>
+      </span>
+    </a>
+    <span class="rail-card is-current" aria-current="page">
+      <span class="rail-mark rail-mark--glyph rail-mark--smooth" aria-hidden="true">Aa</span>
+      <span class="rail-text">
+        <span class="rail-title">Smooth</span>
+        <span class="rail-disc" data-i18n="works.smoothDisc">Typeface Design &mdash; Motion</span>
+      </span>
+    </span>
+    <a class="rail-card" href="litet_snitt.html">
+      <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
+      <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
+           e repeti-lo faria um leitor de ecrã anunciar o mesmo cartão duas vezes. -->
+      <span class="rail-text">
+        <span class="rail-title">Litet Snitt</span>
+        <span class="rail-disc" data-i18n="works.litetDisc">Typeface Design</span>
+      </span>
+    </a>
+    <a class="rail-card" href="poliempreende.html">
+      <!-- `poli-symbol-mark.svg` (14-09-2026) — mesmo padrão do `poli-symbol-wide.svg` da home: cópia do ficheiro só com o viewBox mais apertado à volta da marca, para ela encher mais o quadrado de 48px em vez de sobrar amarelo vazio à volta; o `poli-symbol.svg` original (viewBox inteiro) continua intacto para o `.case-lead` da própria página. -->
+      <img class="rail-mark" src="assets/images/poli-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Poliempreende</span>
+        <span class="rail-disc" data-i18n="works.poliDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="clube_de_xadrez_do_barreiro.html">
+      <!-- `xadrez-symbol-mark.svg` (14-09-2026) — mesma ideia: viewBox recortado à volta do símbolo (que no original vive isolado no centro de uma tela bem mais larga, pensada para o banner do `.case-lead`), para deixar de ficar pequeno e "à boia" dentro do quadrado branco aqui. -->
+      <img class="rail-mark rail-mark--contain" src="assets/images/xadrez-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Clube de Xadrez do Barreiro</span>
+        <span class="rail-disc" data-i18n="works.xadrezDisc">Rebranding &mdash; Identity</span>
+      </span>
+    </a>
+    <a class="rail-card" href="1543.html">
+      <img class="rail-mark" src="assets/images/1543-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">1543</span>
+        <span class="rail-disc" data-i18n="works.n1543Disc">Packaging &mdash; Special Edition</span>
+      </span>
+    </a>
+    <a class="rail-card" href="filipa.html">
+      <img class="rail-mark" src="assets/images/filipa-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Filipa</span>
+        <span class="rail-disc" data-i18n="photo.filipaDisc">Seaside sessions</span>
+      </span>
+    </a>
+    <a class="rail-card" href="beah.html">
+      <img class="rail-mark" src="assets/images/beah-mark.webp" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">Beah</span>
+        <span class="rail-disc" data-i18n="photo.beahDisc">Studio sessions</span>
+      </span>
+    </a>
+  </aside>
+
+</main>
+
+<script src="assets/js/vendor/gsap.min.js?v=1795445271"></script>
+<script src="assets/js/nav.js?v=1795445271"></script>
+<script src="assets/js/lang.js?v=1795445271"></script>
+<script src="assets/js/smooth-page.js?v=1795445271"></script>
+<script src="assets/js/main.js?v=1795445271"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <script src="assets/js/lang-flag.js?v=1789569541"></script>
+  <script src="assets/js/lang-flag.js?v=1795445271"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Clube de Xadrez do Barreiro — Francisco Martins</title>
   <meta name="description" content="Rebranding of Clube de Xadrez do Barreiro, a chess association with over 25 years of history.">
@@ -20,8 +20,8 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="assets/css/style.css?v=1789569541">
-  <link rel="stylesheet" href="assets/css/nav.css?v=1789569541">
+  <link rel="stylesheet" href="assets/css/style.css?v=1795445271">
+  <link rel="stylesheet" href="assets/css/nav.css?v=1795445271">
 </head>
 <body data-page="xadrez" data-split>
 
@@ -81,6 +81,12 @@
         <span class="label" data-i18n="caseLabel.finalProposal">Final Proposal</span>
         <p data-i18n="xadrez.finalProposal">The final proposal presents a minimal, strategic visual identity built on simple shapes, typographic contrast and a clean graphic language — able to represent, at once, the logic, concentration and competitiveness associated with chess.</p>
       </div>
+      <!-- Créditos (23-11-2026) — projecto feito a dois; 3º cartão dentro do mesmo .text-pair, classe `c` = largura
+           toda (colunas 1–16, ver style.css). O texto vive no lang.js (xadrez.credit); muda lá para mudar aqui. -->
+      <div class="text-block c">
+        <span class="label" data-i18n="caseLabel.credits">Credits</span>
+        <p data-i18n="xadrez.credit">A project developed together with Simão Gusmão.</p>
+      </div>
     </div>
   </section>
 
@@ -101,6 +107,16 @@
     <div class="img-pair">
       <div class="case-img a"><img src="assets/images/xadrez-07.jpg" alt="Black cap mockup, three-quarter view" width="1920" height="1440" loading="lazy"></div>
       <div class="case-img b"><img src="assets/images/xadrez-08.jpg" alt="White cap mockup, three-quarter view" width="1920" height="1440" loading="lazy"></div>
+    </div>
+    <!-- Canecas e t-shirts (23-11-2026) — mais merch, logo a seguir aos bonés. Cada par usa o mesmo `.img-pair` de cima.
+         Para trocar uma imagem: muda o `src` e põe o width/height reais do ficheiro novo. -->
+    <div class="img-pair">
+      <div class="case-img a"><img src="assets/images/xadrez-mug-symbol.jpg" alt="White enamel mug with the Clube de Xadrez symbol in black" width="1600" height="1200" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/xadrez-mug-wordmark.jpg" alt="White enamel mug with the club's wordmark in black blocky letters" width="1600" height="1200" loading="lazy"></div>
+    </div>
+    <div class="img-pair">
+      <div class="case-img a"><img src="assets/images/xadrez-tee-grey.jpg" alt="Black t-shirt seen from behind, with the identity's white blocks and thin line details, on a grey backdrop" width="1600" height="1066" loading="lazy"></div>
+      <div class="case-img b"><img src="assets/images/xadrez-tee-concrete.jpg" alt="Dark grey t-shirt seen from behind, with the large white identity lettering, in front of a concrete wall" width="1600" height="1066" loading="lazy"></div>
     </div>
     <div class="case-img full"><img src="assets/images/xadrez-06.jpg" alt="Billboard announcing the 28th chess circuit" width="1920" height="1440" loading="lazy"></div>
   </section>
@@ -205,6 +221,7 @@
       <span>&copy; 2026 Francisco Martins</span>
       <span data-i18n="footer.location">Lisbon, Portugal</span>
       <span data-i18n="footer.credit">Designed &amp; built by Francisco</span>
+      <span><a href="https://orbikun.com" target="_blank" rel="noopener">orbikun.com</a></span>
     </footer>
   </div>
     </div>
@@ -223,6 +240,21 @@
        `aria-label` fica em inglês, como o do `.work-list` da home: o applyTranslations()
        do lang.js só troca texto de elementos com data-i18n, nunca atributos. -->
   <aside class="project-rail" aria-label="Other projects">
+    <!-- PadelGOD + Smooth (23-11-2026) — entraram no topo da rail, mesma ordem da home (01, 02). -->
+    <a class="rail-card" href="padelgod.html">
+      <img class="rail-mark" src="assets/images/padel-symbol-mark.svg" width="96" height="96" alt="" loading="lazy">
+      <span class="rail-text">
+        <span class="rail-title">PadelGOD</span>
+        <span class="rail-disc" data-i18n="works.padelDisc">Identity &mdash; Orbikun</span>
+      </span>
+    </a>
+    <a class="rail-card" href="smooth.html">
+      <span class="rail-mark rail-mark--glyph rail-mark--smooth" aria-hidden="true">Aa</span>
+      <span class="rail-text">
+        <span class="rail-title">Smooth</span>
+        <span class="rail-disc" data-i18n="works.smoothDisc">Typeface Design &mdash; Motion</span>
+      </span>
+    </a>
     <a class="rail-card" href="litet_snitt.html">
       <span class="rail-mark rail-mark--glyph" aria-hidden="true">Aa</span>
       <!-- `alt` vazio de propósito: o nome do projecto vem já a seguir em texto,
@@ -272,9 +304,9 @@
 
 </main>
 
-<script src="assets/js/vendor/gsap.min.js?v=1789569541"></script>
-<script src="assets/js/nav.js?v=1789569541"></script>
-<script src="assets/js/lang.js?v=1789569541"></script>
-<script src="assets/js/main.js?v=1789569541"></script>
+<script src="assets/js/vendor/gsap.min.js?v=1795445271"></script>
+<script src="assets/js/nav.js?v=1795445271"></script>
+<script src="assets/js/lang.js?v=1795445271"></script>
+<script src="assets/js/main.js?v=1795445271"></script>
 </body>
 </html>

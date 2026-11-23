@@ -44,6 +44,16 @@
   font-display: swap;
 }
 
+/* `Smooth` (23-11-2026) — a typeface da Orbikun, self-hosted só para o
+   specimen animado e a marca da rail de smooth.html. Mesmo padrão da Litet acima. */
+@font-face {
+  font-family: "Smooth-Regular";                      /* nome usado em .smooth-specimen__glyph e .rail-mark--smooth */
+  src: url("../fonts/Smooth-Regular.woff2") format("woff2"); /* ficheiro copiado de Orbikun/Studio/Smooth_Type/ */
+  font-weight: 400;                                   /* só existe um corte (Regular) */
+  font-style: normal;
+  font-display: swap;                                 /* mostra a letra de recurso até a webfont chegar, nunca texto invisível */
+}
+
 /* ---------- Tokens ---------- */
 :root {
   --bg: #000000; /* preto absoluto (13-09-2026, era #0d0d0d) — o Francisco pediu para escurecer mais, e este valor já é o mesmo preto que o fundo do SVG "Aa" e os cartões da litet_snitt.html usam por omissão, por isso o site inteiro passa a ter um único preto, não dois */
@@ -719,10 +729,10 @@ body[data-split] .case-scroll .grid {
    WHY   Reproduz o mesmo cartão de marca que o Poliempreende já tem (a cor
          de fundo dele também vem queimada no próprio ficheiro), só que aqui
          a cor tem de vir do CSS porque o ficheiro é vector transparente.
-   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026) — o Xadrez
+   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026), depois para `.we-5` (23-11-2026, PadelGOD+Smooth entraram em 01/02) — o Xadrez
          mudou de posição no reordenamento do índice, e este selector segue o
          PROJECTO, não o número antigo. */
-.we-3 .img-a { background: #fff; }
+.we-5 .img-a { background: #fff; }
 
 .work-entry .work-img img {
   transition: transform 0.8s var(--ease);
@@ -730,6 +740,19 @@ body[data-split] .case-scroll .grid {
 
 .work-entry:hover .work-img img {
   transform: scale(1.03);
+}
+
+/* WHAT  Filme PadelGOD no índice da home (23-11-2026) — um <video> no lugar da imagem.
+   TERM  Mesmas regras do `<img>` acima: enche a largura da coluna, altura automática, e o
+         mesmo zoom suave ao passar o rato. `display:block` tira o espaço fantasma por baixo. */
+.work-entry .work-img video {
+  display: block;                       /* sem a linha em branco que elementos inline deixam por baixo */
+  width: 100%;                          /* enche a coluna, como as imagens */
+  height: auto;                         /* altura segue a proporção 16:9 do filme */
+  transition: transform 0.8s var(--ease); /* mesma suavidade do zoom das imagens */
+}
+.work-entry:hover .work-img video {
+  transform: scale(1.03);               /* zoom ao passar o rato — tira esta regra para não haver zoom */
 }
 
 /* WHAT  Mesmas regras acima, mas para `<svg>` — a miniatura "Litet Snitt" no
@@ -755,18 +778,22 @@ body[data-split] .case-scroll .grid {
 .work-entry .img-a { margin-top: 2.5rem; }
 .work-entry .img-b { margin-top: 2.5rem; }
 
-/* All entries (01–05, incl. Photography) share the Poliempreende two-image layout */
+/* All entries (01–07, incl. Photography as 07 — renumbered 23-11-2026) share the Poliempreende two-image layout */
 .we-1 .img-a,
 .we-2 .img-a,
 .we-3 .img-a,
 .we-4 .img-a,
-.we-5 .img-a { grid-column: 3 / 10; }
+.we-5 .img-a,
+.we-6 .img-a,
+.we-7 .img-a { grid-column: 3 / 10; }
 
 .we-1 .img-b,
 .we-2 .img-b,
 .we-3 .img-b,
 .we-4 .img-b,
-.we-5 .img-b { grid-column: 11 / 16; align-self: end; }
+.we-5 .img-b,
+.we-6 .img-b,
+.we-7 .img-b { grid-column: 11 / 16; align-self: end; }
 
 /* WHAT  `.img-a` já não é um ícone transparente pequeno a flutuar — é agora um
          cartão branco opaco (mesmo tratamento do `xadrez-symbol.png` atual),
@@ -780,22 +807,22 @@ body[data-split] .case-scroll .grid {
          a caixa vazia à volta do cartão branco lia mal ao lado do `.img-b`;
          o antigo comentário (ícone transparente a "flutuar", centrado de
          propósito) já não se aplica com o cartão opaco de hoje.
-   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026) — segue o
+   TERM  Selector actualizado de `.we-4` para `.we-3` (13-09-2026), depois `.we-5` (23-11-2026) — segue o
          Xadrez para a sua nova posição no índice. */
-.we-3 .img-a {
+.we-5 .img-a {
   align-self: start;
 }
 
 /* WHAT  Mesmo tratamento acima, para o cartão amarelo do Poliempreende (11-09-2026).
-   TERM  `align-self: start` (ver comentário completo em `.we-3 .img-a` acima) tira o
+   TERM  `align-self: start` (ver comentário completo em `.we-5 .img-a` acima) tira o
          item do stretch por omissão do grid. Selector actualizado de `.we-1` para
-         `.we-2` (13-09-2026) — segue o Poliempreende para a sua nova posição.
+         `.we-2` (13-09-2026), depois `.we-4` (23-11-2026) — segue o Poliempreende para a sua nova posição.
    WHY   `poli-symbol-wide.svg` (ver index.html) tem agora um canvas retângulo, não
          quadrado — sem isto, o grid volta a esticar a caixa para a altura da linha
          (ditada pelo `.img-b` mais alto ao lado), reintroduzindo o mesmo espaço vazio
          por baixo da imagem que este truque já resolveu para o Xadrez, só que desta
          vez visível a sério, porque o cartão é amarelo opaco em vez de preto. */
-.we-2 .img-a {
+.we-4 .img-a {
   align-self: start;
 }
 
@@ -893,8 +920,12 @@ body[data-split] .case-scroll .grid {
 
 /* © left (col 1), Lisbon under the header name (col 5), credit right */
 .site-footer span:nth-child(1) { grid-column: 1 / 5; }
-.site-footer span:nth-child(2) { grid-column: 5 / 12; }
+.site-footer span:nth-child(2) { grid-column: 5 / 9; }   /* 23-11-2026: era 5/12 — encolheu para dar lugar ao link da Orbikun */
 .site-footer span:nth-child(3) { grid-column: 12 / 17; text-align: right; }
+.site-footer span:nth-child(4) { grid-column: 9 / 12; }  /* 23-11-2026: link orbikun.com, entre a localização e o crédito */
+.site-footer span { grid-row: 1; }                       /* tudo na mesma linha — sem isto o 4º item (coluna 9) caía para uma 2ª linha */
+.site-footer a { color: inherit; }                       /* o link herda o cinza do rodapé em vez do azul de link por omissão */
+.site-footer a:hover { color: var(--accent); }           /* laranja ao passar o rato, como os outros links do site */
 
 /* ============================================================
    CASE / GALLERY PAGES
@@ -1041,6 +1072,8 @@ body[data-split] .case-scroll .grid {
 
 .case-text .text-pair .text-block.a { grid-column: 1 / 9; }  /* metade esquerda: colunas 1 a 8 — o Objectivo */
 .case-text .text-pair .text-block.b { grid-column: 9 / 17; } /* metade direita: colunas 9 a 16 — a Proposta Final */
+.case-text .text-pair .text-block.c { grid-column: 1 / 17; } /* 23-11-2026 — cartão de largura toda por baixo dos dois (os Créditos da PadelGOD): colunas 1 a 16 */
+.case-text .text-pair { row-gap: 8px; }                       /* 23-11-2026 — espaço entre linhas de cartões, os mesmos 8px dos outros gaps; só tem efeito quando o par tem 2 linhas (PadelGOD), nas outras páginas há só uma linha */
 
 .case-text .text-pair .label {
   grid-column: auto;                  /* anula o `1/4` do .case-text: aqui a etiqueta ocupa a largura da sua metade */
@@ -1239,7 +1272,7 @@ body[data-split] .case-text + .case-images {
 
 /* WHAT  Cartão branco atrás do símbolo do Xadrez na PRÓPRIA página do case
          study (08-09-2026) — mesmo problema e mesma solução da home (ver
-         `.we-3 .img-a`, renomeado de `.we-4` a 13-09-2026 quando o Xadrez
+         `.we-5 .img-a`, renomeado de `.we-4` a 13-09-2026 (e para `.we-5` a 23-11-2026) quando o Xadrez
          mudou de posição no índice).
    TERM  `background` num `<img>` pinta por trás das zonas transparentes da
          própria imagem — por isso o rectângulo branco aparece exactamente
@@ -1586,19 +1619,19 @@ body[data-page="photo"] .case-nav {
     grid-column: 4 / 17;
   }
 
-  .we-1 .img-a, .we-2 .img-a, .we-3 .img-a,
-  .we-4 .img-a, .we-5 .img-a {
+  .we-1 .img-a, .we-2 .img-a, .we-3 .img-a, .we-4 .img-a, .we-5 .img-a,
+  .we-6 .img-a, .we-7 .img-a {
     grid-column: 1 / 17;
     margin-top: 1.5rem;
   }
 
-  /* Drop the second image on the four design projects (01–04) */
-  .we-1 .img-b, .we-2 .img-b, .we-3 .img-b, .we-4 .img-b {
+  /* Drop the second image on the six design projects (01–06) */
+  .we-1 .img-b, .we-2 .img-b, .we-3 .img-b, .we-4 .img-b, .we-5 .img-b, .we-6 .img-b {
     display: none;
   }
 
-  /* Photography (05): keep the second photo, but full content-width too */
-  .we-5 .img-b {
+  /* Photography (07): keep the second photo, but full content-width too */
+  .we-7 .img-b {
     grid-column: 1 / 17;
     margin-top: 1rem;
   }
@@ -1712,7 +1745,8 @@ body[data-page="photo"] .case-nav {
 
   .site-footer span:nth-child(1),
   .site-footer span:nth-child(2),
-  .site-footer span:nth-child(3) {
+  .site-footer span:nth-child(3),
+  .site-footer span:nth-child(4) {
     grid-column: auto;
     text-align: left;
   }
@@ -2069,4 +2103,75 @@ body[data-page="photo"] .case-nav {
   fill: #64ff00;                                  /* verde da própria Litet Snitt — o mesmo dos outros specimens, não o laranja do site */
   font-family: LitetSnitt-Regular, 'Litet Snitt '; /* a webfont self-hosted declarada no topo deste ficheiro */
   font-size: 800px;                               /* tamanho em unidades do viewBox do SVG (1388×850), não em pixéis de ecrã */
+}
+
+
+/* ============================================================================
+   NOVOS CASE STUDIES — Smooth + PadelGOD (23-11-2026)
+   ============================================================================ */
+
+/* WHAT  Marca da Smooth na rail — "Aa" escrito na própria fonte, mesmo padrão
+         do `.rail-mark--glyph` da Litet Snitt (que esta classe reaproveita no
+         HTML: o cartão leva as duas classes, esta só troca fonte e cor). */
+.rail-mark--smooth {
+  font-family: "Smooth-Regular", sans-serif; /* a fonte da Smooth em vez da Litet — o sans-serif só aparece antes de ela carregar */
+  background: #f04903;                       /* quadrado laranja (23-11-2026) — igual ao fundo do specimen; troca aqui para mudar a cor do quadrado */
+  color: #000;                               /* "Aa" preto sobre o laranja — troca aqui para mudar a cor da letra */
+}
+
+/* WHAT  Filme da Smooth (`<video>`) — enche a coluna como qualquer imagem de case study.
+   TERM  `aspect-ratio` reserva a altura 16:9 antes do vídeo carregar (evita saltos de layout, CLS). */
+.smooth-film video {
+  display: block;                 /* tira o espaço fantasma por baixo dos elementos inline */
+  width: 100%;                    /* enche a largura da coluna */
+  height: auto;                   /* altura segue a proporção do vídeo */
+  aspect-ratio: 16 / 9;           /* proporção do filme (1920×1080) — muda se trocares para o corte vertical */
+  border-radius: 12px;            /* mesmo raio das imagens dos case studies */
+  border: 1px solid var(--line);  /* mesmo contorno ténue das imagens */
+  background: #000;               /* preto enquanto o vídeo ainda não pintou o 1º frame */
+}
+
+/* WHAT  Botão "Sound on/off" no canto inferior direito do filme.
+   TERM  `position: absolute` posiciona-o em relação ao `.case-img` (que já tem `position: relative`). */
+.smooth-film__sound {
+  position: absolute;                       /* flutua por cima do vídeo */
+  right: 12px;                              /* distância à direita — sobe para afastar do canto */
+  bottom: 12px;                             /* distância ao fundo */
+  padding: 6px 12px;                        /* tamanho da "pílula" à volta do texto */
+  border: 1px solid rgba(255,255,255,.35);  /* contorno branco translúcido — sobe o .35 para mais contraste */
+  border-radius: 999px;                     /* cantos totalmente redondos (forma de pílula) */
+  background: rgba(0,0,0,.55);              /* fundo escuro translúcido para ler por cima de qualquer frame */
+  color: #fff;                              /* texto branco */
+  font: inherit;                            /* usa a fonte do site (PP Telegraf), não a do sistema */
+  font-size: 12px;                          /* texto pequeno, tipo etiqueta */
+  letter-spacing: .04em;                    /* ligeiro espaçamento, igual às outras etiquetas */
+  text-transform: uppercase;                /* em maiúsculas, como as `.label` do site */
+  cursor: pointer;                          /* mão ao passar por cima */
+  -webkit-appearance: none;                 /* Safari: tira o estilo de botão nativo (bug já visto neste site) */
+  appearance: none;                         /* o mesmo, nos outros browsers */
+}
+.smooth-film__sound:hover { border-color: var(--accent); } /* contorno laranja ao passar o rato */
+/* Só um dos dois textos aparece de cada vez — o JS troca `data-state` entre "off" e "on". */
+.smooth-film__sound[data-state="off"] .is-on,
+.smooth-film__sound[data-state="on"] .is-off { display: none; }
+
+/* WHAT  Specimen animado da Smooth — cópia de `.litet-specimen` com a fonte e a cor
+         da Smooth (ver o comentário completo de `.litet-specimen` mais acima). */
+.smooth-specimen {
+  container-type: inline-size;    /* faz o `cqw` do glifo ser relativo à largura DESTE bloco */
+  aspect-ratio: 16 / 9;           /* reserva a altura antes de a fonte carregar */
+  border-radius: 12px;            /* mesmo raio das imagens */
+  border: 1px solid var(--line);  /* mesmo contorno ténue */
+  background: #f04903;            /* fundo laranja (23-11-2026, pedido do Francisco) — o laranja do filme; troca aqui para mudar a cor */
+  display: flex;                  /* flexbox só para centrar a letra */
+  align-items: center;            /* centra na vertical */
+  justify-content: center;        /* centra na horizontal */
+  overflow: hidden;               /* um glifo largo (ex: "W", "…") nunca sai do bloco */
+}
+.smooth-specimen__glyph {
+  font-family: "Smooth-Regular", sans-serif; /* a webfont da Smooth */
+  color: #000;                    /* letra preta sobre o fundo laranja — troca aqui para mudar a cor da letra */
+  font-size: 32cqw;               /* tamanho da letra = 32% da largura do bloco; sobe para letra maior */
+  line-height: 1;                 /* tira o espaço extra acima/abaixo */
+  user-select: none;              /* decorativo — não se selecciona */
 }
